@@ -74,6 +74,6 @@ __PACKAGE__->add_columns(
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-03-25 09:57:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jYQQaqnTkFB6KYg+t8vsuw
 
+# We can't safely assume a unique primary key. Well, probably we can for pipe_*, but not for loutre_*
 
-# You can replace this text with custom content, and it will be preserved on regeneration
 1;

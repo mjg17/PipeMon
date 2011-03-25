@@ -88,6 +88,7 @@ __PACKAGE__->add_columns(
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-03-25 09:57:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PAkXln8mjm6a8H4WNL/iLg
 
+# A bit nasty to use all columns - consider not defining? Should only get maninpulated via joins?
+__PACKAGE__->set_primary_key(qw(job_id status time is_current));
 
-# You can replace this text with custom content, and it will be preserved on regeneration
 1;
