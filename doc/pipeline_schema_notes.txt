@@ -1,0 +1,2 @@
+DBIx::Class::Schema::Loader::make_schema_at(): job_status has no primary key at /software/perl-5.8.8/bin/dbicdump line 71
+DBIx::Class::Schema::Loader::make_schema_at(): seq_region_attrib has no primary key at /software/perl-5.8.8/bin/dbicdump line 71
