@@ -6,6 +6,11 @@ extends 'Catalyst::Model::Adaptor';
 
 __PACKAGE__->config( class => 'Bio::Otter::MFetcher' );
 
+sub mangle_arguments {
+    my ($self, $args) = @_;
+    return %$args;
+}
+
 =head1 NAME
 
 PipeMon::Model::Otter::MFetcher - Catalyst Model
