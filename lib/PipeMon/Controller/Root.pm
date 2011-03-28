@@ -29,8 +29,12 @@ The root page (/)
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    # Hello World
-    $c->response->body( $c->welcome_message );
+    my $mf = $c->model('Otter::MFetcher');
+    my $dataset = $mf->dataset_hash;
+    my @species = sort grep { not $dataset->{$_}->{RESTRICTED} } keys %$dataset;
+
+    $c->stash(species  => \@species);
+    $c->stash(template => 'datasets.tt2');
 }
 
 =head2 default
