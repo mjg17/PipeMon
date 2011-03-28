@@ -1,0 +1,9 @@
+[% META title = 'Datasets' -%]
+
+<table>
+[% FOREACH ds IN species -%]
+  <tr>
+    <td>[% ds %]</td>
+  </tr>
+[% END -%]
+</table>

@@ -6,7 +6,15 @@ use warnings;
 use base 'Catalyst::View::TT';
 
 __PACKAGE__->config(
-    TEMPLATE_EXTENSION => '.tt',
+
+    # Set the location for TT files
+    INCLUDE_PATH => [
+        PipeMon->path_to( 'root', 'src' ),
+    ],
+    TIMER              => 0,
+    # This is your wrapper template located in the 'root/src'
+    WRAPPER => 'xhtml_wrapper.tt2',
+
     render_die => 1,
 );
 
