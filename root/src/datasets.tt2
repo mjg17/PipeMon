@@ -3,7 +3,7 @@
 <table>
 [% FOREACH ds IN species -%]
   <tr>
-    <td>[% ds %]</td>
+    <td><a href="[% c.uri_for_action('/species/index', [ds]) %]">[% ds %]</a></td>
   </tr>
 [% END -%]
 </table>

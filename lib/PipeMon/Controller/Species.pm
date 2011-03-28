@@ -16,15 +16,44 @@ Catalyst Controller.
 
 =cut
 
+=head2 base
+
+Extract species to start chained dispatch here
+
+=cut
+
+sub base :Chained('/') :PathPart('') :CaptureArgs(1) {
+    my ($self, $c, $species) = @_;
+
+    # Store the ResultSet in stash so it's available for other methods
+    $c->stash(species => $species);
+
+    my $ds = $c->model('Otter::MFetcher')->dataset_hash->{$species};
+    unless ($ds) {
+        $c->response->status(404);
+        $c->response->body("No such species '$species'");
+        $c->detach;
+    }
+
+    if ($ds->{RESTRICTED}) {
+        $c->response->status(401);
+        $c->response->body("Not permitted to see '$species'");
+        $c->detach;
+    }
+
+    # Print a message to the debug log
+    $c->log->debug("*** SPECIES: >$species< ***");
+}
 
 =head2 index
 
 =cut
 
-sub index :Path :Args(0) {
+sub index :Chained('base') :Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->response->body('Matched PipeMon::Controller::Species in Species.');
+    my $species = $c->stash->{species};
+    $c->response->body("Matched PipeMon::Controller::Species in Species for $species");
 }
 
 
