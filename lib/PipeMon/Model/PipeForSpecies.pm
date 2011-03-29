@@ -18,6 +18,9 @@ sub build_per_context_instance {
 
     my $new = bless({ %$self }, ref($self));
 
+    # By the time this is used, our MFetcher model should already have
+    # had its dataset_name set.
+    #
     my $mfetcher = $c->model('Otter::MFetcher');
     my $opt_str = $mfetcher->satellite_dba_options('pipeline_db_head');
 
