@@ -18,10 +18,7 @@ sub build_per_context_instance {
 
     my $new = bless({ %$self }, ref($self));
 
-    my $mfetcher = Bio::Otter::MFetcher->new();
-    $mfetcher->species_dat_filename('/nfs/WWWdev/SANGER_docs/data/otter/54/species.dat');
-    $mfetcher->dataset_name($c->stash->{species});
-
+    my $mfetcher = $c->model('Otter::MFetcher');
     my $opt_str = $mfetcher->satellite_dba_options('pipeline_db_head');
 
     # Duplication with Bio::Otter::MFetcher
