@@ -19,6 +19,7 @@ use Catalyst::Runtime 5.80;
 use Catalyst qw/
     ConfigLoader
     Static::Simple
+    StackTrace
 /;
 
 extends 'Catalyst';
