@@ -41,6 +41,8 @@ sub base :Chained('/') :PathPart('') :CaptureArgs(1) {
         $c->detach;
     }
 
+    $c->model('Otter::MFetcher')->dataset_name($species);
+
     # Print a message to the debug log
     $c->log->debug("*** SPECIES: >$species< ***");
 }
@@ -53,7 +55,11 @@ sub index :Chained('base') :Args(0) {
     my ( $self, $c ) = @_;
 
     my $species = $c->stash->{species};
-    $c->response->body("Matched PipeMon::Controller::Species in Species for $species");
+    my $model = $c->model('PipeForSpecies');
+    my $n_analyses = $model->resultset('Analysis')->count;
+
+    $c->response->body("<p>Matched PipeMon::Controller::Species in Species for $species.</p>\n" .
+        "<p>Number of analyses: $n_analyses</p>");
 }
 
 
