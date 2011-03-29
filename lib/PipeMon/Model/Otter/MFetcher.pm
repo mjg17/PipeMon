@@ -2,7 +2,7 @@ package PipeMon::Model::Otter::MFetcher;
 use Moose;
 use namespace::autoclean;
 
-extends 'Catalyst::Model::Adaptor';
+extends 'Catalyst::Model::Factory::PerRequest';
 
 __PACKAGE__->config(
     class => 'Bio::Otter::MFetcher',
