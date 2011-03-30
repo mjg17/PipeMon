@@ -58,8 +58,7 @@ sub index :Chained('base') :Args(0) {
     my $model = $c->model('PipeForSpecies');
     my $n_analyses = $model->resultset('Analysis')->count;
 
-    $c->response->body("<p>Matched PipeMon::Controller::Species in Species for $species.</p>\n" .
-        "<p>Number of analyses: $n_analyses</p>");
+    $c->stash(template => 'species.tt2');
 }
 
 
