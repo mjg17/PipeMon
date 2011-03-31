@@ -1,0 +1,10 @@
+[% META title = 'Analyses' -%]
+
+<table>
+[% FOREACH a IN analyses -%]
+  <tr>
+    <td>[% a.analysis_id %]</td>
+    <td><a href="[% c.uri_for_action('/analysis/analysis', [species], a.logic_name) %]">[% a.logic_name %]</a></td>
+  </tr>
+[% END -%]
+</table>

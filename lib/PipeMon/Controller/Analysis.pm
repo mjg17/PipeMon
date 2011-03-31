@@ -4,6 +4,30 @@ use namespace::autoclean;
 
 BEGIN {extends 'Catalyst::Controller'; }
 
+has 'analysis_keys' => (
+    is  => 'rw',
+    isa => 'ArrayRef[Str]',
+);
+
+__PACKAGE__->config(
+    analysis_keys => [ qw(
+        analysis_id
+        logic_name
+        created
+        db
+        db_version
+        db_file
+        program
+        program_version
+        program_file
+        parameters
+        module
+        module_version
+        gff_source
+        gff_feature
+    )],
+    );
+
 =head1 NAME
 
 PipeMon::Controller::Analysis - Catalyst Controller
@@ -34,7 +58,11 @@ sub base :Chained('/species/base') :PathPart('analysis') :CaptureArgs(0) {
 sub index :Chained('base') :PathPart('') :Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->response->body('Matched PipeMon::Controller::Analysis in Analysis.');
+    my $resultset = $c->model('PipeForSpecies::Analysis');
+
+    $c->stash( analyses => [$resultset->all],
+               template => 'analysis/index.tt2',
+        );
 }
 
 =head2 analysis
@@ -53,16 +81,21 @@ sub analysis :Chained('base') :PathPart('') :Args(1) {
         ($analysis) = $resultset->search({logic_name => $key});
     } else {
         # Bad format
-    }
-    my $analysis_id = "<NOT FOUND>";
-    my $logic_name  = "<NOT FOUND>";
-
-    if ($analysis) {
-        $analysis_id = $analysis->analysis_id;
-        $logic_name  = $analysis->logic_name;
+        $c->response->status(400);
+        $c->response->body("Cannot map '$key' to analysis_id or logic_name");
+        $c->detach;
     }
 
-    $c->response->body("Got key: $key, analysis_id: $analysis_id, logic_name: $logic_name");
+    unless ($analysis) {
+        $c->response->status(404);
+        $c->response->body("No such analysis '$key'");
+        $c->detach;
+    }
+
+    $c->stash( analysis => $analysis,
+               keys     => $self->analysis_keys,
+               template => 'analysis/analysis.tt2',
+        );
 }
 
 =head1 AUTHOR

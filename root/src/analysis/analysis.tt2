@@ -1,0 +1,8 @@
+[% META title = "Analysis" -%]
+
+<dl class="analysis">
+[% FOREACH key IN keys -%]
+ <dt>[% key %]</dt>
+ <dd>[% analysis.$key %]</dd>
+[% END %]
+</dl>
