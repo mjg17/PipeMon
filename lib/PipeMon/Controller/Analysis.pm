@@ -62,7 +62,7 @@ sub analyses :Chained('base') :PathPart('analyses') :Args(0) {
     my $resultset = $c->stash->{analysis_rs};
 
     $c->stash( analyses => [$resultset->all],
-               template => 'analysis/index.tt2',
+               template => 'analysis/analyses.tt2',
         );
 }
 

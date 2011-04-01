@@ -69,7 +69,7 @@ sub jobs :Chained('base') :PathPart('jobs') :Args(0) {
         jobs     => $jobs,
         limit    => $limit,
         total    => $total,
-        template => 'job/list.tt2',
+        template => 'job/jobs.tt2',
         );
 }
 
