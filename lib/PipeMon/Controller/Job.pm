@@ -13,7 +13,6 @@ __PACKAGE__->config(
     job_keys => [ qw(
         job_id
         input_id
-        seq_region_id
         analysis_id
         logic_name
         submission_id

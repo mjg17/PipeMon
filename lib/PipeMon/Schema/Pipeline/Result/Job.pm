@@ -147,13 +147,6 @@ __PACKAGE__->belongs_to(
     { proxy => [ qw/logic_name/ ] },
     );
 
-# __PACKAGE__->belongs_to(
-#     'input_id',
-#     'PipeMon::Schema::Pipeline::Result::InputIdSeqRegion',
-#     'input_id',
-#     { proxy => [ qw/seq_region_id/ ] },
-#     );
-
 __PACKAGE__->has_many(
     'job_status',
     'PipeMon::Schema::Pipeline::Result::JobStatus',
