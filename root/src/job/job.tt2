@@ -1,0 +1,8 @@
+[% META title = "Job" -%]
+
+<dl class="job">
+[% FOREACH key IN keys -%]
+ <dt>[% key %]</dt>
+ <dd>[% job.$key %]</dd>
+[% END %]
+</dl>
