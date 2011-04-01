@@ -1,7 +1,7 @@
 [% META title = 'Datasets' -%]
 
 <table>
-[% FOREACH ds IN species -%]
+[% FOREACH ds IN datasets -%]
   <tr>
     <td><a href="[% c.uri_for_action('/species/index', [ds]) %]">[% ds %]</a></td>
   </tr>

@@ -33,7 +33,7 @@ sub index :Path :Args(0) {
     my $dataset = $mf->dataset_hash;
     my @species = sort grep { not $dataset->{$_}->{RESTRICTED} } keys %$dataset;
 
-    $c->stash(species  => \@species);
+    $c->stash(datasets => \@species);
     $c->stash(template => 'datasets.tt2');
 }
 
