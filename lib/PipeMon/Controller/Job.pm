@@ -56,14 +56,26 @@ sub base :Chained('/species/base') :PathPart('') :CaptureArgs(0) {
 sub jobs :Chained('base') :PathPart('jobs') :Args(0) {
     my ( $self, $c ) = @_;
 
-    my $limit = $c->request->parameters->{limit} || 20;
+    my %search;
+    if (my $analysis_id = $c->request->parameters->{analysis_id}) {
+        $search{'me.analysis_id'} = $analysis_id;
+    }
 
-    my $jobs  = $c->stash->{job_rs}->search( undef, 
-                                             { order_by => 'job_id',
-                                               rows     => $limit,
-                                               prefetch => [ qw/analysis/ ] } );
+    my %opts = (
+        order_by => 'job_id',
+        prefetch => [ qw/analysis/ ],
+        );
 
-    my $total = $c->stash->{job_rs}->count;
+    my $limit = $c->request->parameters->{limit};
+    unless ($limit or %search) {
+        $limit = 20;
+    }
+    if ($limit) {
+        $opts{rows} = $limit;
+    }
+
+    my $jobs  = $c->stash->{job_rs}->search( \%search, \%opts );
+    my $total = $c->stash->{job_rs}->search( \%search );
 
     $c->stash(
         jobs     => $jobs,

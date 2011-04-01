@@ -6,6 +6,11 @@
     <td>[% a.analysis_id %]</td>
     <td><a href="[% c.uri_for_action('/analysis/analysis', [species], a.logic_name) %]">[% a.logic_name %]</a></td>
     <td>[% a.job_count %]</td>
+    <td>
+      [% IF a.job_count -%]
+      <a href="[% c.uri_for_action('/job/jobs', [species], undef, { analysis_id => a.analysis_id }) %]">list</a>
+      [% END -%]
+    </td>
   </tr>
 [% END -%]
 </table>
