@@ -1,0 +1,15 @@
+[% META title = 'Jobs' -%]
+
+<p>First [% jobs.count %] of [% total %] jobs:</p>
+<table>
+[% WHILE (job = jobs.next) -%]
+  <tr>
+    <td><a href="[% c.uri_for_action('/job/job', [species], job.job_id) %]">[% job.job_id %]</a></td>
+    <td>[% job.input_id %]</td>
+    <td>[% job.logic_name %]</td>
+    <td>[% job.status %]</td>
+    <td>[% job.retry_count %]</td>
+    <td>[% job.submission_id %]</td>
+  </tr>
+[% END -%]
+</table>

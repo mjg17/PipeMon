@@ -44,26 +44,40 @@ Just gets us chained to the right place with the right pathpart initially
 
 =cut
 
-sub base :Chained('/species/base') :PathPart('job') :CaptureArgs(0) {
+sub base :Chained('/species/base') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
     $c->stash( job_rs => $c->model('PipeForSpecies::Job') );
 }
 
-=head2 index
+=head2 list
 
 =cut
 
-sub index :Chained('base') :PathPart('') :Args(0) {
+sub list :Chained('base') :PathPart('jobs') :Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->response->body('Matched PipeMon::Controller::Job in Job.');
+    my $limit = $c->request->parameters->{limit} || 20;
+
+    my $jobs  = $c->stash->{job_rs}->search( undef, 
+                                             { order_by => 'job_id',
+                                               rows     => $limit,
+                                               prefetch => [ qw/analysis/ ] } );
+
+    my $total = $c->stash->{job_rs}->count;
+
+    $c->stash(
+        jobs     => $jobs,
+        limit    => $limit,
+        total    => $total,
+        template => 'job/list.tt2',
+        );
 }
 
 =head2 job
 
 =cut
 
-sub job :Chained('base') :PathPart('') :Args(1) {
+sub job :Chained('base') :PathPart('job') :Args(1) {
     my ( $self, $c, $key ) = @_;
 
     my $resultset = $c->stash->{job_rs};
