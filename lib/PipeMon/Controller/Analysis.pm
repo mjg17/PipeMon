@@ -47,18 +47,19 @@ Just gets us chained to the right place with the right pathpart initially
 
 =cut
 
-sub base :Chained('/species/base') :PathPart('analysis') :CaptureArgs(0) {
+sub base :Chained('/species/base') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
+    $c->stash( analysis_rs => $c->model('PipeForSpecies::Analysis') );
 }
 
-=head2 index
+=head2 analyses
 
 =cut
 
-sub index :Chained('base') :PathPart('') :Args(0) {
+sub analyses :Chained('base') :PathPart('analyses') :Args(0) {
     my ( $self, $c ) = @_;
 
-    my $resultset = $c->model('PipeForSpecies::Analysis');
+    my $resultset = $c->stash->{analysis_rs};
 
     $c->stash( analyses => [$resultset->all],
                template => 'analysis/index.tt2',
@@ -69,10 +70,10 @@ sub index :Chained('base') :PathPart('') :Args(0) {
 
 =cut
 
-sub analysis :Chained('base') :PathPart('') :Args(1) {
+sub analysis :Chained('base') :PathPart('analysis') :Args(1) {
     my ( $self, $c, $key ) = @_;
 
-    my $resultset = $c->model('PipeForSpecies::Analysis');
+    my $resultset = $c->stash->{analysis_rs};
 
     my $analysis;
     if ($key =~ /^\d+$/) {

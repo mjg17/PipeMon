@@ -49,11 +49,11 @@ sub base :Chained('/species/base') :PathPart('') :CaptureArgs(0) {
     $c->stash( job_rs => $c->model('PipeForSpecies::Job') );
 }
 
-=head2 list
+=head2 jobs
 
 =cut
 
-sub list :Chained('base') :PathPart('jobs') :Args(0) {
+sub jobs :Chained('base') :PathPart('jobs') :Args(0) {
     my ( $self, $c ) = @_;
 
     my $limit = $c->request->parameters->{limit} || 20;

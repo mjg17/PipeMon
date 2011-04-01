@@ -5,5 +5,15 @@
 </p>
 <dl class="species">
   <dt>analyses</dt>
-  <dd><a class="analyses" href="[% c.uri_for_action('/analysis/index', [species]) %]">analyses for <em>[% species %]</em></a>
+  <dd>
+    <a class="analyses" href="[% c.uri_for_action('/analysis/analyses', [species]) %]">
+      analyses for <em>[% species %]</em>
+    </a>
+  </dd>
+  <dt>jobs</dt>
+  <dd>
+    <a class="jobs" href="[% c.uri_for_action('/job/jobs', [species]) %]">
+      jobs for <em>[% species %]</em>
+    </a>
+  </dd>
 </dl>
