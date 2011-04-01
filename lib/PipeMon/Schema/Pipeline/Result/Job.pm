@@ -144,6 +144,30 @@ __PACKAGE__->belongs_to(
     'analysis',
     'PipeMon::Schema::Pipeline::Result::Analysis',
     'analysis_id',
+    { proxy => [ qw/logic_name/ ] },
+    );
+
+# __PACKAGE__->belongs_to(
+#     'input_id',
+#     'PipeMon::Schema::Pipeline::Result::InputIdSeqRegion',
+#     'input_id',
+#     { proxy => [ qw/seq_region_id/ ] },
+#     );
+
+__PACKAGE__->has_many(
+    'job_status',
+    'PipeMon::Schema::Pipeline::Result::JobStatus',
+    'job_id',
+    );
+
+__PACKAGE__->might_have(
+    'current_status',
+    'PipeMon::Schema::Pipeline::Result::JobStatus',
+    'job_id',
+    {
+        where => { is_current => 'y' },
+        proxy => [ qw/status time/ ],
+    },
     );
 
 1;

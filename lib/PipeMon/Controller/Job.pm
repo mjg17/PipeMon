@@ -13,8 +13,11 @@ __PACKAGE__->config(
     job_keys => [ qw(
         job_id
         input_id
+        seq_region_id
         analysis_id
+        logic_name
         submission_id
+        status
         stdout_file
         stderr_file
         retry_count
@@ -68,11 +71,11 @@ sub job :Chained('base') :PathPart('') :Args(1) {
 
     my $job;
     if ($key =~ /^\d+$/) {
-        $job = $resultset->find($key);
+        $job = $resultset->find($key, { prefetch => 'analysis' } );
     } else {
         # Bad format
         $c->response->status(400);
-        $c->response->body("Cannot map '$key' to job_id or logic_name");
+        $c->response->body("'$key' doesn't look like a job_id");
         $c->detach;
     }
 
