@@ -225,6 +225,15 @@ __PACKAGE__->add_unique_constraint("logic_name_idx", ["logic_name"]);
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-03-25 09:57:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YMFp6oFudPJQOklE9xZYJA
 
+__PACKAGE__->has_many(
+    'jobs',
+    'PipeMon::Schema::Pipeline::Result::Job',
+    'analysis_id',
+    );
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+sub job_count {
+    my ($self) = @_;
+    return $self->jobs->count;
+}
+
 1;

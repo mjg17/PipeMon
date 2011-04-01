@@ -5,4 +5,6 @@
  <dt>[% key %]</dt>
  <dd>[% analysis.$key %]</dd>
 [% END %]
+ <dt>Jobs</dt>
+ <dd>[% analysis.job_count %]</dd>
 </dl>
