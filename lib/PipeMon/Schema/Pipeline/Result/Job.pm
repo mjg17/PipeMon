@@ -163,4 +163,13 @@ __PACKAGE__->might_have(
     },
     );
 
+__PACKAGE__->might_have(
+    'input_id_analysis',
+    'PipeMon::Schema::Pipeline::Result::InputIdAnalysis',
+    {
+        'foreign.input_id'    => 'self.input_id',
+        'foreign.analysis_id' => 'self.analysis_id',
+    },
+    );
+
 1;

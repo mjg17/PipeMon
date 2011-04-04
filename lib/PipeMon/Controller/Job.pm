@@ -9,6 +9,11 @@ has 'job_keys' => (
     isa => 'ArrayRef[Str]',
 );
 
+has 'input_id_analysis_keys' => (
+    is  => 'rw',
+    isa => 'ArrayRef[Str]',
+);
+
 __PACKAGE__->config(
     job_keys => [ qw(
         job_id
@@ -22,6 +27,16 @@ __PACKAGE__->config(
         retry_count
         temp_dir
         exec_host
+    )],
+    input_id_analysis_keys => [ qw(
+        input_id
+        input_id_type
+        analysis_id
+        logic_name
+        created
+        runhost
+        db_version
+        result
     )],
     );
 
@@ -110,9 +125,12 @@ sub job :Chained('base') :PathPart('job') :Args(1) {
         $c->detach;
     }
 
-    $c->stash( job      => $job,
-               keys     => $self->job_keys,
-               template => 'job/job.tt2',
+    $c->stash( job        => $job,
+               job_status => [ $job->job_status->search( undef, { order_by => { '-desc' => 'time' } } ) ],
+               input_id_analysis => $job->input_id_analysis,
+               job_keys   => $self->job_keys,
+               iia_keys   => $self->input_id_analysis_keys,
+               template   => 'job/job.tt2',
         );
 }
 

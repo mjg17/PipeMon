@@ -1,8 +1,27 @@
 [% META title = "Job" -%]
 
 <dl class="job">
-[% FOREACH key IN keys -%]
+[% FOREACH key IN job_keys -%]
  <dt>[% key %]</dt>
  <dd>[% job.$key %]</dd>
-[% END %]
+[% END -%]
 </dl>
+
+<table class="job_status">
+[% FOREACH js IN job_status -%]
+ <tr>
+  <td>[% js.status %]</td>
+  <td>[% js.time %]</td>
+  <td>[% js.is_current %]</td>
+ </tr>
+[% END -%]
+</table>
+
+[% IF input_id_analysis -%]
+[%   FOREACH key IN iia_keys -%]
+ <dt>[% key %]</dt>
+ <dd>[% input_id_analysis.$key %]</dd>
+[%   END -%]
+[% ELSE -%]
+<p>New analysis</p>
+[% END -%]
