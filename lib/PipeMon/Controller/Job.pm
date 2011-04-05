@@ -5,12 +5,12 @@ use namespace::autoclean;
 BEGIN {extends 'Catalyst::Controller'; }
 
 has 'job_keys' => (
-    is  => 'rw',
+    is  => 'ro',
     isa => 'ArrayRef[Str]',
 );
 
 has 'input_id_analysis_keys' => (
-    is  => 'rw',
+    is  => 'ro',
     isa => 'ArrayRef[Str]',
 );
 
