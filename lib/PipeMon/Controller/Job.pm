@@ -72,14 +72,30 @@ sub jobs :Chained('base') :PathPart('jobs') :Args(0) {
     my ( $self, $c ) = @_;
 
     my %search;
-    if (my $analysis_id = $c->request->parameters->{analysis_id}) {
-        $search{'me.analysis_id'} = $analysis_id;
+    my @join;
+    foreach my $key (qw/analysis_id input_id/) {
+        if (my $value = $c->request->parameters->{$key}) {
+            my $search_key = 'me.' . $key;
+            $search{$search_key} = $value;
+        }
+    }
+    if (my $status = $c->request->parameters->{status}) {
+        $search{'job_status.status'}     = $status;
+        $search{'job_status.is_current'} = 'y';
+        push @join, 'job_status';
     }
 
     my %opts = (
         order_by => 'job_id',
         prefetch => [ qw/analysis/ ],
         );
+    if (@join) {
+        $opts{join} = \@join;
+    }
+
+    # For the total, stash the search before we add any LIMIT clause
+    #
+    my $total = $c->stash->{job_rs}->search( \%search, \%opts )->count;
 
     my $limit = $c->request->parameters->{limit};
     unless ($limit or %search) {
@@ -90,7 +106,6 @@ sub jobs :Chained('base') :PathPart('jobs') :Args(0) {
     }
 
     my $jobs  = $c->stash->{job_rs}->search( \%search, \%opts );
-    my $total = $c->stash->{job_rs}->search( \%search );
 
     $c->stash(
         jobs     => $jobs,
