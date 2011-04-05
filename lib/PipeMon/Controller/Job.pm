@@ -14,6 +14,11 @@ has 'input_id_analysis_keys' => (
     isa => 'ArrayRef[Str]',
 );
 
+has 'pipe_queue_keys' => (
+    is  => 'ro',
+    isa => 'ArrayRef[Str]',
+);
+
 __PACKAGE__->config(
     job_keys => [ qw(
         job_id
@@ -37,6 +42,12 @@ __PACKAGE__->config(
         runhost
         db_version
         result
+    )],
+    pipe_queue_keys => [ qw(
+        id
+        created
+        priority
+        is_update
     )],
     );
 
@@ -140,11 +151,18 @@ sub job :Chained('base') :PathPart('job') :Args(1) {
         $c->detach;
     }
 
+    my $pq_rs = $c->model('PipeQueue::Queue');
+    my $pipe_queue_entry = $pq_rs->find({ job_id   => $job->job_id,
+                                          pipeline => 'pipe_' . $c->stash->{species}, # YUK
+                                        });
+
     $c->stash( job        => $job,
                job_status => [ $job->job_status->search( undef, { order_by => { '-desc' => 'time' } } ) ],
                input_id_analysis => $job->input_id_analysis,
+               pq_entry   => $pipe_queue_entry,
                job_keys   => $self->job_keys,
                iia_keys   => $self->input_id_analysis_keys,
+               pq_keys    => $self->pipe_queue_keys,
                template   => 'job/job.tt2',
         );
 }

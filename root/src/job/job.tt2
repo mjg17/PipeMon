@@ -1,5 +1,6 @@
 [% META title = "Job" -%]
 
+<h2>Basics</h2>
 <dl class="job">
 [% FOREACH key IN job_keys -%]
  <dt>[% key %]</dt>
@@ -7,6 +8,19 @@
 [% END -%]
 </dl>
 
+[% IF pq_entry -%]
+<h2>Pipe queue</h2>
+<dl class="iia">
+[%   FOREACH key IN pq_keys -%]
+ <dt>[% key %]</dt>
+ <dd>[% pq_entry.$key %]</dd>
+[%   END -%]
+</dl>
+[% ELSE -%]
+<p>Not in pipe_queue</p>
+[% END -%]
+
+<h2>Job status</h2>
 <table class="job_status">
 [% FOREACH js IN job_status -%]
  <tr>
@@ -18,10 +32,13 @@
 </table>
 
 [% IF input_id_analysis -%]
+<h2>Update for</h2>
+<dl class="iia">
 [%   FOREACH key IN iia_keys -%]
  <dt>[% key %]</dt>
  <dd>[% input_id_analysis.$key %]</dd>
 [%   END -%]
+</dl>
 [% ELSE -%]
 <p>New analysis</p>
 [% END -%]
