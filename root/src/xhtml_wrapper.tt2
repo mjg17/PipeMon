@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>[% template.title or "Pipeline Monitor" %]</title>
+<link rel="stylesheet" type="text/css" href="http://www.sanger.ac.uk/css/wtsi.css?2007" />
 <link rel="stylesheet" href="[% c.uri_for('/static/css/main.css') %]" />
+<link rel="stylesheet" href="[% c.uri_for('/static/css/div_lineup.css') %]" />
 </head>
 
 <body>
