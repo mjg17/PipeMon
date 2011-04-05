@@ -6,7 +6,11 @@ use base 'Catalyst::Model::DBIC::Schema';
 __PACKAGE__->config(
     schema_class => 'PipeMon::Schema::PipeQueue',
     
-    
+    connect_info => {
+        dsn => 'dbi:mysql:database=pipe_queue;host=otterlive;port=3324',
+        user => 'ottro',
+    },
+
 );
 
 =head1 NAME
