@@ -4,7 +4,7 @@
 <dl class="job">
 [% FOREACH key IN job_keys -%]
  <dt>[% key %]</dt>
- <dd>[% job.$key %]</dd>
+ <dd>[% job.$key || '&nbsp;' %]</dd>
 [% END -%]
 </dl>
 
@@ -13,7 +13,7 @@
 <dl class="iia">
 [%   FOREACH key IN pq_keys -%]
  <dt>[% key %]</dt>
- <dd>[% pq_entry.$key %]</dd>
+ <dd>[% pq_entry.$key || '&nbsp;' %]</dd>
 [%   END -%]
 </dl>
 [% ELSE -%]
@@ -36,7 +36,7 @@
 <dl class="iia">
 [%   FOREACH key IN iia_keys -%]
  <dt>[% key %]</dt>
- <dd>[% input_id_analysis.$key %]</dd>
+ <dd>[% input_id_analysis.$key || '&nbsp;' %]</dd>
 [%   END -%]
 </dl>
 [% ELSE -%]
