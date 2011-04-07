@@ -8,7 +8,7 @@
     <td>[% a.job_count %]</td>
     <td>
       [% IF a.job_count -%]
-      <a href="[% c.uri_for_action('/job/jobs', [species], undef, { analysis_id => a.analysis_id }) %]">list</a>
+      <a href="[% c.uri_for_action('/job/jobs', [species], { analysis_id => a.analysis_id }) %]">list</a>
       [% END -%]
     </td>
   </tr>
