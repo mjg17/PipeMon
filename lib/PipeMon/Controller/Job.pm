@@ -94,6 +94,11 @@ sub search :Chained('base') :PathPart('') :CaptureArgs(0) {
             $search{$search_key} = $value;
         }
     }
+    if (my $logic_name = $c->request->parameters->{logic_name}) {
+        $search_params{logic_name}     = $logic_name;
+        $search{'analysis.logic_name'} = $logic_name;
+        push @join, 'analysis';
+    }
     if (my $status = $c->request->parameters->{status}) {
         $search_params{status} = $status;
         $search{'job_status.status'}     = $status;
