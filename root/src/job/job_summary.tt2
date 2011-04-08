@@ -6,13 +6,17 @@
     <th>[% g %]</th>
 [% END -%]
     <th># jobs</th>
+    <th>details</th>
   </tr>
 [% WHILE (sum = job_summary.next) -%]
   <tr>
-[%   FOREACH g IN groups -%]
-    <td>[% sum.get_column( g ) %]</td>
+[%   FOREACH g IN groups       ; 
+       val = sum.get_column(g) ;
+       this_row.$g = val           -%]
+    <td>[% val %]</td>
 [%   END -%]
     <td>[% sum.get_column('job_count') %]</td>
+    <td><a href="[% c.uri_for_action('/job/jobs', [species], this_row ) %]">list</a></td>
   </tr>
 [% END -%]
 </table>
