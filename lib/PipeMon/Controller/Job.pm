@@ -126,6 +126,37 @@ sub jobs :Chained('base') :PathPart('jobs') :Args(0) {
         );
 }
 
+=head2 job_summary
+
+=cut
+
+sub job_summary :Chained('base') :PathPart('job_summary') :Args(1) {
+    my ( $self, $c, $group_on ) = @_;
+
+    my %search;
+    my @join;
+
+    foreach my $key (qw/analysis_id input_id/) {
+        if (my $value = $c->request->parameters->{$key}) {
+            my $search_key = 'me.' . $key;
+            $search{$search_key} = $value;
+        }
+    }
+    if (my $status = $c->request->parameters->{status}) {
+        $search{'job_status.status'}     = $status;
+        $search{'job_status.is_current'} = 'y';
+        push @join, 'job_status';
+    }
+
+    my $job_summary = $c->stash->{job_rs}->summary( $group_on, \%search );
+
+    $c->stash(
+        job_summary => $job_summary,
+        group_on => $group_on,
+        template => 'job/job_summary.tt2',
+        );
+}
+
 =head2 job
 
 =cut
