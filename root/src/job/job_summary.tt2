@@ -1,10 +1,17 @@
 [% META title = 'Job summary' -%]
 
 <table>
-  <tr><th>[% group_on %]</th><th># jobs</th></tr>
+  <tr>
+[% FOREACH g IN groups -%]
+    <th>[% g %]</th>
+[% END -%]
+    <th># jobs</th>
+  </tr>
 [% WHILE (sum = job_summary.next) -%]
   <tr>
-    <td>[% sum.get_column('group_by') %]</td>
+[%   FOREACH g IN groups -%]
+    <td>[% sum.get_column( g ) %]</td>
+[%   END -%]
     <td>[% sum.get_column('job_count') %]</td>
   </tr>
 [% END -%]

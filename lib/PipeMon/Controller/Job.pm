@@ -154,12 +154,14 @@ sub jobs :Chained('search') :PathPart('jobs') :Args(0) {
 sub job_summary :Chained('search') :PathPart('job_summary') :Args(1) {
     my ( $self, $c, $group_on ) = @_;
 
-    my $job_summary = $c->stash->{search_rs}->summary( $group_on );
+    my @groups = split(',', $group_on);
+
+    my $job_summary = $c->stash->{search_rs}->summary( @groups );
 
     $c->stash(
         job_summary => $job_summary,
-        group_on => $group_on,
-        template => 'job/job_summary.tt2',
+        groups      => \@groups,
+        template    => 'job/job_summary.tt2',
         );
 }
 

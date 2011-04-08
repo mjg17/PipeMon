@@ -17,12 +17,16 @@ my $sum = $rs->summary( 'analysis_id' );
 ok($sum, 'simple summary on analysis_id');
 diag("Count: ", $sum->count);
 
-my $sum = $rs->summary( 'status' );
+$sum = $rs->summary( 'status' );
 ok($sum, 'simple summary on status');
 diag("Count: ", $sum->count);
 
-my $sum = $rs->summary( 'logic_name' );
+$sum = $rs->summary( 'logic_name' );
 ok($sum, 'simple summary on logic_name');
+diag("Count: ", $sum->count);
+
+$sum = $rs->summary( qw/analysis_id status/ );
+ok($sum, 'compound summary on analysis_id, status');
 diag("Count: ", $sum->count);
 
 done_testing();
