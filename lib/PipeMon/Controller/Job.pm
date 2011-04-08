@@ -75,48 +75,69 @@ sub base :Chained('/species/base') :PathPart('') :CaptureArgs(0) {
     $c->stash( job_rs => $c->model('PipeForSpecies::Job') );
 }
 
-=head2 jobs
+=head2 search
+
+Private chained component to handle search arguments
 
 =cut
 
-sub jobs :Chained('base') :PathPart('jobs') :Args(0) {
+sub search :Chained('base') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
 
     my %search;
+    my %search_params;
     my @join;
     foreach my $key (qw/analysis_id input_id/) {
         if (my $value = $c->request->parameters->{$key}) {
+            $search_params{$key} = $value;
             my $search_key = 'me.' . $key;
             $search{$search_key} = $value;
         }
     }
     if (my $status = $c->request->parameters->{status}) {
+        $search_params{status} = $status;
         $search{'job_status.status'}     = $status;
         $search{'job_status.is_current'} = 'y';
         push @join, 'job_status';
     }
 
-    my %opts = (
-        order_by => 'job_id',
-        prefetch => [ qw/analysis/ ],
-        );
+    my %opts;
     if (@join) {
         $opts{join} = \@join;
     }
 
+    my $search_rs = $c->stash->{job_rs}->search( \%search, \%opts );
+
+    $c->stash( search_params => \%search_params,
+               search_rs     => $search_rs,
+        );
+}
+
+=head2 jobs
+
+=cut
+
+sub jobs :Chained('search') :PathPart('jobs') :Args(0) {
+    my ( $self, $c ) = @_;
+
+    my %opts = (
+        order_by => 'job_id',
+        prefetch => [ qw/analysis/ ],
+        );
+
     # For the total, stash the search before we add any LIMIT clause
     #
-    my $total = $c->stash->{job_rs}->search( \%search, \%opts )->count;
+    my $total = $c->stash->{search_rs}->search( undef, \%opts )->count;
 
     my $limit = $c->request->parameters->{limit};
-    unless ($limit or %search) {
+    unless ($limit or %{$c->stash->{search_params}}) {
         $limit = 20;
     }
     if ($limit) {
         $opts{rows} = $limit;
     }
 
-    my $jobs  = $c->stash->{job_rs}->search( \%search, \%opts );
+    my $jobs  = $c->stash->{search_rs}->search( undef, \%opts );
 
     $c->stash(
         jobs     => $jobs,
@@ -130,25 +151,10 @@ sub jobs :Chained('base') :PathPart('jobs') :Args(0) {
 
 =cut
 
-sub job_summary :Chained('base') :PathPart('job_summary') :Args(1) {
+sub job_summary :Chained('search') :PathPart('job_summary') :Args(1) {
     my ( $self, $c, $group_on ) = @_;
 
-    my %search;
-    my @join;
-
-    foreach my $key (qw/analysis_id input_id/) {
-        if (my $value = $c->request->parameters->{$key}) {
-            my $search_key = 'me.' . $key;
-            $search{$search_key} = $value;
-        }
-    }
-    if (my $status = $c->request->parameters->{status}) {
-        $search{'job_status.status'}     = $status;
-        $search{'job_status.is_current'} = 'y';
-        push @join, 'job_status';
-    }
-
-    my $job_summary = $c->stash->{job_rs}->summary( $group_on, \%search );
+    my $job_summary = $c->stash->{search_rs}->summary( $group_on );
 
     $c->stash(
         job_summary => $job_summary,
