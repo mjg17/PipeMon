@@ -16,4 +16,16 @@
       jobs for <em>[% species %]</em>
     </a>
   </dd>
+  <dt>job summary by logic_name</dt>
+  <dd>
+    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species], 'logic_name') %]">
+      job summary for <em>[% species %]</em> by logic_name
+    </a>
+  </dd>
+  <dt>job summary by status</dt>
+  <dd>
+    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species], 'status') %]">
+      job summary for <em>[% species %]</em> by job status
+    </a>
+  </dd>
 </dl>
