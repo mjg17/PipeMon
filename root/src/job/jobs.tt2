@@ -2,6 +2,14 @@
 
 <p>First [% jobs.count %] of [% total %] jobs:</p>
 <table>
+  <tr>
+    <th>job_id</th>
+    <th>input_id</th>
+    <th>logic_name</th>
+    <th>status</th>
+    <th>retry_count</th>
+    <th>submission_id</th>
+  </tr>
 [% WHILE (job = jobs.next) -%]
   <tr>
     <td><a href="[% c.uri_for_action('/job/job', [species], job.job_id) %]">[% job.job_id %]</a></td>
