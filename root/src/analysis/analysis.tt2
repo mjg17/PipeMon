@@ -3,7 +3,7 @@
 <dl class="analysis">
 [% FOREACH key IN keys -%]
  <dt>[% key %]</dt>
- <dd>[% analysis.$key %]</dd>
+ <dd>[% analysis.$key || '&nbsp;' %]</dd>
 [% END %]
  <dt>Jobs</dt>
  <dd>[% analysis.job_count %]</dd>
