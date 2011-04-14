@@ -18,7 +18,7 @@
   </dd>
   <dt>job summary</dt>
   <dd>
-    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species], 'logic_name,status') %]">
+    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species]) %]">
       job summary for <em>[% species %]</em>
     </a>
   </dd>

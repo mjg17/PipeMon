@@ -170,6 +170,16 @@ sub job_summary :Chained('search') :PathPart('job_summary') :Args(1) {
         );
 }
 
+=head2 job_summary_canned
+
+=cut
+
+sub job_summary_canned :Chained('search') :PathPart('job_summary') :Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->forward('job_summary', ['logic_name,status']);
+}
+
 =head2 job
 
 =cut
