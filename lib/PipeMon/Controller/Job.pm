@@ -205,10 +205,8 @@ sub job :Chained('base') :PathPart('job') :Args(1) {
         $c->detach;
     }
 
-    my $pq_rs = $c->model('PipeQueue::Queue');
-    my $pipe_queue_entry = $pq_rs->find({ job_id   => $job->job_id,
-                                          pipeline => 'pipe_' . $c->stash->{species}, # YUK
-                                        });
+    my $pq_rs = $c->model('PipeQueue::Queue')->by_species($c->stash->{species});
+    my $pipe_queue_entry = $pq_rs->find({ job_id   => $job->job_id });
 
     $c->stash( job        => $job,
                job_status => [ $job->job_status->search( undef, { order_by => { '-desc' => 'time' } } ) ],
