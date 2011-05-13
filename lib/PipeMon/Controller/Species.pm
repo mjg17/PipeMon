@@ -2,7 +2,14 @@ package PipeMon::Controller::Species;
 use Moose;
 use namespace::autoclean;
 
+use Bio::Otter::SpeciesDat::DataSet;
+
 BEGIN {extends 'Catalyst::Controller'; }
+
+has 'dataset' => (
+    is => 'rw',
+    isa => 'Bio::Otter::SpeciesDat::DataSet',
+    );
 
 =head1 NAME
 
@@ -28,20 +35,20 @@ sub base :Chained('/') :PathPart('') :CaptureArgs(1) {
     # Store the ResultSet in stash so it's available for other methods
     $c->stash(species => $species);
 
-    my $ds = $c->model('Otter::MFetcher')->dataset_hash->{$species};
+    my $ds = $self->dataset($c->model('Otter::SpeciesDat')->dataset($species));
     unless ($ds) {
         $c->response->status(404);
         $c->response->body("No such species '$species'");
         $c->detach;
     }
 
-    if ($ds->{RESTRICTED}) {
+    if ($ds->params->{RESTRICTED}) {
         $c->response->status(401);
         $c->response->body("Not permitted to see '$species'");
         $c->detach;
     }
 
-    $c->model('Otter::MFetcher')->dataset_name($species);
+    $c->stash(dataset => $ds);
 
     # Print a message to the debug log
     $c->log->debug("*** SPECIES: >$species< ***");
