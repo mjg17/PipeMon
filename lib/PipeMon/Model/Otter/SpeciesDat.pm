@@ -2,7 +2,18 @@ package PipeMon::Model::Otter::SpeciesDat;
 use Moose;
 use namespace::autoclean;
 
-extends 'Catalyst::Model';
+extends 'Catalyst::Model::Factory::PerRequest';
+
+__PACKAGE__->config(
+    class => 'Bio::Otter::SpeciesDat',
+    args  => { species_file => '/nfs/WWWdev/SANGER_docs/data/otter/54/species.dat' },
+    );
+
+sub mangle_arguments {
+    my ($self, $args) = @_;
+    # Constructor takes a single filename argument
+    return $args->{species_file};
+}
 
 =head1 NAME
 
