@@ -29,11 +29,11 @@ The root page (/)
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    my $mf = $c->model('Otter::MFetcher');
-    my $dataset = $mf->dataset_hash;
-    my @species = sort grep { not $dataset->{$_}->{RESTRICTED} } keys %$dataset;
+    my $species_dat = $c->model('Otter::SpeciesDat');
+    my $datasets = $species_dat->datasets;
+    my $ds_names = [ sort map { $_->name } grep { not $_->params->{RESTRICTED} } @$datasets ];
 
-    $c->stash(datasets => \@species);
+    $c->stash(datasets => $ds_names );
     $c->stash(template => 'datasets.tt2');
 }
 

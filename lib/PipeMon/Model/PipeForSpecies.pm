@@ -2,7 +2,6 @@ package PipeMon::Model::PipeForSpecies;
 use Moose;
 use namespace::autoclean;
 
-use Bio::Otter::MFetcher;
 use Data::Dumper;
 
 extends 'Catalyst::Model::DBIC::Schema';
@@ -18,13 +17,12 @@ sub build_per_context_instance {
 
     my $new = bless({ %$self }, ref($self));
 
-    # By the time this is used, our MFetcher model should already have
-    # had its dataset_name set.
+    # By the time this is used, the stash should already contain a dataset
     #
-    my $mfetcher = $c->model('Otter::MFetcher');
-    my $opt_str = $mfetcher->satellite_dba_options('pipeline_db_head');
+    my $dataset = $c->stash->{dataset};
+    my $opt_str = $dataset->satellite_dba_options('pipeline_db_head');
 
-    # Duplication with Bio::Otter::MFetcher
+    # Duplication with Bio::Otter::SpeciesDat::DataSet
     my %options;
     {
         %options = eval $opt_str;
