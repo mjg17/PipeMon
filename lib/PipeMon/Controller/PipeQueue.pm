@@ -28,6 +28,25 @@ sub index :Path :Args(0) {
 }
 
 
+=head2 summary
+
+=cut
+
+sub summary :Path('summary') :Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $pipe_summary = $c->model('PipeQueue::Queue')->search( undef,
+                                                              {
+                                                                  select   => [ 'pipeline', { count => 'id' } ],
+                                                                  as       => [ 'pipeline', 'job_count' ],
+                                                                  group_by => [ qw( pipeline ) ]
+                                                              } );
+    $c->stash( 
+        pipe_summary => $pipe_summary,
+        template     => 'pipe_queue/summary.tt2',
+        );
+}
+
 =head1 AUTHOR
 
 Michael Gray

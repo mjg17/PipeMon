@@ -1,0 +1,16 @@
+[% META title = 'PipeQueue summary' -%]
+
+<table>
+  <tr>
+    <th>pipeline</th>
+    <th># jobs</th>
+    <th>details</th>
+  </tr>
+[% WHILE (sum = pipe_summary.next) -%]
+  <tr>
+    <td>[% sum.pipeline %]</td>
+    <td>[% sum.get_column('job_count') %]</td>
+    <td><a href="[% c.uri_for_action('/job/job_summary', [sum.species] ) %]">job summary</a></td>
+  </tr>
+[% END -%]
+</table>

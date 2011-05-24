@@ -129,6 +129,13 @@ __PACKAGE__->set_primary_key("id");
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-04-05 15:05:47
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jAvvgcz7qjP+NbZ2BtY3GQ
 
-
 # You can replace this text with custom content, and it will be preserved on regeneration
+
+sub species {
+    my ($self) = @_;
+    my $species = $self->pipeline;
+    $species =~ s/^pipe_//;
+    return $species;
+}
+
 1;
