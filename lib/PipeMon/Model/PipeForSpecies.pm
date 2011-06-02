@@ -2,8 +2,6 @@ package PipeMon::Model::PipeForSpecies;
 use Moose;
 use namespace::autoclean;
 
-use Data::Dumper;
-
 extends 'Catalyst::Model::DBIC::Schema';
 with 'Catalyst::Component::InstancePerContext';
 
