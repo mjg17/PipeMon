@@ -6,7 +6,7 @@
 <dl class="species">
   <dt>analyses</dt>
   <dd>
-    <a class="analyses" href="[% c.uri_for_action('/analysis/analyses', [species]) %]">
+    <a class="analyses" href="[% c.uri_for_action('/analysis/analyses', [species, 'pipe']) %]">
       analyses for <em>[% species %]</em>
     </a>
   </dd>

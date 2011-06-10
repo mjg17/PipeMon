@@ -5,6 +5,8 @@
  <dt>[% key %]</dt>
  <dd>[% analysis.$key || '&nbsp;' %]</dd>
 [% END %]
+[% IF db_type == 'pipe' -%]
  <dt>Jobs</dt>
  <dd>[% analysis.job_count %]</dd>
+[% END %]
 </dl>

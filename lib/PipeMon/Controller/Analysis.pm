@@ -47,9 +47,10 @@ Just gets us chained to the right place with the right pathpart initially
 
 =cut
 
-sub base :Chained('/species/base') :PathPart('') :CaptureArgs(0) {
+sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
-    $c->stash( analysis_rs => $c->model('PipeForSpecies::Analysis') );
+    my $model = $c->stash->{db_model};
+    $c->stash( analysis_rs => $model->resultset('Analysis') );
 }
 
 =head2 analyses

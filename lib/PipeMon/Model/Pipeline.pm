@@ -7,7 +7,7 @@ __PACKAGE__->config(
     schema_class => 'PipeMon::Schema::Pipeline',
     
     connect_info => {
-        dsn => 'dbi:mysql:database=pipe_human;host=lutra5;port=3322',
+        dsn => 'dbi:mysql:database=pipe_human;host=otterpipe1;port=3322',
         user => 'ottro',
     },
 );
