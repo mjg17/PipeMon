@@ -89,6 +89,12 @@ __PACKAGE__->add_unique_constraint("name_cs_idx", ["name", "coord_system_id"]);
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-03-25 09:57:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EVWZYLo7VZ4UyfOfUYbLXg
 
-
 # You can replace this text with custom content, and it will be preserved on regeneration
+
+__PACKAGE__->belongs_to(
+    'coord_system',
+    'PipeMon::Schema::Pipeline::Result::CoordSystem',
+    'coord_system_id',
+    );
+
 1;
