@@ -1,0 +1,23 @@
+[% META title = 'Sequence sets' -%]
+
+<table>
+  <tr>
+    <th>seq_region_id</th>
+    <th>name</th>
+    <th>coord_system</th>
+    <th>version</th>
+    <th>length</th>
+  </tr>
+[% WHILE (sr = seq_sets.next) -%]
+  <tr>
+    <td>
+     <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sr.seq_region_id) %]">
+      [% sr.seq_region_id %]</a>
+    </td>
+    <td>[% sr.name %]</td>
+    <td>[% sr.coord_system.name %]</td>
+    <td>[% sr.coord_system.version %]</td>
+    <td>[% sr.length %]</td>
+  </tr>
+[% END -%]
+</table>
