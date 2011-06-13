@@ -2,6 +2,8 @@ package PipeMon::Controller::SeqRegion;
 use Moose;
 use namespace::autoclean;
 
+use Hum::Sort 'ace_sort';
+
 BEGIN {extends 'Catalyst::Controller'; }
 
 =head1 NAME
@@ -36,7 +38,7 @@ sub seq_sets :Chained('base') :PathPart('seq_sets') :Args(0) {
     my ( $self, $c ) = @_;
 
     my $resultset = $c->stash->{seq_region_rs};
-    my $seq_sets  = $resultset->search(
+    my @seq_sets  = sort {ace_sort($a->name, $b->name)} $resultset->search(
         {
             'coord_system.name' => 'chromosome',
         },
@@ -44,9 +46,9 @@ sub seq_sets :Chained('base') :PathPart('seq_sets') :Args(0) {
             join => ['coord_system' ],
             order_by => 'me.name',
         } 
-        );
+        )->all();
 
-    $c->stash( seq_sets => $seq_sets,
+    $c->stash( seq_sets => \@seq_sets,
                template => 'seq_region/seq_sets.tt2',
         );
 }
