@@ -7,6 +7,8 @@
     <th>coord_system</th>
     <th>version</th>
     <th>length</th>
+    <th>write_access</th>
+    <th>hidden</th>
   </tr>
 [% FOREACH sr IN seq_sets -%]
   <tr>
@@ -18,6 +20,8 @@
     <td>[% sr.coord_system.name %]</td>
     <td>[% sr.coord_system.version %]</td>
     <td>[% sr.length %]</td>
+    <td>[% sr.write_access %]</td>
+    <td>[% sr.hidden %]</td>
   </tr>
 [% END -%]
 </table>

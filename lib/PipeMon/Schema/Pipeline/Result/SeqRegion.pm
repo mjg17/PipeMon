@@ -97,4 +97,33 @@ __PACKAGE__->belongs_to(
     'coord_system_id',
     );
 
+__PACKAGE__->has_many(
+    'attributes',
+    'PipeMon::Schema::Pipeline::Result::SeqRegionAttrib',
+    'seq_region_id',
+    );
+
+sub get_attrib_val_by_code {
+    my ($self, $code) = @_;
+    my @values = $self->attributes->search(
+        { 'attrib_type.code' => $code },
+        { join => 'attrib_type' },
+        )->all();
+    if (@values) {
+        return $values[0]->value;
+    } else {
+        return undef;
+    }
+}
+
+sub write_access {
+    my ($self) = @_;
+    return $self->get_attrib_val_by_code('write_access');
+}
+
+sub hidden {
+    my ($self) = @_;
+    return $self->get_attrib_val_by_code('hidden');
+}
+
 1;

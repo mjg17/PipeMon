@@ -76,4 +76,13 @@ __PACKAGE__->add_columns(
 
 # We can't safely assume a unique primary key. Well, probably we can for pipe_*, but not for loutre_*
 
+__PACKAGE__->belongs_to(
+    'attrib_type',
+    'PipeMon::Schema::Pipeline::Result::AttribType',
+    'attrib_type_id',
+    {
+        proxy => [ qw/code name description/ ],
+    },
+    );
+
 1;
