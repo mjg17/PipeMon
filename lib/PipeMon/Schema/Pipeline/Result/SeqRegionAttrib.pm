@@ -75,6 +75,9 @@ __PACKAGE__->add_columns(
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jYQQaqnTkFB6KYg+t8vsuw
 
 # We can't safely assume a unique primary key. Well, probably we can for pipe_*, but not for loutre_*
+# Having said that, duplicate identical entries would be in error, so...
+
+__PACKAGE__->set_primary_key(qw/seq_region_id attrib_type_id value/);
 
 __PACKAGE__->belongs_to(
     'attrib_type',
@@ -83,6 +86,12 @@ __PACKAGE__->belongs_to(
     {
         proxy => [ qw/code name description/ ],
     },
+    );
+
+__PACKAGE__->belongs_to(
+    'seq_region',
+    'PipeMon::Schema::Pipeline::Result::SeqRegion',
+    'seq_region_id',
     );
 
 1;

@@ -80,6 +80,11 @@ __PACKAGE__->add_unique_constraint("code_idx", ["code"]);
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-03-25 09:57:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:S4C8dGPdYuq6jP1vGJE6Og
 
+__PACKAGE__->has_many(
+    'seq_region_attributes',
+    'PipeMon::Schema::Pipeline::Result::SeqRegionAttrib',
+    'attrib_type_id',
+    );
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

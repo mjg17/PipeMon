@@ -105,7 +105,7 @@ __PACKAGE__->has_many(
 
 sub get_attrib_val_by_code {
     my ($self, $code) = @_;
-    my @values = $self->attributes->search(
+    my @values = $self->attributes_rs->search(
         { 'attrib_type.code' => $code },
         { join => 'attrib_type' },
         )->all();
