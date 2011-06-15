@@ -116,7 +116,10 @@ sub seq_region :Chained('base') :PathPart('seq_region') :Args(1) {
 
     my $attrs = $seq_region->attributes->search(
         undef,
-        { order_by => 'attrib_type_id' },
+        {
+            order_by => 'me.attrib_type_id',
+            prefetch => 'attrib_type',
+        },
         );
 
     $c->stash( seq_region => $seq_region,
