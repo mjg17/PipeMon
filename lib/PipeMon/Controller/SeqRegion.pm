@@ -114,8 +114,14 @@ sub seq_region :Chained('base') :PathPart('seq_region') :Args(1) {
         $c->detach;
     }
 
+    my $attrs = $seq_region->attributes->search(
+        undef,
+        { order_by => 'attrib_type_id' },
+        );
+
     $c->stash( seq_region => $seq_region,
-               keys       => $self->seq_region_keys,
+               sr_keys    => $self->seq_region_keys,
+               attrs      => $attrs,
                template   => 'seq_region/seq_region.tt2',
         );
 }

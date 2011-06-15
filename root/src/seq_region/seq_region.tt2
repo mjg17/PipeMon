@@ -1,8 +1,23 @@
 [% META title = "Seq region" -%]
 
 <dl class="seq_region">
-[% FOREACH key IN keys -%]
+[% FOREACH key IN sr_keys -%]
  <dt>[% key %]</dt>
  <dd>[% seq_region.$key %]</dd>
 [% END %]
 </dl>
+
+<table>
+ <tr>
+  <th>id</th>
+  <th>name</th>
+  <th>value</th>
+ </tr>
+[% WHILE (a = attrs.next) -%]
+ <tr>
+  <td>[% a.attrib_type_id %]</td>
+  <td><a title="[% a.code %]: [% a.description %]">[% a.name %]</a></td>
+  <td>[% a.value %]</td>
+ </tr>
+[% END %]
+</table>
