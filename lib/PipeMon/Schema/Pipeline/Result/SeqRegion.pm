@@ -103,14 +103,20 @@ __PACKAGE__->has_many(
     'seq_region_id',
     );
 
+__PACKAGE__->has_many(
+    'sv_attributes',
+    'PipeMon::Schema::Pipeline::Result::SeqRegionAttrib::SV',
+    'seq_region_id',            # FIXME: limit to attrs we expect to be SV
+    );
+
 sub get_attrib_val_by_code {
     my ($self, $code) = @_;
-    my @values = $self->attributes_rs->search(
-        { 'attrib_type.code' => $code },
-        { join => 'attrib_type' },
-        )->all();
-    if (@values) {
-        return $values[0]->value;
+
+    # Prefetch-friendly, at the expense of a quick grep through all the attribs
+    #
+    my (@attrs) = grep { $_->attrib_type->code eq $code } $self->sv_attributes;
+    if (@attrs) {
+        return $attrs[0]->value;
     } else {
         return undef;
     }

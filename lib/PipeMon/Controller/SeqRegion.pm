@@ -38,21 +38,33 @@ sub seq_sets :Chained('base') :PathPart('seq_sets') :Args(0) {
     my ( $self, $c ) = @_;
 
     my $resultset = $c->stash->{seq_region_rs};
-    my @seq_sets  = sort { $a->hidden <=> $b->hidden
-                                      ||
-                           ace_sort($a->name, $b->name) }
-        $resultset->search(
-            {
-                'coord_system.name' => 'chromosome',
-            },
-            {
-                join => [ 'coord_system' ],
-                prefetch => { 'attributes' => 'attrib_type' },
-            } 
-            )->all();
+    my @seq_sets  = sort seq_set_sort $resultset->search(
+        {
+            'coord_system.name' => 'chromosome',
+        },
+        {
+            prefetch => [ 
+                { 'sv_attributes' => 'attrib_type' },
+                'coord_system',
+                ],
+        }
+    )->all();
 
     $c->stash( seq_sets => \@seq_sets,
                template => 'seq_region/seq_sets.tt2',
+        );
+}
+
+sub seq_set_sort {
+    my $a_hidden = $a->hidden;
+    my $b_hidden = $b->hidden;
+    my $a_visible = (defined($a_hidden) and not $a_hidden);
+    my $b_visible = (defined($b_hidden) and not $b_hidden);
+
+    return (
+        $b_visible <=> $a_visible
+                   ||
+        ace_sort($a->name, $b->name) 
         );
 }
 
