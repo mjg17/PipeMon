@@ -89,6 +89,53 @@ __PACKAGE__->add_unique_constraint("name_cs_idx", ["name", "coord_system_id"]);
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-03-25 09:57:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EVWZYLo7VZ4UyfOfUYbLXg
 
-
 # You can replace this text with custom content, and it will be preserved on regeneration
+
+__PACKAGE__->belongs_to(
+    'coord_system',
+    'PipeMon::Schema::Pipeline::Result::CoordSystem',
+    'coord_system_id',
+    {
+        proxy => { 
+            cs_name =>    'name',
+            cs_version => 'version',
+        },
+    },
+    );
+
+__PACKAGE__->has_many(
+    'attributes',
+    'PipeMon::Schema::Pipeline::Result::SeqRegionAttrib',
+    'seq_region_id',
+    );
+
+__PACKAGE__->has_many(
+    'sv_attributes',
+    'PipeMon::Schema::Pipeline::Result::SeqRegionAttrib::SV',
+    'seq_region_id',            # FIXME: limit to attrs we expect to be SV
+    );
+
+sub get_attrib_val_by_code {
+    my ($self, $code) = @_;
+
+    # Prefetch-friendly, at the expense of a quick grep through all the attribs
+    #
+    my (@attrs) = grep { $_->attrib_type->code eq $code } $self->sv_attributes;
+    if (@attrs) {
+        return $attrs[0]->value;
+    } else {
+        return undef;
+    }
+}
+
+sub write_access {
+    my ($self) = @_;
+    return $self->get_attrib_val_by_code('write_access');
+}
+
+sub hidden {
+    my ($self) = @_;
+    return $self->get_attrib_val_by_code('hidden');
+}
+
 1;
