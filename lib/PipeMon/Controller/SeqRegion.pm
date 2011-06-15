@@ -6,6 +6,23 @@ use Hum::Sort 'ace_sort';
 
 BEGIN {extends 'Catalyst::Controller'; }
 
+has 'seq_region_keys' => (
+    is  => 'ro',
+    isa => 'ArrayRef[Str]',
+    );
+
+__PACKAGE__->config(
+    seq_region_keys => [ qw(
+        seq_region_id
+        name
+        cs_name
+        cs_version
+        length
+        write_access
+        hidden
+    )],
+    );
+
 =head1 NAME
 
 PipeMon::Controller::SeqRegion - Catalyst Controller
@@ -73,6 +90,34 @@ sub seq_set_sort {
 =cut
 
 sub seq_region :Chained('base') :PathPart('seq_region') :Args(1) {
+    my ( $self, $c, $key ) = @_;
+
+    unless ($key =~ /^\d+$/) {
+        # Bad format
+        $c->response->status(400);
+        $c->response->body("'$key' doesn't look like a seq_region_id");
+        $c->detach;
+    }
+
+    my $seq_region = $c->stash->{seq_region_rs}->find(
+        $key,
+        { prefetch =>  [ 
+              { 'sv_attributes' => 'attrib_type' },
+              'coord_system',
+              ],
+        }
+        );
+
+    unless ($seq_region) {
+        $c->response->status(404);
+        $c->response->body("No such seq_region '$key'");
+        $c->detach;
+    }
+
+    $c->stash( seq_region => $seq_region,
+               keys       => $self->seq_region_keys,
+               template   => 'seq_region/seq_region.tt2',
+        );
 }
 
 =head1 AUTHOR

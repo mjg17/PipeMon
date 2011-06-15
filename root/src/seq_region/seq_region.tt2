@@ -1,0 +1,8 @@
+[% META title = "Seq region" -%]
+
+<dl class="seq_region">
+[% FOREACH key IN keys -%]
+ <dt>[% key %]</dt>
+ <dd>[% seq_region.$key %]</dd>
+[% END %]
+</dl>
