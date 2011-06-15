@@ -58,8 +58,8 @@ sub seq_sets :Chained('base') :PathPart('seq_sets') :Args(0) {
 sub seq_set_sort {
     my $a_hidden = $a->hidden;
     my $b_hidden = $b->hidden;
-    my $a_visible = (defined($a_hidden) and not $a_hidden);
-    my $b_visible = (defined($b_hidden) and not $b_hidden);
+    my $a_visible = (defined($a_hidden) and not $a_hidden and $a->coord_system->version eq 'Otter');
+    my $b_visible = (defined($b_hidden) and not $b_hidden and $b->coord_system->version eq 'Otter');
 
     return (
         $b_visible <=> $a_visible
