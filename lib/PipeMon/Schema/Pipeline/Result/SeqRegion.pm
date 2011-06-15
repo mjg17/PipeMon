@@ -95,6 +95,12 @@ __PACKAGE__->belongs_to(
     'coord_system',
     'PipeMon::Schema::Pipeline::Result::CoordSystem',
     'coord_system_id',
+    {
+        proxy => { 
+            cs_name =>    'name',
+            cs_version => 'version',
+        },
+    },
     );
 
 __PACKAGE__->has_many(
