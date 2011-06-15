@@ -4,6 +4,12 @@
    Pipeline for [% species %].
 </p>
 <dl class="species">
+  <dt>sequence sets</dt>
+  <dd>
+    <a class="seq_sets" href="[% c.uri_for_action('/seqregion/seq_sets', [species, 'loutre']) %]">
+      sequence sets for <em>[% species %]</em>
+    </a>
+  </dd>
   <dt>analyses</dt>
   <dd>
     <a class="analyses" href="[% c.uri_for_action('/analysis/analyses', [species, 'pipe']) %]">
