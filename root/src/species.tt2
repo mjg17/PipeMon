@@ -6,7 +6,7 @@
 <dl class="species">
   <dt>sequence sets</dt>
   <dd>
-    <a class="seq_sets" href="[% c.uri_for_action('/seqregion/seq_sets', [species, 'loutre']) %]">
+    <a class="seq_sets" href="[% c.uri_for_action('/seqregion/seq_sets', [species, 'pipe']) %]">
       sequence sets for <em>[% species %]</em>
     </a>
   </dd>
@@ -38,6 +38,18 @@
   <dd>
     <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species], 'status') %]">
       job summary for <em>[% species %]</em> by job status
+    </a>
+  </dd>
+</dl>
+
+<p>
+   Loutre for [% species %].
+</p>
+<dl class="species">
+  <dt>sequence sets</dt>
+  <dd>
+    <a class="seq_sets" href="[% c.uri_for_action('/seqregion/seq_sets', [species, 'loutre']) %]">
+      sequence sets for <em>[% species %]</em>
     </a>
   </dd>
 </dl>
