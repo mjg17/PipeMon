@@ -1,8 +1,8 @@
 [% META title = "Pipeline for species (fix me - which?)" -%]
 
-<p>
-   Pipeline for [% species %].
-</p>
+<h2>
+   Pipeline for [% species %]
+</h2>
 <dl class="species">
   <dt>sequence sets</dt>
   <dd>
@@ -42,9 +42,9 @@
   </dd>
 </dl>
 
-<p>
-   Loutre for [% species %].
-</p>
+<h2>
+   Loutre for [% species %]
+</h2>
 <dl class="species">
   <dt>sequence sets</dt>
   <dd>
