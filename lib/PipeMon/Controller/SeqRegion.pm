@@ -124,10 +124,15 @@ sub seq_region :Chained('base') :PathPart('seq_region') :Args(1) {
         },
         );
 
-    $c->stash( seq_region => $seq_region,
-               sr_keys    => $self->seq_region_keys,
-               attrs      => $attrs,
-               template   => 'seq_region/seq_region.tt2',
+    my $mappings_to   = $seq_region->mappings_to;
+    my $mappings_from = $seq_region->mappings_from;
+
+    $c->stash( seq_region    => $seq_region,
+               sr_keys       => $self->seq_region_keys,
+               attrs         => $attrs,
+               mappings_to   => $mappings_to,
+               mappings_from => $mappings_from,
+               template      => 'seq_region/seq_region.tt2',
         );
 }
 
