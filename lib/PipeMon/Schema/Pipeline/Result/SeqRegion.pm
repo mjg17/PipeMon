@@ -115,6 +115,18 @@ __PACKAGE__->has_many(
     'seq_region_id',            # FIXME: limit to attrs we expect to be SV
     );
 
+__PACKAGE__->has_many(
+    'components',
+    'PipeMon::Schema::Pipeline::Result::Assembly',
+    { 'foreign.asm_seq_region_id' => 'self.seq_region_id' },
+    );
+
+__PACKAGE__->has_many(
+    'assemblies',
+    'PipeMon::Schema::Pipeline::Result::Assembly',
+    { 'foreign.cmp_seq_region_id' => 'self.seq_region_id' },
+    );
+
 sub get_attrib_val_by_code {
     my ($self, $code) = @_;
 
@@ -136,6 +148,15 @@ sub write_access {
 sub hidden {
     my ($self) = @_;
     return $self->get_attrib_val_by_code('hidden');
+}
+
+sub n_components {
+    my ($self) = @_;
+    return $self->components->count;
+}
+sub n_assemblies {
+    my ($self) = @_;
+    return $self->assemblies->count;
 }
 
 1;

@@ -20,6 +20,8 @@ __PACKAGE__->config(
         length
         write_access
         hidden
+        n_components
+        n_assemblies
     )],
     );
 

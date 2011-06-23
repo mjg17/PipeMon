@@ -117,6 +117,18 @@ __PACKAGE__->add_unique_constraint(
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-06-22 16:42:12
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9Lps+CM5S7Z8Z08d4CWkww
 
-
 # You can replace this text with custom content, and it will be preserved on regeneration
+
+__PACKAGE__->belongs_to(
+    'assembly',
+    'PipeMon::Schema::Pipeline::Result::SeqRegion',
+    { 'foreign.seq_region_id' => 'self.asm_seq_region_id' },
+    );
+
+__PACKAGE__->belongs_to(
+    'component',
+    'PipeMon::Schema::Pipeline::Result::SeqRegion',
+    { 'foreign.seq_region_id' => 'self.cmp_seq_region_id' },
+    );
+
 1;
