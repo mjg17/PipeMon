@@ -115,6 +115,30 @@ __PACKAGE__->has_many(
     'seq_region_id',            # FIXME: limit to attrs we expect to be SV
     );
 
+__PACKAGE__->has_many(
+    'component_assembly_entries',
+    'PipeMon::Schema::Pipeline::Result::Assembly',
+    { 'foreign.asm_seq_region_id' => 'self.seq_region_id' },
+    );
+
+__PACKAGE__->has_many(
+    'assembly_assembly_entries',
+    'PipeMon::Schema::Pipeline::Result::Assembly',
+    { 'foreign.cmp_seq_region_id' => 'self.seq_region_id' },
+    );
+
+__PACKAGE__->many_to_many(
+    'components',
+    'component_assembly_entries',
+    'component',
+    );
+    
+__PACKAGE__->many_to_many(
+    'assemblies',
+    'assembly_assembly_entries',
+    'assembly',
+    );
+    
 sub get_attrib_val_by_code {
     my ($self, $code) = @_;
 
@@ -136,6 +160,51 @@ sub write_access {
 sub hidden {
     my ($self) = @_;
     return $self->get_attrib_val_by_code('hidden');
+}
+
+sub n_components {
+    my ($self) = @_;
+    return $self->components->count;
+}
+sub n_assemblies {
+    my ($self) = @_;
+    return $self->assemblies->count;
+}
+
+sub mappings_to {
+    my ($self) = @_;
+    return $self->components->search(
+        { 'coord_system.name' => $self->cs_name },
+        {
+            join     => 'coord_system',
+            group_by => 'seq_region_id',
+            '+select' => [ { count => 1 } ],
+            '+as'     => [ 'segments'     ],
+        },
+        );
+}
+
+sub mappings_from {
+    my ($self) = @_;
+    return $self->assemblies->search(
+        { 'coord_system.name' => $self->cs_name },
+        {
+            join      => 'coord_system',
+            group_by  => 'seq_region_id',
+            '+select' => [ { count => 1 } ],
+            '+as'     => [ 'segments'     ],
+        },
+        );
+}
+
+sub n_mappings_to {
+    my ($self) = @_;
+    return $self->mappings_to->count;
+}
+
+sub n_mappings_from {
+    my ($self) = @_;
+    return $self->mappings_from->count;
 }
 
 1;
