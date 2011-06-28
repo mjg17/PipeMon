@@ -13,7 +13,11 @@
 [% WHILE (job = jobs.next) -%]
   <tr>
     <td><a href="[% c.uri_for_action('/job/job', [species], job.job_id) %]">[% job.job_id %]</a></td>
-    <td>[% job.input_id %]</td>
+    <td>
+     <a href="[% c.uri_for_action('/inputid/input_id', [species], job.input_id) %]">
+      [% job.input_id %]
+     </a>
+    </td>
     <td>[% job.logic_name %]</td>
     <td>[% job.status %]</td>
     <td>[% job.retry_count %]</td>
