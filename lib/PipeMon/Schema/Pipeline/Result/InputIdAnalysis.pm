@@ -111,4 +111,18 @@ __PACKAGE__->belongs_to(
     { proxy => [ qw/logic_name/ ] },
     );
 
+__PACKAGE__->has_many(
+    'jobs_by_input_id',
+    'PipeMon::Schema::Pipeline::Result::Job',
+    { 'foreign.input_id' => 'self.input_id' },
+    { prefetch => 'analysis' },
+    );
+
+__PACKAGE__->has_many(
+    'analyses_by_input_id',
+    'PipeMon::Schema::Pipeline::Result::InputIdAnalysis',
+    { 'foreign.input_id' => 'self.input_id' },
+    { prefetch => 'analysis' },
+    );
+
 1;
