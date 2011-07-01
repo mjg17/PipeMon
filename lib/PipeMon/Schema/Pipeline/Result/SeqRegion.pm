@@ -128,13 +128,13 @@ __PACKAGE__->has_many(
     );
 
 __PACKAGE__->many_to_many(
-    'components',
+    'all_components',
     'component_assembly_entries',
     'component',
     );
     
 __PACKAGE__->many_to_many(
-    'assemblies',
+    'all_assemblies',
     'assembly_assembly_entries',
     'assembly',
     );
@@ -162,18 +162,18 @@ sub hidden {
     return $self->get_attrib_val_by_code('hidden');
 }
 
-sub n_components {
+sub n_all_components {
     my ($self) = @_;
-    return $self->components->count;
+    return $self->all_components->count;
 }
-sub n_assemblies {
+sub n_all_assemblies {
     my ($self) = @_;
-    return $self->assemblies->count;
+    return $self->all_assemblies->count;
 }
 
 sub mappings_to {
     my ($self) = @_;
-    return $self->components->search(
+    return $self->all_components->search(
         { 'coord_system.name' => $self->cs_name },
         {
             join     => 'coord_system',
@@ -186,7 +186,7 @@ sub mappings_to {
 
 sub mappings_from {
     my ($self) = @_;
-    return $self->assemblies->search(
+    return $self->all_assemblies->search(
         { 'coord_system.name' => $self->cs_name },
         {
             join      => 'coord_system',
