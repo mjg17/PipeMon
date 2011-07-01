@@ -207,4 +207,41 @@ sub n_mappings_from {
     return $self->mappings_from->count;
 }
 
+sub components {
+    my ($self) = @_;
+    return $self->all_components->search(
+        { 'coord_system.name' => { '!=' => $self->cs_name } },
+        { join     => 'coord_system' },
+        );
+}
+
+sub assemblies {
+    my ($self) = @_;
+    return $self->all_assemblies->search(
+        { 'coord_system.name' => { '!=' => $self->cs_name } },
+        { join     => 'coord_system' },
+        );
+}
+
+sub n_components {
+    my ($self) = @_;
+    return $self->components->count;
+}
+sub n_assemblies {
+    my ($self) = @_;
+    return $self->assemblies->count;
+}
+
+sub component_types {
+    my ($self) = @_;
+    return $self->components->search(
+        undef,
+        {
+            group_by => 'coord_system_id',
+            '+select' => [ { count => 1 } ],
+            '+as'     => [ 'segments'     ],
+        }
+        );
+}
+
 1;

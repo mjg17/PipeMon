@@ -22,6 +22,8 @@ __PACKAGE__->config(
         hidden
         n_all_components
         n_all_assemblies
+        n_components
+        n_assemblies
     )],
     );
 
@@ -126,12 +128,14 @@ sub seq_region :Chained('base') :PathPart('seq_region') :Args(1) {
 
     my $mappings_to   = $seq_region->mappings_to;
     my $mappings_from = $seq_region->mappings_from;
+    my $component_types=$seq_region->component_types;
 
     $c->stash( seq_region    => $seq_region,
                sr_keys       => $self->seq_region_keys,
                attrs         => $attrs,
                mappings_to   => $mappings_to,
                mappings_from => $mappings_from,
+               component_types=>$component_types,
                template      => 'seq_region/seq_region.tt2',
         );
 }

@@ -49,3 +49,19 @@
 [%   END %]
 </table>
 [% END %]
+
+<h3>Component types</h3>
+<table>
+ <tr>
+  <th>cs_name</th>
+  <th>cs_ver</th>
+  <th>segments</th>
+ </tr>
+[%   WHILE (m = component_types.next) -%]
+ <tr>
+  <td>[% m.cs_name %]</td>
+  <td>[% m.cs_version %]</td>
+  <td>[% m.get_column('segments') %]</td>
+ </tr>
+[%   END %]
+</table>
