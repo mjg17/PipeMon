@@ -49,3 +49,51 @@
 [%   END %]
 </table>
 [% END %]
+
+<h3>Component types:</h3>
+<table>
+ <tr>
+  <th>cs_name</th>
+  <th>cs_ver</th>
+  <th>count</th>
+ </tr>
+[% WHILE (ct = component_types.next) -%]
+[% sole_comp = seq_region.sole_component({ 'component.coord_system_id' => ct.coord_system_id }) -%]
+ <tr>
+  <td>[% ct.cs_name %]</td>
+  <td>[% ct.cs_version %]</td>
+  <td>[% ct.get_column('count') %]</td>
+[%  IF (sole_comp) -%]
+  <td>
+   <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sole_comp.seq_region_id) %]">
+    [% sole_comp.name %]
+   </a>
+  </td>
+[%  END %]
+ </tr>
+[% END %]
+</table>
+
+<h3>Assembly types:</h3>
+<table>
+ <tr>
+  <th>cs_name</th>
+  <th>cs_ver</th>
+  <th>count</th>
+ </tr>
+[% WHILE (at = assembly_types.next) -%]
+[% sole_asm = seq_region.sole_assembly({ 'assembly.coord_system_id' => at.coord_system_id }) -%]
+ <tr>
+  <td>[% at.cs_name %]</td>
+  <td>[% at.cs_version %]</td>
+  <td>[% at.get_column('count') %]</td>
+[%  IF (sole_asm) -%]
+  <td>
+   <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sole_asm.seq_region_id) %]">
+    [% sole_asm.name %]
+   </a>
+  </td>
+[%  END %]
+ </tr>
+[% END %]
+</table>
