@@ -7,6 +7,7 @@
 [% END %]
 </dl>
 
+<h3>Attributes</h3>
 <table>
  <tr>
   <th>id</th>
@@ -21,3 +22,30 @@
  </tr>
 [% END %]
 </table>
+
+[% mapping_types = { 'Mappings to:' => mappings_to, 'Mappings from:' => mappings_from } -%]
+[% FOREACH m_type IN mapping_types.pairs -%]
+<h3>[% m_type.key %]</h3>
+<table>
+ <tr>
+  <th>id</th>
+  <th>name</th>
+  <th>cs_name</th>
+  <th>cs_ver</th>
+  <th>segments</th>
+ </tr>
+[%   WHILE (m = m_type.value.next) -%]
+ <tr>
+  <td>
+   <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], m.seq_region_id) %]">
+    [% m.seq_region_id %]
+   </a>
+  </td>
+  <td>[% m.name %]</td>
+  <td>[% m.cs_name %]</td>
+  <td>[% m.cs_version %]</td>
+  <td>[% m.get_column('segments') %]</td>
+ </tr>
+[%   END %]
+</table>
+[% END %]
