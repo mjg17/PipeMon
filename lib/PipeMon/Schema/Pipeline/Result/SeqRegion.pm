@@ -239,9 +239,41 @@ sub component_types {
         {
             group_by => 'coord_system_id',
             '+select' => [ { count => 1 } ],
-            '+as'     => [ 'segments'     ],
+            '+as'     => [ 'count'     ],
         }
         );
+}
+
+# A bit obscure?
+sub sole_component {
+    my ($self, $spec ) = @_;
+    my $results = $self->components->search( $spec );
+    my $r1 = $results->next;
+    return undef unless $r1;
+    return undef if $results->next; # more than one, so don't return anything
+    return $r1;
+}
+
+sub assembly_types {
+    my ($self) = @_;
+    return $self->assemblies->search(
+        undef,
+        {
+            group_by => 'coord_system_id',
+            '+select' => [ { count => 1 } ],
+            '+as'     => [ 'count'        ],
+        }
+        );
+}
+
+# A bit obscure?
+sub sole_assembly {
+    my ($self, $spec ) = @_;
+    my $results = $self->assemblies->search( $spec );
+    my $r1 = $results->next;
+    return undef unless $r1;
+    return undef if $results->next; # more than one, so don't return anything
+    return $r1;
 }
 
 1;
