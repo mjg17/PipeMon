@@ -1,4 +1,4 @@
-[% meta.title = species _ ": input ID " _ input_id.input_id -%]
+[% meta.title = species_title(input_id.input_id) -%]
 
 <h2>Basics</h2>
 [% sr_url = c.uri_for_action('/seqregion/seq_region', [species, 'pipe'], input_id.seq_region_id) -%]

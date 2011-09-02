@@ -1,0 +1,7 @@
+[%- MACRO species_title(title) BLOCK -%]
+[% species %]: [% title %]
+[%- END -%]
+
+[%- MACRO species_db_title(title) BLOCK -%]
+[% species %]: [% title %] ([% db_type %])
+[%- END -%]

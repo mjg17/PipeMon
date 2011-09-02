@@ -13,8 +13,9 @@ __PACKAGE__->config(
     ],
     TIMER              => 0,
     # This is your wrapper template located in the 'root/src'
-    WRAPPER => 'xhtml_wrapper.tt2',
-
+    WRAPPER =>     'xhtml_wrapper.tt2',
+    # Some common macros
+    PRE_PROCESS => 'common.tt2',
     render_die => 1,
 );
 

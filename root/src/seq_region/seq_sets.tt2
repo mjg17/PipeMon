@@ -1,4 +1,4 @@
-[% meta.title = species _ ': sequence sets (' _ db_type _ ')' -%]
+[% meta.title = species_db_title('sequence sets') -%]
 
 <table>
   <tr>

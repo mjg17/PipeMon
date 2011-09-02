@@ -1,4 +1,4 @@
-[% meta.title = species _ ': jobs' -%]
+[% meta.title = species_title('jobs') -%]
 
 <p>First [% jobs.count %] of [% total %] jobs:</p>
 <table>

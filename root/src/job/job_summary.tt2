@@ -1,4 +1,4 @@
-[% meta.title = species _ ': job summary' -%]
+[% meta.title = species_title('job summary') -%]
 
 <table>
   <tr>
