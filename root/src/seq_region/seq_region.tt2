@@ -1,5 +1,5 @@
-[% META title = "Seq region" -%]
-<h2>[% species %] [% seq_region.cs_name %] [% seq_region.name %] in [% db_type %]</h2>
+[% meta.title = species _ ": " _ seq_region.cs_name _ " " _ seq_region.name _ " (" _ db_type _ ")" -%]
+
 <dl class="seq_region">
 [% FOREACH key IN sr_keys -%]
  <dt>[% key %]</dt>

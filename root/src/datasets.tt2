@@ -1,4 +1,4 @@
-[% META title = 'Datasets' -%]
+[% meta.title = 'Datasets' -%]
 
 <table>
 [% FOREACH ds IN datasets -%]

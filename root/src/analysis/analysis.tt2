@@ -1,4 +1,5 @@
-[% META title = "Analysis" -%]
+[% meta.title = species _ ": analysis " _ analysis.logic_name _ " (" _ db_type _ ")"
+-%]
 
 <dl class="analysis">
 [% FOREACH key IN keys -%]

@@ -52,10 +52,14 @@ sub default :Path {
 =head2 end
 
 Attempt to render a view, if needed.
+Set up meta for TT META equivalent.
 
 =cut
 
-sub end : ActionClass('RenderView') {}
+sub end : ActionClass('RenderView') {
+    my ($self, $c) = @_;
+    $c->stash(meta => {});
+}
 
 =head1 AUTHOR
 

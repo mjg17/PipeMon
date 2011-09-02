@@ -1,4 +1,4 @@
-[% META title = 'PipeQueue summary' -%]
+[% meta.title = 'PipeQueue summary' -%]
 
 <table>
   <tr>

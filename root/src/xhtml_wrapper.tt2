@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>[% template.title or "Pipeline Monitor" %]</title>
+<title>[% meta.title or "Pipeline Monitor" %]</title>
 <link rel="stylesheet" type="text/css" href="http://www.sanger.ac.uk/css/wtsi.css?2007" />
 <link rel="stylesheet" href="[% c.uri_for('/static/css/main.css') %]" />
 <link rel="stylesheet" href="[% c.uri_for('/static/css/div_lineup.css') %]" />
@@ -14,7 +14,7 @@
     [%# Your logo could go here -%]
     <img src="[% c.uri_for('/static/images/btn_88x31_powered.png') %]" />
     [%# Insert the page title -%]
-    <h1>[% template.title or site.title %]</h1>
+    <h1>[% meta.title or site.title %]</h1>
 </div>
 
 <div id="bodyblock">

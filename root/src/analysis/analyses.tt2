@@ -1,4 +1,4 @@
-[% META title = 'Analyses' -%]
+[% meta.title = species _ ': analyses (' _ db_type _ ')' -%]
 
 <table>
 [% FOREACH a IN analyses -%]

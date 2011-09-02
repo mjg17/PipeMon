@@ -1,4 +1,4 @@
-[% META title = "Pipeline for species (fix me - which?)" -%]
+[% meta.title = "Dataset: " _ species -%]
 
 <h2>
    Pipeline for [% species %]

@@ -1,5 +1,5 @@
-[% META title = 'Sequence sets' -%]
-<h2>Sequence sets in [% db_type %] for [% species %]</h2>
+[% meta.title = species _ ': sequence sets (' _ db_type _ ')' -%]
+
 <table>
   <tr>
     <th>seq_region_id</th>
