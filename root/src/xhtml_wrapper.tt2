@@ -39,6 +39,7 @@
         <div class="counter">
             Page [% pager.current_page %] of [% pager.last_page %]
         </div>
+        [% IF pager.last_page > 1 %]
         <div>
            [% IF pager.previous_page %]
                <span><a href="[% c.req.uri_with( page => pager.first_page ) %]">&laquo;</a></span>
@@ -60,6 +61,7 @@
                <span><a href="[% c.req.uri_with( page => pager.last_page ) %]">&raquo;</a></span>
            [% END %]
        </div>
+       [% END %]
     </div>
     [% END %]
 </div><!-- end content -->
