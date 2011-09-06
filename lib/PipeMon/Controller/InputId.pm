@@ -38,7 +38,7 @@ sub input_id :Chained('base') :PathPart('input_id') :Args(1) {
     my $resultset = $c->stash->{input_id_analysis_rs};
 
     my $input_id;
-    if ($key =~ /^[[:alnum:]:.]+$/) {
+    if ($key =~ /^[[:alnum:]:._]+$/) {
         $input_id = $resultset->search( 
             {
                 'me.input_id'         => $key,
