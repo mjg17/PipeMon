@@ -1,0 +1,16 @@
+[% meta.title = species_db_title('components for ' _ assembly.name) %]
+
+<p>Got [% cmp_rs.count %] components.</p>
+
+<table>
+  <tr>
+   <th>Assembly</th>
+   <th>Component</th>
+  </tr>
+[% WHILE (cmp = cmp_rs.next) -%]
+  <tr>
+    <td>[% cmp.assembly.name %]</td>
+    <td>[% cmp.component.name %]</td>
+  </tr>
+[% END %]
+</table>

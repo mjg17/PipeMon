@@ -68,13 +68,22 @@
  <tr>
   <td>[% ct.cs_name %]</td>
   <td>[% ct.cs_version %]</td>
-  <td>[% ct.get_column('count') %]</td>
 [%  IF (sole_comp) -%]
+  <td>[% ct.get_column('count') %]</td>
   <td>
    <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sole_comp.seq_region_id) %]">
     [% sole_comp.name %]
    </a>
   </td>
+[%  ELSE %]
+  <td>
+   <a href="[% c.uri_for_action('/assembly/components',
+                                [species, db_type], seq_region.seq_region_id, 
+                                { cs_name => ct.cs_name, cs_version => ct.cs_version }) %]">
+    [% ct.get_column('count') %]
+   </a>
+  </td>
+  <td>&nbsp;</td>
 [%  END %]
  </tr>
 [% END %]
