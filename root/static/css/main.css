@@ -34,3 +34,17 @@
 .error {
     color: #f00;
 }
+
+.pager a {
+    color: #777;
+}
+
+.pager .current a,
+.pager a:hover {
+    color: #000;
+}
+
+.pager .current a {
+    background: #FFBA58;
+    font-weight: bold;
+}

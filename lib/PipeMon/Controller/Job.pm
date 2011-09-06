@@ -125,29 +125,22 @@ sub search :Chained('base') :PathPart('') :CaptureArgs(0) {
 sub jobs :Chained('search') :PathPart('jobs') :Args(0) {
     my ( $self, $c ) = @_;
 
+    my $page  = $c->request->parameters->{page}  || 1;
+    my $limit = $c->request->parameters->{limit} || 20; # config?
+
     my %opts = (
         order_by => 'job_id',
         prefetch => [ qw/analysis/ ],
+        page     => $page,
+        rows     => $limit,
         );
-
-    # For the total, stash the search before we add any LIMIT clause
-    #
-    my $total = $c->stash->{search_rs}->search( undef, \%opts )->count;
-
-    my $limit = $c->request->parameters->{limit};
-    unless ($limit or %{$c->stash->{search_params}}) {
-        $limit = 20;
-    }
-    if ($limit) {
-        $opts{rows} = $limit;
-    }
 
     my $jobs  = $c->stash->{search_rs}->search( undef, \%opts );
 
     $c->stash(
         jobs     => $jobs,
         limit    => $limit,
-        total    => $total,
+        pager    => $jobs->pager,
         template => 'job/jobs.tt2',
         );
 }

@@ -1,6 +1,6 @@
 [% meta.title = species_title('jobs') -%]
 
-<p>First [% jobs.count %] of [% total %] jobs:</p>
+<p>Jobs [% pager.first %] - [% pager.last %] of [% pager.total_entries %]:</p>
 <table>
   <tr>
     <th>job_id</th>
