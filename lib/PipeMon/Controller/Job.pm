@@ -139,7 +139,6 @@ sub jobs :Chained('search') :PathPart('jobs') :Args(0) {
 
     $c->stash(
         jobs     => $jobs,
-        limit    => $limit,
         pager    => $jobs->pager,
         template => 'job/jobs.tt2',
         );
