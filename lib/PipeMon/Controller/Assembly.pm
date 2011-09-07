@@ -43,15 +43,27 @@ sub components :Chained('base') :PathPart('components') :Args(1) {
         $c->detach;
     }
 
+    my %search = ( asm_seq_region_id => $assembly_sr_id );
+
+    foreach my $key (qw(cs_version cs_name)) {
+        if (my $value = $c->request->parameters->{$key}) {
+            my $field = $key;
+            $field =~ s/cs_/coord_system./;
+            $search{$field} = $value;
+        }
+    }
+
     my $cmp_rs = $c->stash->{assembly_rs}->search(
-        { asm_seq_region_id => $assembly_sr_id },
+        \%search,
         {
-            prefetch => [ qw(assembly component) ],
+            prefetch => [ 'assembly', { 'component' => 'coord_system' } ],
             order_by => 'asm_start',
         },
         );
 
     my $first = $cmp_rs->first;
+    $cmp_rs->reset;
+
     $c->stash(
         cmp_rs   => $cmp_rs,
         template => 'assembly/components.tt2',
