@@ -43,6 +43,13 @@ sub components :Chained('base') :PathPart('components') :Args(1) {
         $c->detach;
     }
 
+    my $asm_seq_region = $c->stash->{db_model}->resultset('SeqRegion')->find($assembly_sr_id);
+    unless ($asm_seq_region) {
+        $c->response->status(404);
+        $c->response->body("No such assembly '$asm_seq_region'");
+        $c->detach;
+    }
+
     my %search = ( asm_seq_region_id => $assembly_sr_id );
 
     foreach my $key (qw(cs_version cs_name)) {
@@ -65,12 +72,9 @@ sub components :Chained('base') :PathPart('components') :Args(1) {
 
     my $cmp_rs = $c->stash->{assembly_rs}->search( \%search, \%opts );
 
-    my $first = $cmp_rs->first; # YUCK
-    $cmp_rs->reset;
-
     $c->stash(
         cmp_rs   => $cmp_rs,
-        assembly => $first ? $first->assembly : { name => "{${assembly_sr_id}}" },
+        assembly => $asm_seq_region,
         pager    => $cmp_rs->pager,
         template => 'assembly/components.tt2',
         );

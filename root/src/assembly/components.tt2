@@ -1,6 +1,6 @@
 [% meta.title = species_db_title('components for ' _ assembly.name) %]
 
-<p>Got [% cmp_rs.count %] components.</p>
+<p>Components [% pager.first %] - [% pager.last %] of [% pager.total_entries %]:</p>
 
 <table>
   <tr>
