@@ -108,6 +108,15 @@
     [% sole_asm.name %]
    </a>
   </td>
+  <td>
+   <a href="[% c.uri_for_action('/assembly/components',
+                                [species, db_type], sole_asm.seq_region_id,
+                                { cs_name    => seq_region.cs_name,
+                                  cs_version => seq_region.cs_version,
+                                  focus      => seq_region.seq_region_id }) %]">
+    <em>browse assembly</em>
+   </a>
+  </td>
 [%  END %]
  </tr>
 [% END %]
