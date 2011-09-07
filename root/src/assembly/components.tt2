@@ -19,7 +19,11 @@
   <tr>
     <td align="right">[% cmp.asm_start      %]</td>
     <td align="right">[% cmp.asm_end        %]</td>
-    <td              >[% cmp.component.name %]</td>
+    <td>
+      <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], cmp.cmp_seq_region_id) %]">
+        [% cmp.component.name %]
+      </a>
+    </td>
     <td align="right">[% cmp.cmp_start      %]</td>
     <td align="right">[% cmp.cmp_end        %]</td>
     <td align="right">[% cmp.ori            %]</td>
