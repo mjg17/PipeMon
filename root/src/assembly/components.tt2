@@ -16,7 +16,7 @@
    <th>Orientation</th>
   </tr>
 [% WHILE (cmp = cmp_rs.next) -%]
-  <tr>
+  <tr [% 'class="focus"' IF cmp.cmp_seq_region_id == focus %]>
     <td align="right">[% cmp.asm_start      %]</td>
     <td align="right">[% cmp.asm_end        %]</td>
     <td>

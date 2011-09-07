@@ -46,7 +46,7 @@ sub components :Chained('base') :PathPart('components') :Args(1) {
     my $asm_seq_region = $c->stash->{db_model}->resultset('SeqRegion')->find($assembly_sr_id);
     unless ($asm_seq_region) {
         $c->response->status(404);
-        $c->response->body("No such assembly '$asm_seq_region'");
+        $c->response->body("No such assembly '$assembly_sr_id'");
         $c->detach;
     }
 
@@ -60,8 +60,21 @@ sub components :Chained('base') :PathPart('components') :Args(1) {
         }
     }
 
-    my $page  = $c->request->parameters->{page}  || 1;
+    my $page  = $c->request->parameters->{page};
     my $limit = $c->request->parameters->{limit} || 20; # config?
+    my $focus = $c->request->parameters->{focus};
+
+    if ($focus and not $page) {
+        my $focus_row = $c->stash->{db_model}->resultset('AssemblyRank')->search(
+            {},
+            { bind => [ $assembly_sr_id, $focus ] },
+            )->first;
+        if ($focus_row) {
+            my $rank = $focus_row->get_column('rank');
+            $page = int($rank / $limit) + 1;
+        }
+    }
+    $page ||= 1;
 
     my %opts = (
         prefetch => [ 'assembly', { 'component' => 'coord_system' } ],
@@ -76,6 +89,7 @@ sub components :Chained('base') :PathPart('components') :Args(1) {
         cmp_rs   => $cmp_rs,
         assembly => $asm_seq_region,
         pager    => $cmp_rs->pager,
+        focus    => $focus,
         template => 'assembly/components.tt2',
         );
 }
