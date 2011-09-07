@@ -4,13 +4,25 @@
 
 <table>
   <tr>
-   <th>Assembly</th>
-   <th>Component</th>
+   <th colspan="2">Assembly</th>
+   <th colspan="3">Component</th>
+  </tr>
+  <tr>
+   <th>Start</th>
+   <th>End</th>
+   <th>Name</th>
+   <th>Start</th>
+   <th>End</th>
+   <th>Orientation</th>
   </tr>
 [% WHILE (cmp = cmp_rs.next) -%]
   <tr>
-    <td>[% cmp.assembly.name %]</td>
-    <td>[% cmp.component.name %]</td>
+    <td align="right">[% cmp.asm_start      %]</td>
+    <td align="right">[% cmp.asm_end        %]</td>
+    <td              >[% cmp.component.name %]</td>
+    <td align="right">[% cmp.cmp_start      %]</td>
+    <td align="right">[% cmp.cmp_end        %]</td>
+    <td align="right">[% cmp.ori            %]</td>
   </tr>
 [% END %]
 </table>
