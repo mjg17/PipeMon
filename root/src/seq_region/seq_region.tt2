@@ -3,7 +3,13 @@
 <dl class="seq_region">
 [% FOREACH key IN sr_keys -%]
  <dt>[% key %]</dt>
- <dd>[% seq_region.$key %]</dd>
+ <dd>
+  [% IF seq_region.$key.defined -%]
+   [% seq_region.$key %]
+  [% ELSE -%]
+   <em>null</em>
+  [% END -%]
+ </dd>
 [% END %]
 </dl>
 
