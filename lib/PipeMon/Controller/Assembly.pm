@@ -53,21 +53,26 @@ sub components :Chained('base') :PathPart('components') :Args(1) {
         }
     }
 
-    my $cmp_rs = $c->stash->{assembly_rs}->search(
-        \%search,
-        {
-            prefetch => [ 'assembly', { 'component' => 'coord_system' } ],
-            order_by => 'asm_start',
-        },
+    my $page  = $c->request->parameters->{page}  || 1;
+    my $limit = $c->request->parameters->{limit} || 20; # config?
+
+    my %opts = (
+        prefetch => [ 'assembly', { 'component' => 'coord_system' } ],
+        order_by => 'asm_start',
+        page     => $page,
+        rows     => $limit,
         );
 
-    my $first = $cmp_rs->first;
+    my $cmp_rs = $c->stash->{assembly_rs}->search( \%search, \%opts );
+
+    my $first = $cmp_rs->first; # YUCK
     $cmp_rs->reset;
 
     $c->stash(
         cmp_rs   => $cmp_rs,
-        template => 'assembly/components.tt2',
         assembly => $first ? $first->assembly : { name => "{${assembly_sr_id}}" },
+        pager    => $cmp_rs->pager,
+        template => 'assembly/components.tt2',
         );
 }
 
