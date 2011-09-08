@@ -1,0 +1,26 @@
+[% meta.title = species_db_title('mapping from ' _ ref_sr.name _ ' to ' _ alt_sr.name) %]
+
+<p>Components [% pager.first %] - [% pager.last %] of [% pager.total_entries %]:</p>
+
+<table>
+  <tr>
+   <th colspan="2">Assembly</th>
+   <th colspan="2">Component</th>
+  </tr>
+  <tr>
+   <th>Start</th>
+   <th>End</th>
+   <th>Start</th>
+   <th>End</th>
+   <th>Orientation</th>
+  </tr>
+[% WHILE (cmp = cmp_rs.next) -%]
+  <tr>
+    <td align="right">[% cmp.asm_start      %]</td>
+    <td align="right">[% cmp.asm_end        %]</td>
+    <td align="right">[% cmp.cmp_start      %]</td>
+    <td align="right">[% cmp.cmp_end        %]</td>
+    <td align="right">[% cmp.ori            %]</td>
+  </tr>
+[% END %]
+</table>

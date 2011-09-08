@@ -94,6 +94,50 @@ sub components :Chained('base') :PathPart('components') :Args(1) {
         );
 }
 
+=head2 mapping
+
+=cut
+
+sub mapping :Chained('base') :PathPart('mapping') :Args(2) {
+    my ( $self, $c, $ref_sr_id, $alt_sr_id ) = @_;
+
+    my %checks = ( Ref => $ref_sr_id, Alt => $alt_sr_id );
+    while (my ($key, $val) = each %checks) {
+        unless ($val =~ /^\d+$/) {
+            # Bad format
+            $c->response->status(400);
+            $c->response->body("$key '$val' doesn't look like a seq_region_id");
+            $c->detach;
+        }
+    }
+    my %seq_region;
+    while (my ($key, $val) = each %checks) {
+        $seq_region{$key} = $c->stash->{db_model}->resultset('SeqRegion')->find($val);
+        unless ($seq_region{$key}) {
+            $c->response->status(404);
+            $c->response->body("$key assembly '$val' not found");
+            $c->detach;
+        }
+    }
+
+    my $cmp_rs = $c->stash->{assembly_rs}->search(
+        {
+            asm_seq_region_id => $ref_sr_id,
+            cmp_seq_region_id => $alt_sr_id,
+        },
+        {
+            prefetch => [ 'assembly', 'component' ],
+            order_by => 'asm_start',
+        }
+        );
+
+    $c->stash(
+        cmp_rs   => $cmp_rs,
+        ref_sr   => $seq_region{'Ref'},
+        alt_sr   => $seq_region{'Alt'},
+        template => 'assembly/mapping.tt2',
+        );
+}
 
 =head1 AUTHOR
 

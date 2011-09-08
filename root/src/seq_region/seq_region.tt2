@@ -50,7 +50,19 @@
   <td>[% m.name %]</td>
   <td>[% m.cs_name %]</td>
   <td>[% m.cs_version %]</td>
-  <td>[% m.get_column('segments') %]</td>
+  <td>
+[%     IF m_type.key == 'Mappings from:' -%]
+   <a href="[% c.uri_for_action('/assembly/mapping',
+                                [species, db_type],
+                                m.seq_region_id, seq_region.seq_region_id) %]">
+[%     ELSE -%]
+   <a href="[% c.uri_for_action('/assembly/mapping',
+                                [species, db_type],
+                                seq_region.seq_region_id, m.seq_region_id) %]">
+[%     END  -%]
+    [% m.get_column('segments') %]
+   </a>
+  </td>
  </tr>
 [%   END %]
 </table>
