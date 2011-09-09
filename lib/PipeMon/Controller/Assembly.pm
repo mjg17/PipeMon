@@ -50,9 +50,21 @@ sub components :Chained('base') :PathPart('components') :Args(2) {
         $c->detach;
     }
 
-    my %search = (
-        'asm_seq_region_id'         => $assembly_sr_id,
-        'component.coord_system_id' => $coord_system_id,
+
+    my %opts = (
+        prefetch => [ 'assembly', 'component' ],
+        order_by => 'asm_start',
+        );
+
+    my $cmp_rs = $c->stash->{assembly_rs}->search(
+        {
+            'asm_seq_region_id'         => $assembly_sr_id,
+            'component.coord_system_id' => $coord_system_id,
+        },
+        {
+            prefetch => [ 'assembly', 'component' ],
+            order_by => 'asm_start',
+        },
         );
 
     my $page  = $c->request->parameters->{page};
@@ -60,30 +72,21 @@ sub components :Chained('base') :PathPart('components') :Args(2) {
     my $focus = $c->request->parameters->{focus};
 
     if ($focus and not $page) {
-        my $focus_row = $c->stash->{db_model}->resultset('AssemblyRank')->search(
-            {},
-            { bind => [ $assembly_sr_id, $focus ] },
-            )->first;
-        if ($focus_row) {
-            my $rank = $focus_row->get_column('rank');
+        my $i = 0;
+        my %cmp_map = map { $_ => ++$i } $cmp_rs->get_column('cmp_seq_region_id')->all;
+        my $rank = $cmp_map{$focus};
+        if ($rank) {
             $page = int(($rank - 1) / $limit) + 1;
         }
     }
     $page ||= 1;
 
-    my %opts = (
-        prefetch => [ 'assembly', { 'component' => 'coord_system' } ],
-        order_by => 'asm_start',
-        page     => $page,
-        rows     => $limit,
-        );
-
-    my $cmp_rs = $c->stash->{assembly_rs}->search( \%search, \%opts );
+    my $paged_cmp_rs = $cmp_rs->search( {}, { page => $page, rows => $limit } );
 
     $c->stash(
-        cmp_rs   => $cmp_rs,
+        cmp_rs   => $paged_cmp_rs,
         assembly => $asm_seq_region,
-        pager    => $cmp_rs->pager,
+        pager    => $paged_cmp_rs->pager,
         focus    => $focus,
         template => 'assembly/components.tt2',
         );
