@@ -90,8 +90,7 @@
 [%  ELSE %]
   <td>
    <a href="[% c.uri_for_action('/assembly/components',
-                                [species, db_type], seq_region.seq_region_id,
-                                { cs_name => ct.cs_name, cs_version => ct.cs_version }) | html %]">
+                                [species, db_type], seq_region.seq_region_id, ct.coord_system_id) | html %]">
     [% ct.get_column('count') %]
    </a>
   </td>
@@ -122,10 +121,8 @@
   </td>
   <td>
    <a href="[% c.uri_for_action('/assembly/components',
-                                [species, db_type], sole_asm.seq_region_id,
-                                { cs_name    => seq_region.cs_name,
-                                  cs_version => seq_region.cs_version,
-                                  focus      => seq_region.seq_region_id }) | html %]">
+                                [species, db_type], sole_asm.seq_region_id, seq_region.coord_system_id,
+                                { focus => seq_region.seq_region_id }) | html %]">
     <em>browse assembly</em>
    </a>
   </td>

@@ -33,8 +33,8 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
 
 =cut
 
-sub components :Chained('base') :PathPart('components') :Args(1) {
-    my ( $self, $c, $assembly_sr_id ) = @_;
+sub components :Chained('base') :PathPart('components') :Args(2) {
+    my ( $self, $c, $assembly_sr_id, $coord_system_id ) = @_;
 
     unless ($assembly_sr_id =~ /^\d+$/) {
         # Bad format
@@ -50,15 +50,10 @@ sub components :Chained('base') :PathPart('components') :Args(1) {
         $c->detach;
     }
 
-    my %search = ( asm_seq_region_id => $assembly_sr_id );
-
-    foreach my $key (qw(cs_version cs_name)) {
-        if (my $value = $c->request->parameters->{$key}) {
-            my $field = $key;
-            $field =~ s/cs_/coord_system./;
-            $search{$field} = $value;
-        }
-    }
+    my %search = (
+        'asm_seq_region_id'         => $assembly_sr_id,
+        'component.coord_system_id' => $coord_system_id,
+        );
 
     my $page  = $c->request->parameters->{page};
     my $limit = $c->request->parameters->{limit} || 20; # config?
