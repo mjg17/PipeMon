@@ -50,7 +50,19 @@
   <td>[% m.name %]</td>
   <td>[% m.cs_name %]</td>
   <td>[% m.cs_version %]</td>
-  <td>[% m.get_column('segments') %]</td>
+  <td>
+[%     IF m_type.key == 'Mappings from:' -%]
+   <a href="[% c.uri_for_action('/assembly/mapping',
+                                [species, db_type],
+                                m.seq_region_id, seq_region.seq_region_id) %]">
+[%     ELSE -%]
+   <a href="[% c.uri_for_action('/assembly/mapping',
+                                [species, db_type],
+                                seq_region.seq_region_id, m.seq_region_id) %]">
+[%     END  -%]
+    [% m.get_column('segments') %]
+   </a>
+  </td>
  </tr>
 [%   END %]
 </table>
@@ -68,13 +80,21 @@
  <tr>
   <td>[% ct.cs_name %]</td>
   <td>[% ct.cs_version %]</td>
-  <td>[% ct.get_column('count') %]</td>
 [%  IF (sole_comp) -%]
+  <td>[% ct.get_column('count') %]</td>
   <td>
    <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sole_comp.seq_region_id) %]">
     [% sole_comp.name %]
    </a>
   </td>
+[%  ELSE %]
+  <td>
+   <a href="[% c.uri_for_action('/assembly/components',
+                                [species, db_type], seq_region.seq_region_id, ct.coord_system_id) | html %]">
+    [% ct.get_column('count') %]
+   </a>
+  </td>
+  <td>&nbsp;</td>
 [%  END %]
  </tr>
 [% END %]
@@ -97,6 +117,13 @@
   <td>
    <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sole_asm.seq_region_id) %]">
     [% sole_asm.name %]
+   </a>
+  </td>
+  <td>
+   <a href="[% c.uri_for_action('/assembly/components',
+                                [species, db_type], sole_asm.seq_region_id, seq_region.coord_system_id,
+                                { focus => seq_region.seq_region_id }) | html %]">
+    <em>browse assembly</em>
    </a>
   </td>
 [%  END %]
