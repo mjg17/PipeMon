@@ -71,7 +71,7 @@ sub components :Chained('base') :PathPart('components') :Args(1) {
             )->first;
         if ($focus_row) {
             my $rank = $focus_row->get_column('rank');
-            $page = int($rank / $limit) + 1;
+            $page = int(($rank - 1) / $limit) + 1;
         }
     }
     $page ||= 1;
