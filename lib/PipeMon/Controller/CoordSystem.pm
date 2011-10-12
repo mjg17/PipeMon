@@ -67,7 +67,7 @@ sub coord_system_id :Chained('base') :PathPart('coord_system/id') :Args(1) {
 
 =cut
 
-sub coord_system :Chained('base') :PathPart('coord_system') :Args() {
+sub coord_system :Chained('base') :PathPart('coord_system/name') :Args() {
     my ( $self, $c, $name, $version ) = @_;
 
     unless ($name) {
