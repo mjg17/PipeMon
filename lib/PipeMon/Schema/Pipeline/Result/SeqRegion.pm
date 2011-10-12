@@ -128,13 +128,13 @@ __PACKAGE__->has_many(
     );
 
 __PACKAGE__->many_to_many(
-    'components',
+    'all_components',
     'component_assembly_entries',
     'component',
     );
     
 __PACKAGE__->many_to_many(
-    'assemblies',
+    'all_assemblies',
     'assembly_assembly_entries',
     'assembly',
     );
@@ -162,18 +162,18 @@ sub hidden {
     return $self->get_attrib_val_by_code('hidden');
 }
 
-sub n_components {
+sub n_all_components {
     my ($self) = @_;
-    return $self->components->count;
+    return $self->all_components->count;
 }
-sub n_assemblies {
+sub n_all_assemblies {
     my ($self) = @_;
-    return $self->assemblies->count;
+    return $self->all_assemblies->count;
 }
 
 sub mappings_to {
     my ($self) = @_;
-    return $self->components->search(
+    return $self->all_components->search(
         { 'coord_system.name' => $self->cs_name },
         {
             join     => 'coord_system',
@@ -186,7 +186,7 @@ sub mappings_to {
 
 sub mappings_from {
     my ($self) = @_;
-    return $self->assemblies->search(
+    return $self->all_assemblies->search(
         { 'coord_system.name' => $self->cs_name },
         {
             join      => 'coord_system',
@@ -205,6 +205,75 @@ sub n_mappings_to {
 sub n_mappings_from {
     my ($self) = @_;
     return $self->mappings_from->count;
+}
+
+sub components {
+    my ($self) = @_;
+    return $self->all_components->search(
+        { 'coord_system.name' => { '!=' => $self->cs_name } },
+        { join     => 'coord_system' },
+        );
+}
+
+sub assemblies {
+    my ($self) = @_;
+    return $self->all_assemblies->search(
+        { 'coord_system.name' => { '!=' => $self->cs_name } },
+        { join     => 'coord_system' },
+        );
+}
+
+sub n_components {
+    my ($self) = @_;
+    return $self->components->count;
+}
+sub n_assemblies {
+    my ($self) = @_;
+    return $self->assemblies->count;
+}
+
+sub component_types {
+    my ($self) = @_;
+    return $self->components->search(
+        undef,
+        {
+            group_by => 'coord_system_id',
+            '+select' => [ { count => 1 } ],
+            '+as'     => [ 'count'     ],
+        }
+        );
+}
+
+# A bit obscure?
+sub sole_component {
+    my ($self, $spec ) = @_;
+    my $results = $self->components->search( $spec );
+    my $r1 = $results->next;
+    return undef unless $r1;
+    return undef if $results->next; # more than one, so don't return anything
+    return $r1;
+}
+
+sub assembly_types {
+    my ($self) = @_;
+    return $self->assemblies->search(
+        undef,
+        {
+            group_by => 'coord_system_id',
+            '+select' => [ { count => 1 } ],
+            '+as'     => [ 'count'        ],
+        }
+        );
+}
+
+# A bit obscure?
+sub sole_assembly {
+    my ($self, $spec ) = @_;
+    my $results = $self->assemblies->search( $spec );
+    my $r1 = $results->next;
+    return undef unless $r1;
+    return undef if $results->next; # more than one, so don't return anything
+    return $r1;
 }
 
 1;
