@@ -45,11 +45,11 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
     $c->stash( coord_system_rs => $model->resultset('CoordSystem') );
 }
 
-=head2 coord_system
+=head2 coord_system_id
 
 =cut
 
-sub coord_system :Chained('base') :PathPart('coord_system/id') :Args(1) {
+sub coord_system_id :Chained('base') :PathPart('coord_system/id') :Args(1) {
     my ( $self, $c, $id ) = @_;
 
     my $coord_system = $c->stash->{coord_system_rs}->find($id);
@@ -59,12 +59,49 @@ sub coord_system :Chained('base') :PathPart('coord_system/id') :Args(1) {
         $c->detach;
     }
 
-    $c->stash( coord_system => $coord_system,
-               keys         => $self->coord_system_keys,
+    $c->stash( coord_system => $coord_system );
+    $c->detach( 'display' );
+}
+
+=head2 coord_system
+
+=cut
+
+sub coord_system :Chained('base') :PathPart('coord_system') :Args() {
+    my ( $self, $c, $name, $version ) = @_;
+
+    unless ($name) {
+        $c->response->status(400);
+        $c->response->body("Must supply at least a coord_system name");
+        $c->detach;
+    }
+
+    my %search = (
+        name => $name,
+        );
+
+    if ($version) {
+        $search{version} = $version;
+    } else {
+        $search{attrib} = { like => "%default_version%" };
+    }
+    my $coord_system = $c->stash->{coord_system_rs}->single(\%search);
+
+    $c->stash( coord_system => $coord_system );
+    $c->detach( 'display' );
+}
+
+=head2 display
+
+=cut
+
+sub display :Private {
+    my ( $self, $c ) = @_;
+
+    $c->stash( keys         => $self->coord_system_keys,
                template     => 'coord_system/coord_system.tt2',
         );
 }
-
 
 =head1 AUTHOR
 
