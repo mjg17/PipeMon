@@ -76,6 +76,17 @@ sub coord_system :Chained('base') :PathPart('coord_system') :Args() {
         $c->detach;
     }
 
+    $c->forward( 'search' );
+    $c->detach( 'display' );
+}
+
+=head2 search
+
+=cut
+
+sub search :Private {
+    my ( $self, $c, $name, $version ) = @_;
+
     my %search = (
         name => $name,
         );
@@ -88,7 +99,6 @@ sub coord_system :Chained('base') :PathPart('coord_system') :Args() {
     my $coord_system = $c->stash->{coord_system_rs}->single(\%search);
 
     $c->stash( coord_system => $coord_system );
-    $c->detach( 'display' );
 }
 
 =head2 display
