@@ -41,14 +41,24 @@ Catalyst Controller.
 
 =head2 base
 
-Just gets us chained to the right place with the right pathpart initially
+Just gets us chained to the right place with the right pathpart initially,
+and sets up prefetch for searches.
 
 =cut
 
 sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
     my $model = $c->stash->{db_model};
-    $c->stash( seq_region_rs => $model->resultset('SeqRegion') );
+
+    my $resultset = $model->resultset('SeqRegion')->search(
+        undef,
+        { prefetch =>  [
+              { 'sv_attributes' => 'attrib_type' },
+              'coord_system',
+              ],
+        }
+        );
+    $c->stash( seq_region_rs => $resultset );
 }
 
 =head2 seq_sets
@@ -63,12 +73,6 @@ sub seq_sets :Chained('base') :PathPart('seq_sets') :Args(0) {
         {
             'coord_system.name' => 'chromosome',
         },
-        {
-            prefetch => [ 
-                { 'sv_attributes' => 'attrib_type' },
-                'coord_system',
-                ],
-        }
     )->all();
 
     $c->stash( seq_sets => \@seq_sets,
@@ -89,12 +93,14 @@ sub seq_set_sort {
         );
 }
 
-=head2 seq_region 
+=head2 seq_region_id
 
 =cut
 
-sub seq_region :Chained('base') :PathPart('seq_region') :Args(1) {
+sub seq_region_id :Chained('base') :PathPart('seq_region/id') :Args(1) {
     my ( $self, $c, $key ) = @_;
+
+    my $resultset = $c->stash->{seq_region_rs};
 
     unless ($key =~ /^\d+$/) {
         # Bad format
@@ -103,20 +109,53 @@ sub seq_region :Chained('base') :PathPart('seq_region') :Args(1) {
         $c->detach;
     }
 
-    my $seq_region = $c->stash->{seq_region_rs}->find(
-        $key,
-        { prefetch =>  [ 
-              { 'sv_attributes' => 'attrib_type' },
-              'coord_system',
-              ],
-        }
-        );
+    my $seq_region = $resultset->find($key);
 
     unless ($seq_region) {
         $c->response->status(404);
         $c->response->body("No such seq_region '$key'");
         $c->detach;
     }
+
+    $c->stash(seq_region => $seq_region);
+    $c->detach( 'display' );
+}
+
+=head2 seq_region 
+
+=cut
+
+sub seq_region :Chained('base') :PathPart('seq_region/name') :Args() {
+    my ( $self, $c, $sr_name, $cs_name, $cs_ver ) = @_;
+
+    my $resultset = $c->stash->{seq_region_rs};
+
+    my ($seq_region, $not_unique) = $resultset->search({'me.name' => $sr_name});
+
+    unless ($seq_region) {
+        $c->response->status(404);
+        $c->response->body("No such seq_region '$sr_name'");
+        $c->detach;
+    }
+
+    if ($not_unique) {
+        $c->response->status(400);
+        $c->response->body("More than one seq_region with name '$sr_name'");
+        $c->detach;
+    }
+
+    $c->stash(seq_region => $seq_region);
+    $c->detach( 'display' );
+}
+
+=head2 display
+
+=cut
+
+sub display :Private {
+    my ( $self, $c ) = @_;
+
+    my $seq_region = $c->stash->{seq_region};
 
     my $attrs = $seq_region->attributes->search(
         undef,
@@ -131,8 +170,7 @@ sub seq_region :Chained('base') :PathPart('seq_region') :Args(1) {
     my $component_types = $seq_region->component_types;
     my $assembly_types  = $seq_region->assembly_types;
 
-    $c->stash( seq_region      => $seq_region,
-               sr_keys         => $self->seq_region_keys,
+    $c->stash( sr_keys         => $self->seq_region_keys,
                attrs           => $attrs,
                mappings_to     => $mappings_to,
                mappings_from   => $mappings_from,
