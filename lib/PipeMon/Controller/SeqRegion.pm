@@ -128,9 +128,20 @@ sub seq_region_id :Chained('base') :PathPart('seq_region/id') :Args(1) {
 sub seq_region :Chained('base') :PathPart('seq_region/name') :Args() {
     my ( $self, $c, $sr_name, $cs_name, $cs_ver ) = @_;
 
-    my $resultset = $c->stash->{seq_region_rs};
+    unless ($sr_name) {
+        $c->response->status(400);
+        $c->response->body("Must supply at least a seq_region name");
+        $c->detach;
+    }
+    my %search = ('me.name' => $sr_name);
 
-    my ($seq_region, $not_unique) = $resultset->search({'me.name' => $sr_name});
+    if ($cs_name) {
+        $c->forward('/coordsystem/search', [ $cs_name, $cs_ver ]);
+        $search{'me.coord_system_id'} = $c->stash->{coord_system}->coord_system_id;
+    }
+
+    my $resultset = $c->stash->{seq_region_rs};
+    my ($seq_region, $not_unique) = $resultset->search(\%search);
 
     unless ($seq_region) {
         $c->response->status(404);

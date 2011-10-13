@@ -23,7 +23,7 @@ sub by_name {
         $search{attrib} = { like => "%default_version%" };
     }
 
-    my %opts => (
+    my %opts = (
         order_by => 'rank',
         );
 

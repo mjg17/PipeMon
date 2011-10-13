@@ -87,7 +87,9 @@ sub coord_system :Chained('base') :PathPart('coord_system/name') :Args() {
 sub search :Private {
     my ( $self, $c, $name, $version ) = @_;
 
-    my $coord_system = $c->stash->{coord_system_rs}->by_name($name, $version);
+    # Not chained to base so cannot count on its setup
+    my $model = $c->stash->{db_model};
+    my $coord_system = $model->resultset('CoordSystem')->by_name($name, $version);
 
     unless ($coord_system) {
         $version ||= '<em>default</em>';
