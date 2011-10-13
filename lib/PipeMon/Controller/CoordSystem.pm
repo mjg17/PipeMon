@@ -45,6 +45,21 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
     $c->stash( coord_system_rs => $model->resultset('CoordSystem') );
 }
 
+=head2 coord_systems
+
+=cut
+
+sub coord_systems :Chained('base') :PathPart('coord_systems') :Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $resultset = $c->stash->{coord_system_rs};
+
+    $c->stash( coord_systems => [$resultset->all],
+               keys          => $self->coord_system_keys,
+               template      => 'coord_system/coord_systems.tt2',
+        );
+}
+
 =head2 coord_system_id
 
 =cut
