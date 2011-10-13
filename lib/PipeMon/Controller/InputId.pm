@@ -23,9 +23,10 @@ Just gets us chained to the right place with the right pathpart initially
 
 =cut
 
-sub base :Chained('/species/base') :PathPart('') :CaptureArgs(0) {
+sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
-    $c->stash( input_id_analysis_rs => $c->model('PipeForSpecies::InputIdAnalysis') );
+    my $model = $c->stash->{db_model};
+    $c->stash( input_id_analysis_rs => $model->resultset('InputIdAnalysis') );
 }
 
 =head2 input_id
