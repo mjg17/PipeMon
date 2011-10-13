@@ -6,11 +6,6 @@ use Bio::Otter::SpeciesDat::DataSet;
 
 BEGIN {extends 'Catalyst::Controller'; }
 
-has 'dataset' => (
-    is => 'rw',
-    isa => 'Bio::Otter::SpeciesDat::DataSet',
-    );
-
 =head1 NAME
 
 PipeMon::Controller::Species - Catalyst Controller
@@ -35,7 +30,7 @@ sub base :Chained('/') :PathPart('') :CaptureArgs(1) {
     # Store the ResultSet in stash so it's available for other methods
     $c->stash(species => $species);
 
-    my $ds = $self->dataset($c->model('Otter::SpeciesDat')->dataset($species));
+    my $ds = $c->model('Otter::SpeciesDat')->dataset($species);
     unless ($ds) {
         $c->response->status(404);
         $c->response->body("No such species '$species'");
