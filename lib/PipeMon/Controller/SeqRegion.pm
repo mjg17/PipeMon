@@ -133,6 +133,12 @@ sub seq_region :Chained('base') :PathPart('seq_region/name') :Args() {
         $c->response->body("Must supply at least a seq_region name");
         $c->detach;
     }
+
+    if ($sr_name =~ ':') {
+        my @coords;
+       ($cs_name, $cs_ver, $sr_name, @coords) = split(':', $sr_name);
+    }
+
     my %search = ('me.name' => $sr_name);
 
     if ($cs_name) {
