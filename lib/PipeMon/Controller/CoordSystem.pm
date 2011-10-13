@@ -87,16 +87,14 @@ sub coord_system :Chained('base') :PathPart('coord_system/name') :Args() {
 sub search :Private {
     my ( $self, $c, $name, $version ) = @_;
 
-    my %search = (
-        name => $name,
-        );
+    my $coord_system = $c->stash->{coord_system_rs}->by_name($name, $version);
 
-    if ($version) {
-        $search{version} = $version;
-    } else {
-        $search{attrib} = { like => "%default_version%" };
+    unless ($coord_system) {
+        $version ||= '<em>default</em>';
+        $c->response->status(404);
+        $c->response->body("No such coord_system '$name:$version'");
+        $c->detach;
     }
-    my $coord_system = $c->stash->{coord_system_rs}->single(\%search);
 
     $c->stash( coord_system => $coord_system );
 }
