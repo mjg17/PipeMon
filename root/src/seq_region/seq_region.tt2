@@ -11,6 +11,14 @@
   [% END -%]
  </dd>
 [% END %]
+[% IF seq_region.cs_name == 'contig' %]
+ <dt>input_id</dt>
+ <dd>
+  <a href="[% c.uri_for_action('/inputid/input_id', [species, db_type], seq_region.input_id_name) | html %]">
+   [% seq_region.input_id_name %]
+  </a>
+ </dd>
+[% END %]
 </dl>
 
 <h3>Attributes</h3>
