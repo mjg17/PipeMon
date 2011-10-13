@@ -9,7 +9,7 @@
 [%- jc = analysis.job_count -%]
 [%  IF jc                   -%]
  <dt>
-  <a href="[% c.uri_for_action('/job/jobs', [species], { analysis_id => analysis.analysis_id }) %]">Jobs</a>
+  <a href="[% c.uri_for_action('/job/jobs', [species, db_type], { analysis_id => analysis.analysis_id }) %]">Jobs</a>
  </dt>
 [%  ELSE                    -%]
  <dt>Jobs</dt>
