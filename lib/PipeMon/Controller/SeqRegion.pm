@@ -134,6 +134,17 @@ sub seq_region :Chained('base') :PathPart('seq_region/name') :Args() {
         $c->detach;
     }
 
+    $c->forward('search_by_name');
+    $c->detach( 'display' );
+}
+
+=head2 search_by_name
+
+=cut
+
+sub search_by_name :Private {
+    my ( $self, $c, $sr_name, $cs_name, $cs_ver ) = @_;
+
     if ($sr_name =~ ':') {
         my @coords;
        ($cs_name, $cs_ver, $sr_name, @coords) = split(':', $sr_name);
@@ -146,7 +157,9 @@ sub seq_region :Chained('base') :PathPart('seq_region/name') :Args() {
         $search{'me.coord_system_id'} = $c->stash->{coord_system}->coord_system_id;
     }
 
-    my $resultset = $c->stash->{seq_region_rs};
+    # Not chained to base so cannot count on its setup
+    my $resultset = $c->stash->{db_model}->resultset('SeqRegion');
+
     my ($seq_region, $not_unique) = $resultset->search(\%search);
 
     unless ($seq_region) {
@@ -162,7 +175,6 @@ sub seq_region :Chained('base') :PathPart('seq_region/name') :Args() {
     }
 
     $c->stash(seq_region => $seq_region);
-    $c->detach( 'display' );
 }
 
 =head2 display
