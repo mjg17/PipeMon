@@ -13,7 +13,7 @@
 [% FOREACH sr IN seq_sets -%]
   <tr>
     <td>
-     <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sr.seq_region_id) %]">
+     <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], sr.seq_region_id) %]">
       [% sr.seq_region_id %]</a>
     </td>
     <td>[% sr.name %]</td>

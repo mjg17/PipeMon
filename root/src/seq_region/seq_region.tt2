@@ -1,4 +1,4 @@
-[% meta.title = species_db_title(seq_region.cs_name _ " " _ seq_region.name) -%]
+[% meta.title = species_db_title(seq_region.display_name) -%]
 
 <dl class="seq_region">
 [% FOREACH key IN sr_keys -%]
@@ -9,6 +9,14 @@
   [% ELSE -%]
    <em>null</em>
   [% END -%]
+ </dd>
+[% END %]
+[% IF seq_region.cs_name == 'contig' %]
+ <dt>input_id</dt>
+ <dd>
+  <a href="[% c.uri_for_action('/inputid/input_id', [species, db_type], seq_region.input_id_name) | html %]">
+   [% seq_region.input_id_name %]
+  </a>
  </dd>
 [% END %]
 </dl>
@@ -43,7 +51,7 @@
 [%   WHILE (m = m_type.value.next) -%]
  <tr>
   <td>
-   <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], m.seq_region_id) %]">
+   <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], m.seq_region_id) %]">
     [% m.seq_region_id %]
    </a>
   </td>
@@ -83,7 +91,7 @@
 [%  IF (sole_comp) -%]
   <td>[% ct.get_column('count') %]</td>
   <td>
-   <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sole_comp.seq_region_id) %]">
+   <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], sole_comp.seq_region_id) %]">
     [% sole_comp.name %]
    </a>
   </td>
@@ -115,7 +123,7 @@
   <td>[% at.get_column('count') %]</td>
 [%  IF (sole_asm) -%]
   <td>
-   <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sole_asm.seq_region_id) %]">
+   <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], sole_asm.seq_region_id) %]">
     [% sole_asm.name %]
    </a>
   </td>

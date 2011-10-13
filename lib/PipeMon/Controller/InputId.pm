@@ -62,6 +62,9 @@ sub input_id :Chained('base') :PathPart('input_id') :Args(1) {
         $c->detach;
     }
 
+    # Forward to seqregion for corresponding seq_region
+    $c->forward('/seqregion/search_by_name', [ $key ]);
+
     my $jobs     = $input_id->jobs_by_input_id;
     my $analyses = $input_id->analyses_by_input_id;
 
