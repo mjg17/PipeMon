@@ -17,17 +17,6 @@ Catalyst Controller.
 =cut
 
 
-=head2 index
-
-=cut
-
-sub index :Path :Args(0) {
-    my ( $self, $c ) = @_;
-
-    $c->response->body('Matched PipeMon::Controller::PipeQueue in PipeQueue.');
-}
-
-
 =head2 summary
 
 =cut
