@@ -23,9 +23,10 @@ Just gets us chained to the right place with the right pathpart initially
 
 =cut
 
-sub base :Chained('/species/base') :PathPart('') :CaptureArgs(0) {
+sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
-    $c->stash( input_id_analysis_rs => $c->model('PipeForSpecies::InputIdAnalysis') );
+    my $model = $c->stash->{db_model};
+    $c->stash( input_id_analysis_rs => $model->resultset('InputIdAnalysis') );
 }
 
 =head2 input_id
@@ -60,6 +61,9 @@ sub input_id :Chained('base') :PathPart('input_id') :Args(1) {
         $c->response->body("No such input_id '$key'");
         $c->detach;
     }
+
+    # Forward to seqregion for corresponding seq_region
+    $c->forward('/seqregion/search_by_name', [ $key ]);
 
     my $jobs     = $input_id->jobs_by_input_id;
     my $analyses = $input_id->analyses_by_input_id;

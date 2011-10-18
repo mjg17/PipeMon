@@ -6,5 +6,6 @@ use Test::More;
 use Catalyst::Test 'PipeMon';
 use PipeMon::Controller::Species;
 
-ok( request('/species')->is_success, 'Request should succeed' );
+ok( request('/human/index')->is_success, 'Request should succeed' );
+ok( request('/mouse/index')->is_success, 'Request should succeed' );
 done_testing();

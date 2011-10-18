@@ -18,25 +18,25 @@
   </dd>
   <dt>jobs</dt>
   <dd>
-    <a class="jobs" href="[% c.uri_for_action('/job/jobs', [species]) %]">
+    <a class="jobs" href="[% c.uri_for_action('/job/jobs', [species, 'pipe']) %]">
       jobs for <em>[% species %]</em>
     </a>
   </dd>
   <dt>job summary</dt>
   <dd>
-    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species]) %]">
+    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species, 'pipe']) %]">
       job summary for <em>[% species %]</em>
     </a>
   </dd>
   <dt>job summary by logic_name</dt>
   <dd>
-    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species], 'logic_name') %]">
+    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species, 'pipe'], 'logic_name') %]">
       job summary for <em>[% species %]</em> by logic_name
     </a>
   </dd>
   <dt>job summary by status</dt>
   <dd>
-    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species], 'status') %]">
+    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species, 'pipe'], 'status') %]">
       job summary for <em>[% species %]</em> by job status
     </a>
   </dd>
@@ -50,6 +50,12 @@
   <dd>
     <a class="seq_sets" href="[% c.uri_for_action('/seqregion/seq_sets', [species, 'loutre']) %]">
       sequence sets for <em>[% species %]</em>
+    </a>
+  </dd>
+  <dt>analyses</dt>
+  <dd>
+    <a class="analyses" href="[% c.uri_for_action('/analysis/analyses', [species, 'loutre']) %]">
+      analyses for <em>[% species %]</em>
     </a>
   </dd>
 </dl>

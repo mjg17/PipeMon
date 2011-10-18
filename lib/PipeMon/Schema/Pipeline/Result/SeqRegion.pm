@@ -162,6 +162,28 @@ sub hidden {
     return $self->get_attrib_val_by_code('hidden');
 }
 
+sub display_name {
+    my ($self) = @_;
+    return join(':',
+                $self->cs_name,
+                $self->cs_version || '',
+                $self->name
+        );
+}
+
+# May not be general
+#
+sub input_id_name {
+    my ($self) = @_;
+    my ($start, $end) = $self->name =~ /.+\.(\d+)\.(\d+)$/;
+    return join(':',
+                $self->display_name,
+                $start,
+                $end,
+                1,
+        );
+}
+
 sub n_all_components {
     my ($self) = @_;
     return $self->all_components->count;

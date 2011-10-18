@@ -1,0 +1,8 @@
+[% meta.title = species_db_title('coord system ' _ coord_system.coord_system_id) -%]
+
+<dl class="coord_system">
+[% FOREACH key IN keys -%]
+ <dt>[% key %]</dt>
+ <dd>[% coord_system.$key || '&nbsp;' %]</dd>
+[% END %]
+</dl>

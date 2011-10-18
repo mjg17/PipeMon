@@ -3,6 +3,9 @@ use warnings;
 use Test::More;
 use Test::More;
 
-BEGIN { use_ok 'PipeMon::View::HTML' }
+BEGIN {
+    use_ok('PipeMon');
+    use_ok('PipeMon::View::HTML');
+}
 
 done_testing();

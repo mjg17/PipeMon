@@ -70,9 +70,10 @@ Just gets us chained to the right place with the right pathpart initially
 
 =cut
 
-sub base :Chained('/species/base') :PathPart('') :CaptureArgs(0) {
+sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
-    $c->stash( job_rs => $c->model('PipeForSpecies::Job') );
+    my $model = $c->stash->{db_model};
+    $c->stash( job_rs => $model->resultset('Job') );
 }
 
 =head2 search
@@ -122,24 +123,21 @@ sub search :Chained('base') :PathPart('') :CaptureArgs(0) {
 
 =cut
 
-sub jobs :Chained('search') :PathPart('jobs') :Args(0) {
+sub jobs :Chained('search') :PathPart('jobs') :Args(0) :MyAction('Paged') {
     my ( $self, $c ) = @_;
-
-    my $page  = $c->request->parameters->{page}  || 1;
-    my $limit = $c->request->parameters->{limit} || 20; # config?
 
     my %opts = (
         order_by => 'job_id',
         prefetch => [ qw/analysis/ ],
-        page     => $page,
-        rows     => $limit,
         );
 
     my $jobs  = $c->stash->{search_rs}->search( undef, \%opts );
 
     $c->stash(
         jobs     => $jobs,
-        pager    => $jobs->pager,
+
+        paged_rs_key => 'jobs',
+
         template => 'job/jobs.tt2',
         );
 }

@@ -1,0 +1,24 @@
+[% meta.title = species_db_title('coord systems') -%]
+
+<table>
+  <tr>
+[%   FOREACH key IN keys -%]
+    <th>[% key %]</th>
+[%   END -%]
+  </tr>
+[% FOREACH cs IN coord_systems -%]
+  <tr>
+[%   FOREACH key IN keys -%]
+[%     IF key == 'coord_system_id' -%]
+    <td>
+      <a href="[% c.uri_for_action('/coordsystem/coord_system_id', [species, db_type], cs.$key) %]">
+        [% cs.$key %]
+      </a>
+    </td>
+[%     ELSE -%]
+    <td>[% cs.$key %]</td>
+[%     END -%]
+[%   END -%]
+  </tr>
+[% END -%]
+</table>
