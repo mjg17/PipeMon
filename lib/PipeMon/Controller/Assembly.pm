@@ -136,7 +136,7 @@ sub assemblies :Chained('base') :PathPart('assemblies') :Args(2) {
             'assembly.coord_system_id' => $asm_cs_id,
         },
         {
-            prefetch => [ 'assembly', 'component' ],
+            prefetch => [ { 'assembly' => 'coord_system'}, 'component' ],
             order_by => 'asm_start',
         }
         );
