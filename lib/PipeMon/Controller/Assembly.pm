@@ -123,21 +123,28 @@ sub mapping :Chained('base') :PathPart('mapping') :Args(2) :MyAction('Paged') {
 
 =cut
 
-sub assemblies :Chained('base') :PathPart('assemblies') :Args(2) {
+sub assemblies :Chained('base') :PathPart('assemblies') :Args() {
     my ( $self, $c, $cmp_sr_id, $asm_cs_id ) = @_;
+
+    unless ($cmp_sr_id) {
+        $c->response->status(400);
+        $c->response->body("Must supply at least a cmp_seq_region_id");
+        $c->detach;
+    }
 
     # Check the params and get the related objects
     $c->forward('/seqregion/by_id',   [ $cmp_sr_id ]);
-    $c->forward('/coordsystem/by_id', [ $asm_cs_id ]);
+    $c->forward('/coordsystem/by_id', [ $asm_cs_id ]) if $asm_cs_id;
+
+    my %search;
+    $search{'cmp_seq_region_id'       } = $cmp_sr_id;
+    $search{'assembly.coord_system_id'} = $asm_cs_id if $asm_cs_id;
 
     my $asm_rs = $c->stash->{assembly_rs}->search(
-        {
-            'cmp_seq_region_id'        => $cmp_sr_id,
-            'assembly.coord_system_id' => $asm_cs_id,
-        },
+        \%search,
         {
             prefetch => [ { 'assembly' => 'coord_system'}, 'component' ],
-            order_by => 'asm_start',
+            order_by => 'assembly.name',
         }
         );
 
