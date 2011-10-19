@@ -41,8 +41,20 @@ Just gets us chained to the right place with the right pathpart initially
 
 sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
+}
+
+=head2 resultset
+
+Get the right resultset
+
+=cut
+
+sub resultset :Private {
+    my ( $self, $c ) = @_;
     my $model = $c->stash->{db_model};
-    $c->stash( coord_system_rs => $model->resultset('CoordSystem') );
+    my $resultset = $model->resultset('CoordSystem');
+    $c->stash( coord_system_rs => $resultset ); # NEEDED ?
+    return $resultset;
 }
 
 =head2 coord_systems
@@ -52,7 +64,7 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
 sub coord_systems :Chained('base') :PathPart('coord_systems') :Args(0) {
     my ( $self, $c ) = @_;
 
-    my $resultset = $c->stash->{coord_system_rs};
+    my $resultset = $c->forward('resultset');
 
     $c->stash( coord_systems => [$resultset->all],
                keys          => $self->coord_system_keys,
@@ -67,7 +79,27 @@ sub coord_systems :Chained('base') :PathPart('coord_systems') :Args(0) {
 sub coord_system_id :Chained('base') :PathPart('coord_system/id') :Args(1) {
     my ( $self, $c, $id ) = @_;
 
-    my $coord_system = $c->stash->{coord_system_rs}->find($id);
+    $c->forward( 'by_id' );
+    $c->detach(  'display' );
+}
+
+=head2 by_id
+
+=cut
+
+sub by_id :Private {
+    my ( $self, $c, $id ) = @_;
+
+    unless ($id =~ /^\d+$/) {
+        # Bad format
+        $c->response->status(400);
+        $c->response->body("'$id' doesn't look like a coord_system_id");
+        $c->detach;
+    }
+
+    my $resultset = $c->forward('resultset');
+    my $coord_system = $resultset->find($id);
+
     unless ($coord_system) {
         $c->response->status(404);
         $c->response->body("No such coord_system_id '$id'");
@@ -75,7 +107,6 @@ sub coord_system_id :Chained('base') :PathPart('coord_system/id') :Args(1) {
     }
 
     $c->stash( coord_system => $coord_system );
-    $c->detach( 'display' );
 }
 
 =head2 coord_system
