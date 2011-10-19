@@ -119,6 +119,34 @@ sub mapping :Chained('base') :PathPart('mapping') :Args(2) :MyAction('Paged') {
         );
 }
 
+=head2 assemblies
+
+=cut
+
+sub assemblies :Chained('base') :PathPart('assemblies') :Args(2) {
+    my ( $self, $c, $cmp_sr_id, $asm_cs_id ) = @_;
+
+    # Check the params and get the related objects
+    $c->forward('/seqregion/by_id',   [ $cmp_sr_id ]);
+    $c->forward('/coordsystem/by_id', [ $asm_cs_id ]);
+
+    my $asm_rs = $c->stash->{assembly_rs}->search(
+        {
+            'cmp_seq_region_id'        => $cmp_sr_id,
+            'assembly.coord_system_id' => $asm_cs_id,
+        },
+        {
+            prefetch => [ 'assembly', 'component' ],
+            order_by => 'asm_start',
+        }
+        );
+
+    $c->stash(
+        asm_rs => $asm_rs,
+        template => 'assembly/assemblies.tt2',
+        );
+}
+
 =head1 AUTHOR
 
 Michael Gray

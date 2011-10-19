@@ -134,6 +134,14 @@
     <em>browse assembly</em>
    </a>
   </td>
+[%  ELSE %]
+  <td>&nbsp;</td>
+  <td>
+   <a href="[% c.uri_for_action('/assembly/assemblies', [species, db_type],
+                                seq_region.seq_region_id, at.coord_system_id) %]">
+    <em>show assemblies</em>
+   </a>
+  </td>
 [%  END %]
  </tr>
 [% END %]
