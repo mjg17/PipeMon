@@ -41,12 +41,22 @@ Catalyst Controller.
 
 =head2 base
 
-Just gets us chained to the right place with the right pathpart initially,
-and sets up prefetch for searches.
+Just gets us chained to the right place with the right pathpart initially.
+Can replumb the entire controller if necessary.
 
 =cut
 
 sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
+    my ( $self, $c ) = @_;
+}
+
+=head2 search_rs
+
+Sets up prefetch for searches and stashes resultset.
+
+=cut
+
+sub search_rs :Private {
     my ( $self, $c ) = @_;
     my $model = $c->stash->{db_model};
 
@@ -59,6 +69,7 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
         }
         );
     $c->stash( seq_region_rs => $resultset );
+    return $resultset;
 }
 
 =head2 seq_sets
@@ -68,7 +79,8 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
 sub seq_sets :Chained('base') :PathPart('seq_sets') :Args(0) {
     my ( $self, $c ) = @_;
 
-    my $resultset = $c->stash->{seq_region_rs};
+    my $resultset = $c->forward('search_rs');
+
     my @seq_sets  = sort seq_set_sort $resultset->search(
         {
             'coord_system.name' => 'chromosome',
@@ -100,7 +112,16 @@ sub seq_set_sort {
 sub seq_region_id :Chained('base') :PathPart('seq_region/id') :Args(1) {
     my ( $self, $c, $key ) = @_;
 
-    my $resultset = $c->stash->{seq_region_rs};
+    $c->forward( 'by_id' );
+    $c->detach(  'display' );
+}
+
+=head2 by_id
+
+=cut
+
+sub by_id :Private {
+    my ( $self, $c, $key ) = @_;
 
     unless ($key =~ /^\d+$/) {
         # Bad format
@@ -109,6 +130,7 @@ sub seq_region_id :Chained('base') :PathPart('seq_region/id') :Args(1) {
         $c->detach;
     }
 
+    my $resultset = $c->forward('search_rs');
     my $seq_region = $resultset->find($key);
 
     unless ($seq_region) {
@@ -118,7 +140,6 @@ sub seq_region_id :Chained('base') :PathPart('seq_region/id') :Args(1) {
     }
 
     $c->stash(seq_region => $seq_region);
-    $c->detach( 'display' );
 }
 
 =head2 seq_region 
@@ -157,9 +178,7 @@ sub search_by_name :Private {
         $search{'me.coord_system_id'} = $c->stash->{coord_system}->coord_system_id;
     }
 
-    # Not chained to base so cannot count on its setup
-    my $resultset = $c->stash->{db_model}->resultset('SeqRegion');
-
+    my $resultset = $c->forward('search_rs');
     my ($seq_region, $not_unique) = $resultset->search(\%search);
 
     unless ($seq_region) {
