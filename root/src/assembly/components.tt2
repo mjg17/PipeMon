@@ -16,6 +16,13 @@
    <th>Orientation</th>
   </tr>
 [% WHILE (cmp = cmp_rs.next) -%]
+[%   IF (prev AND (cmp.asm_start - prev.asm_end) != 1) -%]
+  <tr>
+   <td>[% prev.asm_end  + 1 %]</td>
+   <td>[% cmp.asm_start - 1 %]</td>
+   <td><em>Gap [% cmp.asm_start - prev.asm_end - 1 %]</td>
+  </tr>
+[%   END %]
   <tr [% 'class="focus"' IF cmp.cmp_seq_region_id == focus %]>
     <td align="right">[% cmp.asm_start      %]</td>
     <td align="right">[% cmp.asm_end        %]</td>
@@ -28,5 +35,6 @@
     <td align="right">[% cmp.cmp_end        %]</td>
     <td align="right">[% cmp.ori            %]</td>
   </tr>
-[% END %]
+[% prev = cmp %]
+[% END -%]
 </table>
