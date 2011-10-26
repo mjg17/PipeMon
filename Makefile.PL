@@ -18,6 +18,10 @@ requires 'namespace::autoclean';
 requires 'Config::General'; # This should reflect the config file format you've chosen
                  # See Catalyst::Plugin::ConfigLoader for supported formats
 requires 'Catalyst::Model::Adaptor';
+requires 'Catalyst::Plugin::StackTrace';
+requires 'Catalyst::View::TT';
+requires 'Catalyst::Model::Factory::PerRequest';
+
 test_requires 'Test::More' => '0.88';
 catalyst;
 
