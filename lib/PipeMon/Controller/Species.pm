@@ -56,10 +56,6 @@ sub base :Chained('/') :PathPart('') :CaptureArgs(1) {
 sub index :Chained('base') :Args(0) {
     my ( $self, $c ) = @_;
 
-    my $species = $c->stash->{species};
-    my $model = $c->model('PipeForSpecies');
-    my $n_analyses = $model->resultset('Analysis')->count;
-
     $c->stash(template => 'species.tt2');
 }
 
