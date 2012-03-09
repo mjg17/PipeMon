@@ -16,7 +16,7 @@
    <th>Orientation</th>
   </tr>
 [% WHILE (cmp = cmp_rs.next) -%]
-[%   IF (prev AND (cmp.asm_start - prev.asm_end) != 1) -%]
+[%   IF (gaps AND prev AND (cmp.asm_start - prev.asm_end) != 1) -%]
   <tr>
    <td align="right"><em>[% prev.asm_end  + 1 %]</em></td>
    <td align="right"><em>[% cmp.asm_start - 1 %]</em></td>

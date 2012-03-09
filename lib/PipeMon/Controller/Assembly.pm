@@ -61,11 +61,17 @@ sub components :Chained('base') :PathPart('components') :Args(2) :MyAction('Page
         },
         );
 
+    my $gaps_param = $c->request->parameters->{gaps},
+    my $gaps = 1;
+    $gaps = 0 if defined $gaps_param and not $gaps_param;
+
     $c->stash(
         cmp_rs             => $cmp_rs,
 
         paged_rs_key       => 'cmp_rs',
         paged_focus_column => 'cmp_seq_region_id',
+
+        gaps     => $gaps,
 
         assembly => $asm_seq_region,
         template => 'assembly/components.tt2',
