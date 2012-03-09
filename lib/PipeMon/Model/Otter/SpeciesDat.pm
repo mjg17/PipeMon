@@ -6,7 +6,7 @@ extends 'Catalyst::Model::Factory::PerRequest';
 
 __PACKAGE__->config(
     class => 'Bio::Otter::SpeciesDat',
-    args  => { species_file => '/nfs/WWWdev/SANGER_docs/data/otter/57/species.dat' },
+    args  => { species_file => '/nfs/WWWdev/SANGER_docs/data/otter/63/species.dat' },
     );
 
 sub mangle_arguments {
