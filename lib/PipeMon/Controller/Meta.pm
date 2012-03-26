@@ -23,17 +23,19 @@ Just gets us chained to the right place with the right pathpart initially
 
 =cut
 
-sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
+sub base :Chained('/loutreorpipe/base') :PathPart('meta') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
     my $model = $c->stash->{db_model};
     $c->stash( meta_rs => $model->resultset('Meta') );
 }
 
-=head2 all
+=head2 sorted
+
+Apply a standard sort order
 
 =cut
 
-sub all :Chained('base') :PathPart('all') :Args(0) {
+sub sorted :Chained('base') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
 
     my $resultset = $c->stash->{meta_rs};
@@ -41,9 +43,37 @@ sub all :Chained('base') :PathPart('all') :Args(0) {
         undef,
         { order_by => [ qw(species_id meta_key meta_value) ] },
         );
+    $c->stash( sorted_rs => $sorted );
+}
 
+=head2 all
+
+=cut
+
+sub all :Chained('sorted') :PathPart('all') :Args(0) {
+    my ( $self, $c ) = @_;
+    my $sorted = $c->stash->{sorted_rs};
     $c->stash( meta_t   => [$sorted->all],
                template => 'meta/all.tt2',
+               title    => '[all]',
+        );
+}
+
+=head2 assembly
+
+=cut
+
+sub assembly :Chained('sorted') :PathPart('assembly') :Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $sorted = $c->stash->{sorted_rs};
+    my $sifted = $sorted->search(
+        { meta_key => { like => 'assembly.%' } },
+        );
+
+    $c->stash( meta_t   => [$sifted->all],
+               template => 'meta/all.tt2',
+               title    => '[assembly.*]',
         );
 }
 

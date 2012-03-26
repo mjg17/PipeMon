@@ -1,4 +1,4 @@
-[% meta.title = species_db_title('meta') -%]
+[% meta.title = species_db_title("meta $title") -%]
 
 <table>
   <tr>
