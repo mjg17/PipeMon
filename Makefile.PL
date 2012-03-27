@@ -21,6 +21,7 @@ requires 'Catalyst::Model::Adaptor';
 requires 'Catalyst::Plugin::StackTrace';
 requires 'Catalyst::View::TT';
 requires 'Catalyst::Model::Factory::PerRequest';
+requires 'Readonly';
 
 test_requires 'Test::More' => '0.88';
 catalyst;
