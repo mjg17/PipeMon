@@ -2,7 +2,7 @@ package PipeMon::Controller::LoutreOrPipe;
 use Moose;
 use namespace::autoclean;
 
-use Switch;
+use feature 'switch';
 
 BEGIN {extends 'Catalyst::Controller'; }
 
@@ -29,13 +29,13 @@ sub base :Chained('/species/base') :PathPart('') :CaptureArgs(1) {
 
     my $model;
 
-    switch ($db_type) {
+    given ($db_type) {
 
-        case 'l'      { $model = 'LoutreForSpecies'; $db_type = 'loutre'; }
-        case 'loutre' { $model = 'LoutreForSpecies'; }
+        when ('l')      { $model = 'LoutreForSpecies'; $db_type = 'loutre'; }
+        when ('loutre') { $model = 'LoutreForSpecies'; }
 
-        case 'p'      { $model = 'PipeForSpecies';   $db_type = 'pipe'; }
-        case 'pipe'   { $model = 'PipeForSpecies'; }
+        when ('p')      { $model = 'PipeForSpecies';   $db_type = 'pipe'; }
+        when ('pipe')   { $model = 'PipeForSpecies'; }
         
     }
 

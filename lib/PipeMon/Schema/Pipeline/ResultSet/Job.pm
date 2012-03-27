@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base 'DBIx::Class::ResultSet';
 
-use Switch;
+use feature 'switch';
 
 =head2 summary
 
@@ -25,24 +25,24 @@ sub summary {
 
         my ($group_by, $group_prefix);
 
-        switch ($g) {
+        given ($g) {
 
-            case 'analysis_id' {
+            when ('analysis_id') {
                 $group_prefix = 'me';
             }
 
-            case 'status' {
+            when ('status') {
                 $group_prefix = 'job_status';
                 push @join, 'job_status';
                 $search{is_current} = 'y';
             }
 
-            case 'logic_name' {
+            when ('logic_name') {
                 $group_prefix = 'analysis';
                 push @join, 'analysis';
             }
 
-            else {
+            default {
                 die "Summary by '$g' not supported";
             }
         }
