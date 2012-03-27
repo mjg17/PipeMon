@@ -40,6 +40,16 @@
       job summary for <em>[% species %]</em> by job status
     </a>
   </dd>
+  <dt>meta</dt>
+  <dd>
+    <a class="meta" href="[% c.uri_for_action('/meta/all', [species, 'pipe']) %]">
+      meta for <em>[% species %]</em>
+    </a>
+    <br/>
+    <a class="meta" href="[% c.uri_for_action('/meta/assembly', [species, 'pipe']) %]">
+      assembly.* for <em>[% species %]</em>
+    </a>
+  </dd>
 </dl>
 
 <h2>
@@ -56,6 +66,16 @@
   <dd>
     <a class="analyses" href="[% c.uri_for_action('/analysis/analyses', [species, 'loutre']) %]">
       analyses for <em>[% species %]</em>
+    </a>
+  </dd>
+  <dt>meta</dt>
+  <dd>
+    <a class="meta" href="[% c.uri_for_action('/meta/all', [species, 'loutre']) %]">
+      meta for <em>[% species %]</em>
+    </a>
+    <br/>
+    <a class="meta" href="[% c.uri_for_action('/meta/assembly', [species, 'loutre']) %]">
+      assembly.* for <em>[% species %]</em>
     </a>
   </dd>
 </dl>

@@ -1,0 +1,18 @@
+[% meta.title = species_db_title("meta $title") -%]
+
+<table>
+  <tr>
+   <th>meta_id</th>
+   <th>species_id</th>
+   <th>meta_key</th>
+   <th>meta_value</th>
+  </tr>
+[% FOREACH m IN meta_t -%]
+  <tr>
+    <td>[% m.meta_id %]</td>
+    <td>[% m.species_id.defined ? m.species_id : '&lt;null&gt;' %]</td>
+    <td>[% m.meta_key %]</td>
+    <td>[% m.meta_value %]</td>
+  </tr>
+[% END -%]
+</table>
