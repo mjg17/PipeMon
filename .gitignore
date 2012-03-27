@@ -3,3 +3,4 @@ META.yml
 Makefile
 blib/
 inc/
+var/
