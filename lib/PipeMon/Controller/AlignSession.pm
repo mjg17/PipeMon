@@ -17,14 +17,31 @@ Catalyst Controller.
 =cut
 
 
-=head2 index
+=head2 base
+
+Just gets us chained to the right place with the right pathpart initially
 
 =cut
 
-sub index :Path :Args(0) {
+sub base :Chained('/loutreorpipe/base') :PathPart('align') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
+    my $model = $c->stash->{db_model};
+    $c->stash( align_session_rs => $model->resultset('AlignSession') );
+}
 
-    $c->response->body('Matched PipeMon::Controller::AlignSession in AlignSession.');
+=head2 sessions
+
+=cut
+
+sub sessions :Chained('base') :PathPart('sessions') :Args(0) {
+    my ( $self, $c ) = @_;
+    my $results = $c->stash->{align_session_rs}->search(
+        undef,
+        { prefetch => [ qw(ref_seq_region alt_seq_region) ] },
+        );
+    $c->stash( sessions => [$results->all],
+               template => 'align/sessions.tt2',
+        );
 }
 
 
