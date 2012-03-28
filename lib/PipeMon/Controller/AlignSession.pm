@@ -44,23 +44,52 @@ sub sessions :Chained('base') :PathPart('sessions') :Args(0) {
         );
 }
 
-=head2 stages
+=head2 session
+
+Retrieves a single session for further use.
 
 =cut
 
-sub stages :Chained('base') :PathPart('stages') :Args(1) {
+sub session :Chained('base') :PathPart('') :CaptureArgs(1) {
     my ( $self, $c, $key ) = @_;
     my $session = $c->stash->{align_session_rs}->find(
         $key,
         { prefetch => [ qw(ref_seq_region alt_seq_region ) ] },
         );
+    $c->stash( session => $session );
+}
+
+=head2 stages
+
+=cut
+
+sub stages :Chained('session') :PathPart('stages') :Args(0) {
+    my ( $self, $c ) = @_;
+    my $session = $c->stash->{session};
     my $stages = $session->align_stages->search(
         undef,
-        { order_by => 'align_stage_id' },
+        { order_by => 'stage' },
         );
     $c->stash( session  => $session,
                stages   => [ $stages->all ],
                template => 'align/stages.tt2',
+        );
+}
+
+=head2 tmp_aligns
+
+=cut
+
+sub tmp_aligns :Chained('session') :PathPart('tmp_aligns') :Args(0) {
+    my ( $self, $c ) = @_;
+    my $session = $c->stash->{session};
+    my $tmp_aligns = $session->tmp_aligns->search(
+        { align_session_id => $session->align_session_id },
+        { order_by => 'ref_start' },
+        );
+    $c->stash( session    => $session,
+               tmp_aligns => [ $tmp_aligns->all ],
+               template   => 'align/tmp_aligns.tt2',
         );
 }
 

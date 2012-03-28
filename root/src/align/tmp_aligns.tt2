@@ -1,0 +1,36 @@
+[% meta.title = species_db_title("tmp_aligns for session $session.align_session_id") -%]
+
+[%# FIXME: copy-and-paste from stages.tt2 -%]
+<h3>
+  [% session.align_session_id %]:
+  <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], session.ref_seq_region.seq_region_id) %]">
+    [% session.ref_seq_region.name %]
+  </a>
+  =&gt;
+[%   IF session.alt_db_name -%]
+  [% session.alt_seq_region.name %] ([% session.alt_db_name %])
+[%   ELSE -%]
+  <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], session.alt_seq_region.seq_region_id) %]">
+    [% session.alt_seq_region.name %]
+  </a>
+[%   END -%]
+</h3>
+
+<table>
+  <tr>
+   <th>ID</th>
+   <th>ref_start</th>
+   <th>ref_end</th>
+   <th>alt_start</th>
+   <th>alt_end</th>
+  </tr>
+[% FOREACH t IN tmp_aligns -%]
+  <tr>
+    <td align="right">[% t.tmp_align_id %]</td>
+    <td align="right">[% t.ref_start %]</td>
+    <td align="right">[% t.ref_end %]</td>
+    <td align="right">[% t.alt_start %]</td>
+    <td align="right">[% t.alt_end %]</td>
+  </tr>
+[% END -%]
+</table>

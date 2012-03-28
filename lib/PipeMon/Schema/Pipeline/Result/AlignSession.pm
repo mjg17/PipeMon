@@ -115,4 +115,9 @@ __PACKAGE__->has_many(
     'align_session_id',
     );
 
+__PACKAGE__->has_many(
+    'tmp_aligns',
+    'PipeMon::Schema::Pipeline::Result::TmpAlign',
+    'align_session_id',
+    );
 1;

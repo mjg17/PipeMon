@@ -29,7 +29,14 @@
     <td>[% s.alt_db_name %]</td>
     <td>[% s.author %]</td>
     <td>[% s.comment %]</td>
-    <td><a href="[% c.uri_for_action('/alignsession/stages', [species, db_type], s.align_session_id) %]">stages</a></td>
+    <td>
+      <a href="[% c.uri_for_action('/alignsession/stages', [species, db_type, s.align_session_id]) %]">stages</a>
+    </td>
+    <td>
+      <a href="[% c.uri_for_action('/alignsession/tmp_aligns', [species, db_type, s.align_session_id]) %]">
+        tmp_aligns
+      </a>
+    </td>
   </tr>
 [% END -%]
 </table>
