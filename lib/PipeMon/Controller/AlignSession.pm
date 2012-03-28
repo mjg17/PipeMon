@@ -44,6 +44,25 @@ sub sessions :Chained('base') :PathPart('sessions') :Args(0) {
         );
 }
 
+=head2 stages
+
+=cut
+
+sub stages :Chained('base') :PathPart('stages') :Args(1) {
+    my ( $self, $c, $key ) = @_;
+    my $session = $c->stash->{align_session_rs}->find(
+        $key,
+        { prefetch => [ qw(ref_seq_region alt_seq_region ) ] },
+        );
+    my $stages = $session->align_stages->search(
+        undef,
+        { order_by => 'align_stage_id' },
+        );
+    $c->stash( session  => $session,
+               stages   => [ $stages->all ],
+               template => 'align/stages.tt2',
+        );
+}
 
 =head1 AUTHOR
 
