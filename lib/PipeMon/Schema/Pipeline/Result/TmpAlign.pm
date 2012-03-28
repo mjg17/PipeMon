@@ -98,6 +98,10 @@ __PACKAGE__->set_primary_key("tmp_align_id");
 # Created by DBIx::Class::Schema::Loader v0.07018 @ 2012-03-28 10:45:55
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JKlFh0uUInRpuiCs1KnhCQ
 
+__PACKAGE__->has_many(
+    'masks',
+    'PipeMon::Schema::Pipeline::Result::TmpMask',
+    'tmp_align_id',
+    );
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

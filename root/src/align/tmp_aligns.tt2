@@ -23,6 +23,15 @@
    <th>ref_end</th>
    <th>alt_start</th>
    <th>alt_end</th>
+   <th colspan="5">Masks</th>
+  </tr>
+  <tr>
+   <th colspan="5">&nbsp;</th>
+   <th>ID</th>
+   <th>ref_start</th>
+   <th>ref_end</th>
+   <th>alt_start</th>
+   <th>alt_end</th>
   </tr>
 [% FOREACH t IN tmp_aligns -%]
   <tr>
@@ -32,5 +41,19 @@
     <td align="right">[% t.alt_start %]</td>
     <td align="right">[% t.alt_end %]</td>
   </tr>
+[%   FOREACH m IN t.masks -%]
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td align="right">[% m.tmp_mask_id %]</td>
+    <td align="right">[% m.ref_mask_start %]</td>
+    <td align="right">[% m.ref_mask_end %]</td>
+    <td align="right">[% m.alt_mask_start %]</td>
+    <td align="right">[% m.alt_mask_end %]</td>
+  </tr>
+[%   END -%]
 [% END -%]
 </table>
