@@ -97,6 +97,22 @@ __PACKAGE__->set_primary_key("align_session_id");
 # Created by DBIx::Class::Schema::Loader v0.07018 @ 2012-03-28 10:45:55
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:02a5KWXH1XSNGkyiOWQPbA
 
+__PACKAGE__->belongs_to(
+    'ref_seq_region',
+    'PipeMon::Schema::Pipeline::Result::SeqRegion',
+    { 'foreign.seq_region_id' => 'self.ref_seq_region_id' },
+    );
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+__PACKAGE__->belongs_to(
+    'alt_seq_region',
+    'PipeMon::Schema::Pipeline::Result::SeqRegion',
+    { 'foreign.seq_region_id' => 'self.alt_seq_region_id' },
+    );
+
+__PACKAGE__->has_many(
+    'align_stages',
+    'PipeMon::Schema::Pipeline::Result::AlignStage',
+    'align_session_id',
+    );
+
 1;

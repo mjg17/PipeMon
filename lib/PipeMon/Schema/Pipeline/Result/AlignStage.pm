@@ -103,6 +103,10 @@ __PACKAGE__->set_primary_key("align_stage_id");
 # Created by DBIx::Class::Schema::Loader v0.07018 @ 2012-03-28 10:45:55
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6zClUeA6uywJB/0jGJOFbA
 
+__PACKAGE__->belongs_to(
+    'align_session',
+    'PipeMon::Schema::Pipeline::Result::AlignSession',
+    'align_session_id',
+    );
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;
