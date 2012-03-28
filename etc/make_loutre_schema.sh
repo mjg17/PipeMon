@@ -2,7 +2,7 @@
 
 # NB this adds loutre tables into PipeMon::Schema::Pipeline to avoid having two schemas.
 
-/software/perl-5.8.8/bin/dbicdump \
+dbicdump \
     -o dump_directory=./lib \
     -o constraint='^(align_session|align_stage|tmp_align|tmp_mask)$' \
     PipeMon::Schema::Pipeline \
