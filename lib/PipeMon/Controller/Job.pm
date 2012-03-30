@@ -123,7 +123,9 @@ sub search :Chained('base') :PathPart('') :CaptureArgs(0) {
 
 =cut
 
-sub jobs :Chained('search') :PathPart('jobs') :Args(0) :MyAction('Paged') {
+sub jobs :Chained('search') :PathPart('jobs') :Args(0)
+         :MyAction('Paged') :PagedResultSetKey('jobs')
+{
     my ( $self, $c ) = @_;
 
     my %opts = (
@@ -135,9 +137,6 @@ sub jobs :Chained('search') :PathPart('jobs') :Args(0) :MyAction('Paged') {
 
     $c->stash(
         jobs     => $jobs,
-
-        paged_rs_key => 'jobs',
-
         template => 'job/jobs.tt2',
         );
 }

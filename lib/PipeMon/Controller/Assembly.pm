@@ -33,7 +33,9 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
 
 =cut
 
-sub components :Chained('base') :PathPart('components') :Args(2) :MyAction('Paged') {
+sub components :Chained('base') :PathPart('components') :Args(2) 
+               :MyAction('Paged') :PagedResultSetKey('cmp_rs') :PagedFocusColumn('cmp_seq_region_id')
+{
     my ( $self, $c, $assembly_sr_id, $coord_system_id ) = @_;
 
     unless ($assembly_sr_id =~ /^\d+$/) {
@@ -68,9 +70,6 @@ sub components :Chained('base') :PathPart('components') :Args(2) :MyAction('Page
     $c->stash(
         cmp_rs             => $cmp_rs,
 
-        paged_rs_key       => 'cmp_rs',
-        paged_focus_column => 'cmp_seq_region_id',
-
         gaps     => $gaps,
 
         assembly => $asm_seq_region,
@@ -82,7 +81,9 @@ sub components :Chained('base') :PathPart('components') :Args(2) :MyAction('Page
 
 =cut
 
-sub mapping :Chained('base') :PathPart('mapping') :Args(2) :MyAction('Paged') {
+sub mapping :Chained('base') :PathPart('mapping') :Args(2)
+            :MyAction('Paged') :PagedResultSetKey('cmp_rs')
+{
     my ( $self, $c, $ref_sr_id, $alt_sr_id ) = @_;
 
     my %checks = ( Ref => $ref_sr_id, Alt => $alt_sr_id );
@@ -117,7 +118,6 @@ sub mapping :Chained('base') :PathPart('mapping') :Args(2) :MyAction('Paged') {
 
     $c->stash(
         cmp_rs       => $cmp_rs,
-        paged_rs_key => 'cmp_rs',
 
         ref_sr   => $seq_region{'Ref'},
         alt_sr   => $seq_region{'Alt'},

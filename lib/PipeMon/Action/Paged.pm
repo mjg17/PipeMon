@@ -4,6 +4,28 @@ use namespace::autoclean;
 
 extends 'Catalyst::Action';
 
+sub BUILD { }
+
+after BUILD => sub {
+    my $class = shift;
+    my ($args) = @_;
+
+    my $attr = $args->{attributes};
+
+    unless (exists $attr->{PagedResultSetKey}) {
+        Catalyst::Exception->throw(
+            "Action '$args->{reverse}' requires the PagedResultSetKey(<stash_key>) attribute");
+    }
+    unless ($attr->{PagedResultSetKey}->[0]) {
+        Catalyst::Exception->throw(
+            "Action '$args->{reverse}' PagedResultSetKey(<stash_key>) attribute is missing stash_key");
+    }
+    if (exists $attr->{PagedFocusColumn} and not $attr->{PagedFocusColumn}->[0]) {
+        Catalyst::Exception->throw(
+            "Action '$args->{reverse}' PagedFocusColumn(<column_name>) attribute is missing column_name");
+    }
+};
+
 after 'execute' => sub {
     my ( $self, $controller, $c ) = @_;
 
@@ -11,10 +33,10 @@ after 'execute' => sub {
     my $limit = $c->request->parameters->{limit} || 20; # config?
     my $focus = $c->request->parameters->{focus};
 
-    my $rs_key    = $c->stash->{paged_rs_key};
+    my $rs_key    = $c->action->attributes->{PagedResultSetKey}->[0];
     my $plain_rs  = $c->stash->{$rs_key};
 
-    my $focus_col = $c->stash->{paged_focus_column};
+    my $focus_col = $c->action->attributes->{PagedFocusColumn}->[0];
 
     if ($focus_col and $focus and not $page) {
 
