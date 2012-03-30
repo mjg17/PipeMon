@@ -139,6 +139,18 @@ __PACKAGE__->many_to_many(
     'assembly',
     );
     
+__PACKAGE__->has_many(
+    'dna_align_features',
+    'PipeMon::Schema::Pipeline::Result::DnaAlignFeature',
+    'seq_region_id',
+    );
+
+__PACKAGE__->has_many(
+    'protein_align_features',
+    'PipeMon::Schema::Pipeline::Result::ProteinAlignFeature',
+    'seq_region_id',
+    );
+
 sub get_attrib_val_by_code {
     my ($self, $code) = @_;
 

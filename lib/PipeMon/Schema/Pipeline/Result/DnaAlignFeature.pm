@@ -214,5 +214,16 @@ __PACKAGE__->set_primary_key("dna_align_feature_id");
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vSZR9LeMs1k5RGDlvXemJw
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+__PACKAGE__->belongs_to(
+    'analysis',
+    'PipeMon::Schema::Pipeline::Result::Analysis',
+    'analysis_id',
+    );
+
+__PACKAGE__->belongs_to(
+    'seq_region',
+    'PipeMon::Schema::Pipeline::Result::SeqRegion',
+    'seq_region_id',
+    );
+
 1;

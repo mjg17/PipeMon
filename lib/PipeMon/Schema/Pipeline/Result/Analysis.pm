@@ -236,4 +236,16 @@ sub job_count {
     return $self->jobs->count;
 }
 
+__PACKAGE__->has_many(
+    'dna_align_features',
+    'PipeMon::Schema::Pipeline::Result::DnaAlignFeature',
+    'analysis_id',
+    );
+
+__PACKAGE__->has_many(
+    'protein_align_features',
+    'PipeMon::Schema::Pipeline::Result::ProteinAlignFeature',
+    'analysis_id',
+    );
+
 1;
