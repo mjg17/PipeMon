@@ -80,7 +80,7 @@
   </dd>
   <dt>align_sessions</dt>
   <dd>
-    <a class="align_sessions" href="[% c.uri_for_action('/alignsession/sessions', [species, 'loutre']) %]">
+    <a class="align_sessions" href="[% c.uri_for_action('/assemblymapping/sessions', [species, 'loutre']) %]">
       align_sessions for <em>[% species %]</em>
     </a>
   </dd>

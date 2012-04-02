@@ -1,6 +1,6 @@
 [% meta.title = species_db_title("align_stages for session $session.align_session_id") -%]
 
-[% INCLUDE 'align/session_details.tt2' -%]
+[% INCLUDE 'assembly_mapping/session_details.tt2' -%]
 
 <table>
   <tr>
@@ -14,7 +14,8 @@
     <td[% ' align="right"' IF key.match('id$') %]>[% s.$key %]</td>
 [%   END -%]
     <td>
-      <a href="[% c.uri_for_action('/alignsession/stage', [species, db_type, session.align_session_id, s.align_stage_id]) %]">
+      <a href="[% c.uri_for_action('/assemblymapping/stage',
+                                   [species, db_type, session.align_session_id, s.align_stage_id]) %]">
         details
       </a>
     </td>

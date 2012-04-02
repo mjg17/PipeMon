@@ -1,4 +1,4 @@
-package PipeMon::Controller::AlignSession;
+package PipeMon::Controller::AssemblyMapping;
 use Moose;
 use namespace::autoclean;
 
@@ -20,7 +20,7 @@ __PACKAGE__->config(
 
 =head1 NAME
 
-PipeMon::Controller::AlignSession - Catalyst Controller
+PipeMon::Controller::AssemblyMapping - Catalyst Controller
 
 =head1 DESCRIPTION
 
@@ -37,7 +37,7 @@ Just gets us chained to the right place with the right pathpart initially
 
 =cut
 
-sub base :Chained('/loutreorpipe/loutre_only') :PathPart('align') :CaptureArgs(0) {
+sub base :Chained('/loutreorpipe/loutre_only') :PathPart('assembly_mapping') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
     my $model = $c->stash->{db_model};
     $c->stash( align_session_rs => $model->resultset('AlignSession') );
@@ -54,7 +54,7 @@ sub sessions :Chained('base') :PathPart('sessions') :Args(0) {
         { prefetch => [ qw(ref_seq_region alt_seq_region) ] },
         );
     $c->stash( sessions => [$results->all],
-               template => 'align/sessions.tt2',
+               template => 'assembly_mapping/sessions.tt2',
         );
 }
 
@@ -101,7 +101,7 @@ sub stages :Chained('session') :PathPart('stages') :Args(0) {
         );
     $c->stash( session  => $session,
                stages   => [ $stages->all ],
-               template => 'align/stages.tt2',
+               template => 'assembly_mapping/stages.tt2',
                align_stage_keys => $self->align_stage_keys,
         );
 }
@@ -131,7 +131,7 @@ sub stage :Chained('session') :PathPart('stage') :Args(1) {
     }
 
     $c->stash( stage            => $stage,
-               template         => 'align/stage.tt2',
+               template         => 'assembly_mapping/stage.tt2',
                align_stage_keys => $self->align_stage_keys,
         );
 }
@@ -149,7 +149,7 @@ sub tmp_aligns :Chained('session') :PathPart('tmp_aligns') :Args(0) {
         );
     $c->stash( session    => $session,
                tmp_aligns => [ $tmp_aligns->all ],
-               template   => 'align/tmp_aligns.tt2',
+               template   => 'assembly_mapping/tmp_aligns.tt2',
         );
 }
 
