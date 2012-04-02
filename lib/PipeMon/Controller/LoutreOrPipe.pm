@@ -20,7 +20,7 @@ Catalyst Controller.
 
 =head2 base
 
-Chain to species, then interpret one path arg to resolve loure or pipe
+Chain to species, then interpret one path arg to resolve loutre or pipe
 
 =cut
 
@@ -49,6 +49,61 @@ sub base :Chained('/species/base') :PathPart('') :CaptureArgs(1) {
     $c->stash(db_model => $c->model($model));
 
     $c->log->debug("*** DB MODEL: >$model< ***");
+}
+
+=head2 loutre_only
+
+Provide a path only to .../loutre/... but otherwise behave as base
+
+=cut
+
+sub loutre_only :Chained('/species/base') :PathPart('') :CaptureArgs(1) {
+    my ($self, $c, $db_type) = @_;
+
+    unless ($db_type eq 'loutre') {
+        $c->detach('wrong_path', [$db_type, 'loutre']);
+    }
+
+    $c->forward('base/loutre');
+}
+
+=head2 pipe_only
+
+Provide a path only to .../pipe/... but otherwise behave as base
+
+=cut
+
+sub pipe_only :Chained('/species/base') :PathPart('') :CaptureArgs(1) {
+    my ($self, $c, $db_type) = @_;
+
+    unless ($db_type eq 'pipe') {
+        $c->detach('wrong_path', [$db_type, 'pipe']);
+    }
+
+    $c->forward('base/pipe');
+}
+
+=head2 wrong_path
+
+=cut
+
+sub wrong_path :Private {
+    my ($self, $c, $supplied, $permitted) = @_;
+
+    unless ($supplied =~ /^(loutre|pipe)$/) {
+        $c->response->status(404);
+        $c->response->body("No such database type '$supplied'");
+        $c->detach;
+    }
+
+    my $try_path = $c->request->uri;
+    $try_path =~ s/$supplied/$permitted/;
+    $c->response->status(400);
+    $c->response->body(qq{
+            Only available for $permitted database<br/>
+            Try: <a href="$try_path">$try_path</a>
+            });
+    $c->detach;
 }
 
 =head1 AUTHOR

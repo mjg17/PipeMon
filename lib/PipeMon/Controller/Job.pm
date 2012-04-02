@@ -70,7 +70,7 @@ Just gets us chained to the right place with the right pathpart initially
 
 =cut
 
-sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(0) {
+sub base :Chained('/loutreorpipe/pipe_only') :PathPart('') :CaptureArgs(0) {
     my ( $self, $c ) = @_;
     my $model = $c->stash->{db_model};
     $c->stash( job_rs => $model->resultset('Job') );
