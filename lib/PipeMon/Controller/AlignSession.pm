@@ -52,10 +52,25 @@ Retrieves a single session for further use.
 
 sub session :Chained('base') :PathPart('') :CaptureArgs(1) {
     my ( $self, $c, $key ) = @_;
+
+    unless ($key =~ /^\d+$/) {
+        # Bad format
+        $c->response->status(400);
+        $c->response->body("'$key' doesn't look like an align_session_id");
+        $c->detach;
+    }
+
     my $session = $c->stash->{align_session_rs}->find(
         $key,
         { prefetch => [ qw(ref_seq_region alt_seq_region ) ] },
         );
+
+    unless ($session) {
+        $c->response->status(404);
+        $c->response->body("No such align_session '$key'");
+        $c->detach;
+    }
+
     $c->stash( session => $session );
 }
 
