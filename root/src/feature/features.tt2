@@ -1,0 +1,19 @@
+[% meta.title = species_title('features') -%]
+
+<p>Features [% pager.first %] - [% pager.last %] of [% pager.total_entries %]:</p>
+<table>
+  <tr>
+    <th>feature_id</th>
+    <th>seq_region_name</th>
+    <th>logic_name</th>
+    <th>hit_name</th>
+  </tr>
+[% WHILE (feature = features.next) -%]
+  <tr>
+    <td><a href="[%# c.uri_for_action('/feature/feature', [species, db_type], feature.$feature_id) %]">[% feature.$feature_id %]</a></td>
+    <td>[% feature.seq_region.name %]</td>
+    <td>[% feature.analysis.logic_name %]</td>
+    <td>[% feature.hit_name %]</td>
+  </tr>
+[% END -%]
+</table>
