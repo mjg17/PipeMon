@@ -1,19 +1,6 @@
 [% meta.title = species_db_title("align_stages for session $session.align_session_id") -%]
 
-<h3>
-  [% session.align_session_id %]:
-  <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], session.ref_seq_region.seq_region_id) %]">
-    [% session.ref_seq_region.name %]
-  </a>
-  =&gt;
-[%   IF session.alt_db_name -%]
-  [% session.alt_seq_region.name %] ([% session.alt_db_name %])
-[%   ELSE -%]
-  <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], session.alt_seq_region.seq_region_id) %]">
-    [% session.alt_seq_region.name %]
-  </a>
-[%   END -%]
-</h3>
+[% INCLUDE 'align/session_details.tt2' -%]
 
 <table>
   <tr>
