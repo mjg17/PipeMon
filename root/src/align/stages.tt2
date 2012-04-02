@@ -4,17 +4,20 @@
 
 <table>
   <tr>
-   <th>ID</th>
-   <th>stage</th>
-   <th>timestamp</th>
-   <th>script</th>
+[% FOREACH key IN align_stage_keys -%]
+    <th>[% key %]</th>
+[% END -%]
   </tr>
 [% FOREACH s IN stages -%]
   <tr>
-    <td>[% s.align_stage_id %]</td>
-    <td>[% s.stage %]</td>
-    <td>[% s.ts %]</td>
-    <td>[% s.script %]</td>
+[%   FOREACH key IN align_stage_keys -%]
+    <td[% ' align="right"' IF key.match('id$') %]>[% s.$key %]</td>
+[%   END -%]
+    <td>
+      <a href="[% c.uri_for_action('/alignsession/stage', [species, db_type, session.align_session_id, s.align_stage_id]) %]">
+        details
+      </a>
+    </td>
   </tr>
 [% END -%]
 </table>

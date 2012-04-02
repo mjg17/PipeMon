@@ -4,6 +4,20 @@ use namespace::autoclean;
 
 BEGIN {extends 'Catalyst::Controller'; }
 
+has 'align_stage_keys' => (
+    is  => 'ro',
+    isa => 'ArrayRef[Str]',
+    );
+
+__PACKAGE__->config(
+    align_stage_keys => [ qw(
+        align_stage_id
+        stage
+        ts
+        script
+    )],
+    );
+
 =head1 NAME
 
 PipeMon::Controller::AlignSession - Catalyst Controller
@@ -88,6 +102,37 @@ sub stages :Chained('session') :PathPart('stages') :Args(0) {
     $c->stash( session  => $session,
                stages   => [ $stages->all ],
                template => 'align/stages.tt2',
+               align_stage_keys => $self->align_stage_keys,
+        );
+}
+
+=head2 stage
+
+=cut
+
+sub stage :Chained('session') :PathPart('stage') :Args(1) {
+    my ( $self, $c, $key ) = @_;
+
+    unless ($key =~ /^\d+$/) {
+        # Bad format
+        $c->response->status(400);
+        $c->response->body("'$key' doesn't look like an align_stage_id");
+        $c->detach;
+    }
+
+    my $session = $c->stash->{session};
+    my $stage = $session->align_stages->find($key);
+
+    unless ($stage) {
+        my $session_id = $session->align_session_id;
+        $c->response->status(404);
+        $c->response->body("No such align_stage '$key' for align_session $session_id");
+        $c->detach;
+    }
+
+    $c->stash( stage            => $stage,
+               template         => 'align/stage.tt2',
+               align_stage_keys => $self->align_stage_keys,
         );
 }
 
