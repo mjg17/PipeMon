@@ -150,7 +150,7 @@ sub feature :Chained('base') :PathPart('feature') :Args(1) {
     unless ($key =~ /^\d+$/) {
         # Bad format
         $c->response->status(400);
-        $c->response->body("'$key' doesn't look like a job_id");
+        $c->response->body("'$key' doesn't look like a feature_id");
         $c->detach;
     }
 
