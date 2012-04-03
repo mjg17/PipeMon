@@ -1,4 +1,4 @@
-package PipeMon::Schema::Pipeline::ResultSet::DnaAlignFeature;
+package PipeMon::Schema::Pipeline::ResultSet::ProteinAlignFeature;
 
 use strict;
 use warnings;
