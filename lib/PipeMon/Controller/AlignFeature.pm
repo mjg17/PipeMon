@@ -92,7 +92,7 @@ sub search :Chained('base') :PathPart('') :CaptureArgs(0) {
     my %search;
     my %search_params;
     my @join;
-    foreach my $key (qw/analysis_id seq_region_id/) {
+    foreach my $key (qw/analysis_id seq_region_id hit_name/) {
         if (my $value = $c->request->parameters->{$key}) {
             $search_params{$key} = $value;
             my $search_key = 'me.' . $key;
