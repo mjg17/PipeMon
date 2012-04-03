@@ -34,7 +34,6 @@ sub base :Chained('/loutreorpipe/pipe_only') :PathPart('') :CaptureArgs(1) {
     given ($feature_type) {
         when ('dna')     { $feature_class = 'DnaAlignFeature'; }
         when ('protein') { $feature_class = 'ProteinAlignFeature'; }
-        
     }
 
     unless ($feature_class) {
@@ -103,7 +102,7 @@ sub features :Chained('search') :PathPart('features') :Args(0)
         prefetch => [ qw/analysis seq_region/ ],
         );
 
-    my $features  = $c->stash->{search_rs}->search( undef, \%opts );
+    my $features = $c->stash->{search_rs}->search( undef, \%opts );
 
     $c->stash(
         features => $features,
