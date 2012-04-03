@@ -146,3 +146,26 @@
  </tr>
 [% END %]
 </table>
+
+<h3>Features</h3>
+
+<dl>
+ <dt>DNA align</dt>
+ <dd>
+  <a href="[% c.uri_for_action('/alignfeature/feature_summary',
+                               [species, db_type, 'dna', 'logic_name'],
+                               { seq_region_id => seq_region.id }
+                               ) %]">
+   Summary by logic_name
+  </a>
+ </dd>
+ <dt>Protein align</dt>
+ <dd>
+  <a href="[% c.uri_for_action('/alignfeature/feature_summary',
+                               [species, db_type, 'protein', 'logic_name'],
+                               { seq_region_id => seq_region.id }
+                               ) %]">
+   Summary by logic_name
+  </a>
+ </dd>
+</dl>
