@@ -92,13 +92,24 @@ sub search :Chained('base') :PathPart('') :CaptureArgs(0) {
     my %search;
     my %search_params;
     my @join;
-    foreach my $key (qw/analysis_id seq_region_id hit_name/) {
+    foreach my $key (qw/analysis_id seq_region_id/) {
         if (my $value = $c->request->parameters->{$key}) {
             $search_params{$key} = $value;
             my $search_key = 'me.' . $key;
             $search{$search_key} = $value;
         }
     }
+
+    if (my $hit_name = $c->request->parameters->{hit_name}) {
+        $search_params{hit_name} = $hit_name;
+        if ($c->request->parameters->{hit_name_like}) {
+            $search_params{hit_name_like} = 1;
+            $search{'me.hit_name'} = { LIKE => "${hit_name}%" };
+        } else {
+            $search{'me.hit_name'} = $hit_name;
+        }
+    }
+
     if (my $logic_name = $c->request->parameters->{logic_name}) {
         $search_params{logic_name}     = $logic_name;
         $search{'analysis.logic_name'} = $logic_name;

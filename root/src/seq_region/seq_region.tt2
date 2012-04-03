@@ -156,8 +156,16 @@
                                [species, db_type, 'dna', 'logic_name'],
                                { seq_region_id => seq_region.id }
                                ) %]">
-   Summary by logic_name
-  </a>
+   Summary by logic_name</a>
+  <br/>
+  <form action="[% c.uri_for_action('/alignfeature/feature_summary',
+                                    [species, db_type, 'dna', 'logic_name'],
+                                    ) %]"
+        method="get">
+   Search by hit_name:                <input type="text"     name="hit_name" />
+   Use LIKE &quot<em>name</em>%&quot: <input type="checkbox" name="hit_name_like" value="1" />
+   <input type="hidden" name="seq_region_id" value="[% seq_region.id %]" />
+  </form>
  </dd>
  <dt>Protein align</dt>
  <dd>
@@ -165,7 +173,15 @@
                                [species, db_type, 'protein', 'logic_name'],
                                { seq_region_id => seq_region.id }
                                ) %]">
-   Summary by logic_name
-  </a>
+   Summary by logic_name</a>
+  <br/>
+  <form action="[% c.uri_for_action('/alignfeature/feature_summary',
+                                    [species, db_type, 'protein', 'logic_name'],
+                                    ) %]"
+        method="get">
+   Search by hit_name:                <input type="text"     name="hit_name" />
+   Use LIKE &quot<em>name</em>%&quot: <input type="checkbox" name="hit_name_like" value="1" />
+   <input type="hidden" name="seq_region_id" value="[% seq_region.id %]" />
+  </form>
  </dd>
 </dl>
