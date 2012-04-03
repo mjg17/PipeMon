@@ -140,6 +140,25 @@ sub features :Chained('search') :PathPart('features') :Args(0)
 }
 
 
+=head2 feature_summary
+
+=cut
+
+sub feature_summary :Chained('search') :PathPart('feature_summary') :Args(1) {
+    my ( $self, $c, $group_on ) = @_;
+
+    my @groups = split(',', $group_on);
+
+    my $feature_summary = $c->stash->{search_rs}->summary( @groups );
+
+    $c->stash(
+        feature_summary => $feature_summary,
+        groups          => \@groups,
+        template        => 'feature/feature_summary.tt2',
+        );
+}
+
+
 =head2 feature
 
 =cut
