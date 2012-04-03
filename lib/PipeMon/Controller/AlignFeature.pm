@@ -6,6 +6,35 @@ use feature 'switch';
 
 BEGIN {extends 'Catalyst::Controller'; }
 
+has 'feature_keys' => (
+    is  => 'ro',
+    isa => 'ArrayRef[Str]',
+);
+
+__PACKAGE__->config(
+    feature_keys => [ qw(
+        id
+        seq_region_id
+        seq_region_name
+        seq_region_start
+        seq_region_end
+        seq_region_strand
+        hit_name
+        hit_start
+        hit_end
+        hit_strand
+        analysis_id
+        logic_name
+        score
+        evalue
+        perc_ident
+        cigar_line
+        external_db_id
+        hcoverage
+        ) ],
+    );
+
+
 =head1 NAME
 
 PipeMon::Controller::AlignFeature - Catalyst Controller
@@ -110,6 +139,29 @@ sub features :Chained('search') :PathPart('features') :Args(0)
         );
 }
 
+
+=head2 feature
+
+=cut
+
+sub feature :Chained('base') :PathPart('feature') :Args(1) {
+    my ( $self, $c, $key ) = @_;
+
+    unless ($key =~ /^\d+$/) {
+        # Bad format
+        $c->response->status(400);
+        $c->response->body("'$key' doesn't look like a job_id");
+        $c->detach;
+    }
+
+    my $feature = $c->stash->{feature_rs}->find($key, { prefetch => [qw/analysis seq_region/] });
+
+    $c->stash(
+        feature      => $feature,
+        feature_keys => $self->feature_keys,
+        template     => 'feature/feature.tt2',
+        );
+}
 
 =head1 AUTHOR
 

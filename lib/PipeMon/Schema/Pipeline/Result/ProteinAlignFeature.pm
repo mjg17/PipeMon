@@ -195,12 +195,18 @@ __PACKAGE__->belongs_to(
     'analysis',
     'PipeMon::Schema::Pipeline::Result::Analysis',
     'analysis_id',
+    { proxy => [ qw/logic_name/ ] },
     );
 
 __PACKAGE__->belongs_to(
     'seq_region',
     'PipeMon::Schema::Pipeline::Result::SeqRegion',
     'seq_region_id',
+    {
+        proxy => {
+            seq_region_name => 'name',
+        },
+    },
     );
 
 1;

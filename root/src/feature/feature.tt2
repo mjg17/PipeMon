@@ -1,0 +1,8 @@
+[% meta.title = species_title(feature_type _ ' feature ' _ feature.id) -%]
+
+<dl class="feature">
+[% FOREACH key IN feature_keys -%]
+ <dt>[% key %]</dt>
+ <dd>[% feature.$key || '&nbsp;' %]</dd>
+[% END -%]
+</dl>
