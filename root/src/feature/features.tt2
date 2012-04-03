@@ -3,17 +3,35 @@
 <p>Features [% pager.first %] - [% pager.last %] of [% pager.total_entries %]:</p>
 <table>
   <tr>
+    <th>&nbsp;</th>
+    <th colspan="4">seq_region</th>
+    <th>&nbsp;</th>
+    <th colspan="2">hit</th>
+  </tr>
+  <tr>
     <th>feature_id</th>
-    <th>seq_region_name</th>
+    <th>name</th>
+    <th>start</th>
+    <th>end</th>
+    <th>strand</th>
     <th>logic_name</th>
-    <th>hit_name</th>
+    <th>name</th>
+    <th>score</th>
   </tr>
 [% WHILE (feature = features.next) -%]
   <tr>
-    <td><a href="[%# c.uri_for_action('/feature/feature', [species, db_type], feature.$feature_id) %]">[% feature.$feature_id %]</a></td>
+    <td align="right">
+      <a href="[% c.uri_for_action('/alignfeature/feature', [species, db_type, feature_type], feature.$feature_id) %]">
+        [% feature.$feature_id %]
+      </a>
+    </td>
     <td>[% feature.seq_region.name %]</td>
+    <td align="right">[% feature.seq_region_start %]</td>
+    <td align="right">[% feature.seq_region_end %]</td>
+    <td align="right">[% feature.seq_region_strand %]</td>
     <td>[% feature.analysis.logic_name %]</td>
     <td>[% feature.hit_name %]</td>
+    <td align="right">[% feature.score %]</td>
   </tr>
 [% END -%]
 </table>

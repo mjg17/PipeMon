@@ -127,7 +127,7 @@ sub features :Chained('search') :PathPart('features') :Args(0)
     my ( $self, $c ) = @_;
 
     my %opts = (
-        order_by => 'hit_name',
+        order_by => [ qw/seq_region_start seq_region_strand hit_name/],
         prefetch => [ qw/analysis seq_region/ ],
         );
 
