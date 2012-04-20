@@ -117,7 +117,9 @@ sub mapping :Chained('base') :PathPart('mapping') :Args(2)
         );
 
     $c->stash(
-        cmp_rs       => $cmp_rs,
+        cmp_rs   => $cmp_rs,
+
+        gaps     => $c->request->parameters->{gaps},
 
         ref_sr   => $seq_region{'Ref'},
         alt_sr   => $seq_region{'Alt'},
