@@ -16,8 +16,8 @@
    <th>Length</th>
   </tr>
 [% WHILE (cmp = cmp_rs.next) -%]
-[%   asm_gap = ((cmp.asm_start - prev.asm_end) != 1) -%]
-[%   cmp_gap = ((cmp.cmp_start - prev.cmp_end) != 1) -%]
+[%   asm_gap = ((cmp.asm_start - prev.asm_end) != 1) IF prev -%]
+[%   cmp_gap = ((cmp.cmp_start - prev.cmp_end) != 1) IF prev -%]
 [%   IF (gaps AND prev AND (asm_gap OR cmp_gap)) -%]
   <tr style="font-style:italic;[% "font-weight: bold;" IF (asm_gap AND cmp_gap) %]">
 [%     IF (asm_gap) -%]
@@ -41,7 +41,7 @@
     <td align="right">[% cmp.cmp_end        %]</td>
     <td align="right">[% cmp.ori            %]</td>
     <td align="right">[% cmp.asm_end - cmp.asm_start + 1 %]</td>
-[%   IF (cmp.cmp_start <= prev.cmp_end) -%]
+[%   IF (prev AND (cmp.cmp_start <= prev.cmp_end)) -%]
     <td style="font-weight: bold;">Non-linear!</td>
 [%   END -%]
   </tr>
