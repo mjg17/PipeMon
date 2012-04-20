@@ -1,6 +1,6 @@
 [% meta.title = species_db_title("tmp_aligns for session $session.align_session_id") -%]
 
-[% INCLUDE 'align/session_details.tt2' -%]
+[% INCLUDE 'assembly_mapping/session_details.tt2' -%]
 
 <table>
   <tr>
