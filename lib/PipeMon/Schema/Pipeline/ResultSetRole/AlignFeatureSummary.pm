@@ -1,8 +1,7 @@
-package PipeMon::Schema::Pipeline::ResultSet::AlignFeatureSummary;
+package PipeMon::Schema::Pipeline::ResultSetRole::AlignFeatureSummary;
 
-use strict;
-use warnings;
-use base 'DBIx::Class::ResultSet';
+use Moose::Role;
+requires 'search';
 
 use feature 'switch';
 
