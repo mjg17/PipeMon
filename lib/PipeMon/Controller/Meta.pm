@@ -59,21 +59,31 @@ sub all :Chained('sorted') :PathPart('all') :Args(0) {
         );
 }
 
-=head2 assembly
+=head2 subset
 
 =cut
 
-sub assembly :Chained('sorted') :PathPart('assembly') :Args(0) {
-    my ( $self, $c ) = @_;
+sub subset :Chained('sorted') :PathPart('') :Args(1) {
+    my ( $self, $c, $subset ) = @_;
+
+    unless ($subset =~ /^\w+$/) {
+        # Bad format
+        $c->response->status(400);
+        $c->response->body("'$subset' doesn't look like a metakey class");
+        $c->detach;
+    }
+
+    my $like = $subset . '.%';
+    my $title = sprintf('[%s.*]', $subset);
 
     my $sorted = $c->stash->{sorted_rs};
     my $sifted = $sorted->search(
-        { meta_key => { like => 'assembly.%' } },
+        { meta_key => { like => $like } },
         );
 
     $c->stash( meta_t   => [$sifted->all],
                template => 'meta/all.tt2',
-               title    => '[assembly.*]',
+               title    => $title,
         );
 }
 

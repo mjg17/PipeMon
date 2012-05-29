@@ -46,8 +46,12 @@
       meta for <em>[% species %]</em>
     </a>
     <br/>
-    <a class="meta" href="[% c.uri_for_action('/meta/assembly', [species, 'pipe']) %]">
+    <a class="meta" href="[% c.uri_for_action('/meta/subset', [species, 'pipe'], 'assembly') %]">
       assembly.* for <em>[% species %]</em>
+    </a>
+    <br/>
+    <a class="meta" href="[% c.uri_for_action('/meta/subset',  [species, 'pipe'], 'species') %]">
+      species.* for <em>[% species %]</em>
     </a>
   </dd>
 </dl>
@@ -74,8 +78,12 @@
       meta for <em>[% species %]</em>
     </a>
     <br/>
-    <a class="meta" href="[% c.uri_for_action('/meta/assembly', [species, 'loutre']) %]">
+    <a class="meta" href="[% c.uri_for_action('/meta/subset', [species, 'loutre'], 'assembly') %]">
       assembly.* for <em>[% species %]</em>
+    </a>
+    <br/>
+    <a class="meta" href="[% c.uri_for_action('/meta/subset',  [species, 'loutre'], 'species') %]">
+      species.* for <em>[% species %]</em>
     </a>
   </dd>
   <dt>align_sessions</dt>
