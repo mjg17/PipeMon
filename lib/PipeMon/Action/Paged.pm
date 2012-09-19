@@ -29,6 +29,8 @@ after BUILD => sub {
 after 'execute' => sub {
     my ( $self, $controller, $c ) = @_;
 
+    return if $c->stash->{no_page};
+
     my $page  = $c->request->parameters->{page};
     my $limit = $c->request->parameters->{limit} || 20; # config?
     my $focus = $c->request->parameters->{focus};
