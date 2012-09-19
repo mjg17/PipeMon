@@ -1,5 +1,5 @@
 [% meta.title = species_db_title('mapping from ' _ ref_sr.name _ ' to ' _ alt_sr.name) %]
-
+<p><a href="?format=csv">Download as CSV</a></p>
 <p>Components [% pager.first %] - [% pager.last %] of [% pager.total_entries %]:</p>
 
 <table>

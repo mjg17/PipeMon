@@ -114,9 +114,15 @@ sub mapping :Chained('base') :PathPart('mapping') :Args(2)
             no_page    => 1,
             no_wrapper => 1,
             );
-        $c->res->content_type('text/plain');
-        # To force download, do this instead:
-        # $c->res->content_type('text/comma-separated-values');
+        if (0) {
+            # This to display
+            $c->res->content_type('text/plain');
+        } else {
+            # To force download, do this instead:
+            my $filename = 'mapping.csv';
+            $c->res->content_type('text/comma-separated-values');
+            $c->res->header('Content-Disposition', qq[attachment; filename="$filename"]);
+        }
     }
 
     my $cmp_rs = $c->stash->{assembly_rs}->search(
