@@ -105,6 +105,20 @@ sub mapping :Chained('base') :PathPart('mapping') :Args(2)
         }
     }
 
+    $c->stash(template => 'assembly/mapping.tt2');
+
+    my $format = $c->request->parameters->{format};
+    if ($format and $format eq 'csv') {
+        $c->stash(
+            template   => 'assembly/mapping_csv.tt2',
+            no_page    => 1,
+            no_wrapper => 1,
+            );
+        $c->res->content_type('text/plain');
+        # To force download, do this instead:
+        # $c->res->content_type('text/comma-separated-values');
+    }
+
     my $cmp_rs = $c->stash->{assembly_rs}->search(
         {
             asm_seq_region_id => $ref_sr_id,
@@ -123,7 +137,6 @@ sub mapping :Chained('base') :PathPart('mapping') :Args(2)
 
         ref_sr   => $seq_region{'Ref'},
         alt_sr   => $seq_region{'Alt'},
-        template => 'assembly/mapping.tt2',
         );
 }
 
