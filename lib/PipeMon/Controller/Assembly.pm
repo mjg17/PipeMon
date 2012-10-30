@@ -119,7 +119,9 @@ sub mapping :Chained('base') :PathPart('mapping') :Args(2)
             $c->res->content_type('text/plain');
         } else {
             # To force download, do this instead:
-            my $filename = 'mapping.csv';
+            my $ref_nm = $seq_region{'Ref'}->name;
+            my $alt_nm = $seq_region{'Alt'}->name;
+            my $filename = "${ref_nm}__${alt_nm}.csv";
             $c->res->content_type('text/comma-separated-values');
             $c->res->header('Content-Disposition', qq[attachment; filename="$filename"]);
         }
