@@ -1,4 +1,4 @@
 "Assembly start","Assembly end","Component start","Component end","Orientation","Length"
 [% WHILE (cmp = cmp_rs.next) -%]
-"[% cmp.asm_start %]","[% cmp.asm_end %]","[% cmp.cmp_start %]","[% cmp.cmp_end %]","[% cmp.ori %]","[%- cmp.asm_end - cmp.asm_start + 1 %]"
+[% cmp.asm_start %],[% cmp.asm_end %],[% cmp.cmp_start %],[% cmp.cmp_end %],[% cmp.ori %],[%- cmp.asm_end - cmp.asm_start + 1 %]
 [% END %]
