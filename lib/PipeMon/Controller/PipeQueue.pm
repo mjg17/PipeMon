@@ -43,10 +43,12 @@ sub summary :Path('summary') :Args(0) {
 sub priority :Path('priority') :Args(0) {
     my ( $self, $c ) = @_;
 
-    my $where;
+    my ($where, $species_list);
     if (my $species = $c->request->parameters->{species}) {
-        my @pipeline_list = map { 'pipe_' . $_ } split ',', $species;
+        my @species = split ',', $species;
+        my @pipeline_list = map { 'pipe_' . $_ } @species;
         $where = { pipeline => { -in => \@pipeline_list } };
+        $species_list = ' for ' . join ', ', @species;
     }
 
     my @fields = qw( pipeline analysis priority is_update );
@@ -61,6 +63,7 @@ sub priority :Path('priority') :Args(0) {
         } );
     $c->stash(
         pipe_priority => $pipe_priority,
+        species_list  => $species_list,
         template      => 'pipe_queue/priority.tt2',
         );
 }

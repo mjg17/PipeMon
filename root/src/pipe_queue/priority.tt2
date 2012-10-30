@@ -1,4 +1,4 @@
-[% meta.title = 'PipeQueue by priority' -%]
+[% meta.title = 'PipeQueue by priority' _ species_list -%]
 
 <table>
   <tr>
