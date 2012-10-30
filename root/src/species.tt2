@@ -40,6 +40,12 @@
       job summary for <em>[% species %]</em> by job status
     </a>
   </dd>
+  <dt>pipe_queue</dt>
+  <dd>
+   <a class="pipe_queue" href="[% c.uri_for_action('/pipequeue/priority', [], { species => species }) %]">
+     pipe queue for <em>[% species %]</em> by priority
+   </a>
+  </dd>
   <dt>meta</dt>
   <dd>
     <a class="meta" href="[% c.uri_for_action('/meta/all', [species, 'pipe']) %]">
