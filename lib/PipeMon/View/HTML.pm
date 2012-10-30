@@ -19,6 +19,8 @@ __PACKAGE__->config(
     render_die => 1,
 );
 
+$Template::Directive::WHILE_MAX = 5000;
+
 =head1 NAME
 
 PipeMon::View::HTML - TT View for PipeMon
