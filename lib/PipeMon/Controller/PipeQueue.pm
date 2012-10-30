@@ -36,6 +36,35 @@ sub summary :Path('summary') :Args(0) {
         );
 }
 
+=head2 priority
+
+=cut
+
+sub priority :Path('priority') :Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $where;
+    if (my $species = $c->request->parameters->{species}) {
+        my @pipeline_list = map { 'pipe_' . $_ } split ',', $species;
+        $where = { pipeline => { -in => \@pipeline_list } };
+    }
+
+    my @fields = qw( pipeline analysis priority is_update );
+
+    my $pipe_priority = $c->model('PipeQueue::Queue')->search(
+        $where,
+        {
+            select   => [ @fields, { min => 'created' }, { max => 'created' }, { count => 'id' } ],
+            as       => [ @fields, 'oldest',             'youngest',           'job_count' ],
+            group_by => [ @fields ],
+            order_by => { -desc => 'priority' },
+        } );
+    $c->stash(
+        pipe_priority => $pipe_priority,
+        template      => 'pipe_queue/priority.tt2',
+        );
+}
+
 =head1 AUTHOR
 
 Michael Gray
