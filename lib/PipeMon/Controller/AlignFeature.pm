@@ -55,7 +55,7 @@ DNA versus protein.
 
 =cut
 
-sub base :Chained('/loutreorpipe/pipe_only') :PathPart('') :CaptureArgs(1) {
+sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(1) {
     my ( $self, $c, $feature_type ) = @_;
 
     my $feature_class;
