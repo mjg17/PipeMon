@@ -1,17 +1,21 @@
+use utf8;
 package PipeMon::Schema::Pipeline::Result::Meta;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+PipeMon::Schema::Pipeline::Result::Meta
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-PipeMon::Schema::Pipeline::Result::Meta
+=head1 TABLE: C<meta>
 
 =cut
 
@@ -21,31 +25,26 @@ __PACKAGE__->table("meta");
 
 =head2 meta_id
 
-  data_type: INT
-  default_value: undef
+  data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
-  size: 11
 
 =head2 species_id
 
-  data_type: INT
+  data_type: 'integer'
   default_value: 1
-  extra: HASH(0x8ac9adc)
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 10
 
 =head2 meta_key
 
-  data_type: VARCHAR
-  default_value: (empty string)
+  data_type: 'varchar'
   is_nullable: 0
   size: 40
 
 =head2 meta_value
 
-  data_type: VARCHAR
-  default_value: undef
+  data_type: 'varchar'
   is_nullable: 1
   size: 255
 
@@ -53,36 +52,56 @@ __PACKAGE__->table("meta");
 
 __PACKAGE__->add_columns(
   "meta_id",
-  {
-    data_type => "INT",
-    default_value => undef,
-    is_auto_increment => 1,
-    is_nullable => 0,
-    size => 11,
-  },
+  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "species_id",
   {
-    data_type => "INT",
+    data_type => "integer",
     default_value => 1,
     extra => { unsigned => 1 },
     is_nullable => 1,
-    size => 10,
   },
   "meta_key",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 40 },
+  { data_type => "varchar", is_nullable => 0, size => 40 },
   "meta_value",
-  {
-    data_type => "VARCHAR",
-    default_value => undef,
-    is_nullable => 1,
-    size => 255,
-  },
+  { data_type => "varchar", is_nullable => 1, size => 255 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</meta_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("meta_id");
 
+=head1 UNIQUE CONSTRAINTS
 
-# Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-06-22 16:42:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:QT7wha1on2YnhF/+lmmTgg
+=head2 C<species_key_value_idx>
+
+=over 4
+
+=item * L</species_id>
+
+=item * L</meta_key>
+
+=item * L</meta_value>
+
+=back
+
+=cut
+
+__PACKAGE__->add_unique_constraint(
+  "species_key_value_idx",
+  ["species_id", "meta_key", "meta_value"],
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07018 @ 2012-11-29 16:38:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HX+m+5gTABefKYRe4oP+Eg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

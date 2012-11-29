@@ -1,17 +1,21 @@
+use utf8;
 package PipeMon::Schema::Pipeline::Result::SeqRegionAttrib;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+PipeMon::Schema::Pipeline::Result::SeqRegionAttrib
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-PipeMon::Schema::Pipeline::Result::SeqRegionAttrib
+=head1 TABLE: C<seq_region_attrib>
 
 =cut
 
@@ -21,58 +25,47 @@ __PACKAGE__->table("seq_region_attrib");
 
 =head2 seq_region_id
 
-  data_type: INT
+  data_type: 'integer'
   default_value: 0
-  extra: HASH(0x89c9de4)
+  extra: {unsigned => 1}
   is_nullable: 0
-  size: 10
 
 =head2 attrib_type_id
 
-  data_type: SMALLINT
+  data_type: 'smallint'
   default_value: 0
-  extra: HASH(0x880d0a4)
+  extra: {unsigned => 1}
   is_nullable: 0
-  size: 5
 
 =head2 value
 
-  data_type: TEXT
-  default_value: undef
+  data_type: 'text'
   is_nullable: 0
-  size: 65535
 
 =cut
 
 __PACKAGE__->add_columns(
   "seq_region_id",
   {
-    data_type => "INT",
+    data_type => "integer",
     default_value => 0,
     extra => { unsigned => 1 },
     is_nullable => 0,
-    size => 10,
   },
   "attrib_type_id",
   {
-    data_type => "SMALLINT",
+    data_type => "smallint",
     default_value => 0,
     extra => { unsigned => 1 },
     is_nullable => 0,
-    size => 5,
   },
   "value",
-  {
-    data_type => "TEXT",
-    default_value => undef,
-    is_nullable => 0,
-    size => 65535,
-  },
+  { data_type => "text", is_nullable => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-03-25 09:57:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jYQQaqnTkFB6KYg+t8vsuw
+# Created by DBIx::Class::Schema::Loader v0.07018 @ 2012-11-29 16:38:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:tBd+aJ4443H+iVwjaIZZfA
 
 # We can't safely assume a unique primary key. Well, probably we can for pipe_*, but not for loutre_*
 # Having said that, duplicate identical entries would be in error, so...

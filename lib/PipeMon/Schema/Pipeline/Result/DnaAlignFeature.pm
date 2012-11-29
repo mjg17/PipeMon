@@ -33,59 +33,50 @@ __PACKAGE__->table("dna_align_feature");
 =head2 seq_region_id
 
   data_type: 'integer'
-  default_value: 0
   extra: {unsigned => 1}
   is_nullable: 0
 
 =head2 seq_region_start
 
   data_type: 'integer'
-  default_value: 0
   extra: {unsigned => 1}
   is_nullable: 0
 
 =head2 seq_region_end
 
   data_type: 'integer'
-  default_value: 0
   extra: {unsigned => 1}
   is_nullable: 0
 
 =head2 seq_region_strand
 
   data_type: 'tinyint'
-  default_value: 0
   is_nullable: 0
 
 =head2 hit_start
 
   data_type: 'integer'
-  default_value: 0
   is_nullable: 0
 
 =head2 hit_end
 
   data_type: 'integer'
-  default_value: 0
   is_nullable: 0
 
 =head2 hit_strand
 
   data_type: 'tinyint'
-  default_value: 0
   is_nullable: 0
 
 =head2 hit_name
 
   data_type: 'varchar'
-  default_value: (empty string)
   is_nullable: 0
   size: 40
 
 =head2 analysis_id
 
   data_type: 'smallint'
-  default_value: 0
   extra: {unsigned => 1}
   is_nullable: 0
 
@@ -142,43 +133,23 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
   },
   "seq_region_id",
-  {
-    data_type => "integer",
-    default_value => 0,
-    extra => { unsigned => 1 },
-    is_nullable => 0,
-  },
+  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
   "seq_region_start",
-  {
-    data_type => "integer",
-    default_value => 0,
-    extra => { unsigned => 1 },
-    is_nullable => 0,
-  },
+  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
   "seq_region_end",
-  {
-    data_type => "integer",
-    default_value => 0,
-    extra => { unsigned => 1 },
-    is_nullable => 0,
-  },
+  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
   "seq_region_strand",
-  { data_type => "tinyint", default_value => 0, is_nullable => 0 },
+  { data_type => "tinyint", is_nullable => 0 },
   "hit_start",
-  { data_type => "integer", default_value => 0, is_nullable => 0 },
+  { data_type => "integer", is_nullable => 0 },
   "hit_end",
-  { data_type => "integer", default_value => 0, is_nullable => 0 },
+  { data_type => "integer", is_nullable => 0 },
   "hit_strand",
-  { data_type => "tinyint", default_value => 0, is_nullable => 0 },
+  { data_type => "tinyint", is_nullable => 0 },
   "hit_name",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 40 },
+  { data_type => "varchar", is_nullable => 0, size => 40 },
   "analysis_id",
-  {
-    data_type => "smallint",
-    default_value => 0,
-    extra => { unsigned => 1 },
-    is_nullable => 0,
-  },
+  { data_type => "smallint", extra => { unsigned => 1 }, is_nullable => 0 },
   "score",
   { data_type => "double precision", is_nullable => 1 },
   "evalue",
@@ -210,8 +181,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("dna_align_feature_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07018 @ 2012-03-30 11:54:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vSZR9LeMs1k5RGDlvXemJw
+# Created by DBIx::Class::Schema::Loader v0.07018 @ 2012-11-29 16:38:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7D2IPIqZTQ0snBab5pPl+g
 
 
 __PACKAGE__->belongs_to(

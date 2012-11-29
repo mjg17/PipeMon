@@ -1,17 +1,21 @@
+use utf8;
 package PipeMon::Schema::Pipeline::Result::Assembly;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+PipeMon::Schema::Pipeline::Result::Assembly
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-PipeMon::Schema::Pipeline::Result::Assembly
+=head1 TABLE: C<assembly>
 
 =cut
 
@@ -21,85 +25,84 @@ __PACKAGE__->table("assembly");
 
 =head2 asm_seq_region_id
 
-  data_type: INT
-  default_value: 0
-  extra: HASH(0x8a9ca38)
+  data_type: 'integer'
+  extra: {unsigned => 1}
   is_nullable: 0
-  size: 10
 
 =head2 cmp_seq_region_id
 
-  data_type: INT
-  default_value: 0
-  extra: HASH(0x8aba1f0)
+  data_type: 'integer'
+  extra: {unsigned => 1}
   is_nullable: 0
-  size: 10
 
 =head2 asm_start
 
-  data_type: INT
-  default_value: 0
+  data_type: 'integer'
   is_nullable: 0
-  size: 10
 
 =head2 asm_end
 
-  data_type: INT
-  default_value: 0
+  data_type: 'integer'
   is_nullable: 0
-  size: 10
 
 =head2 cmp_start
 
-  data_type: INT
-  default_value: 0
+  data_type: 'integer'
   is_nullable: 0
-  size: 10
 
 =head2 cmp_end
 
-  data_type: INT
-  default_value: 0
+  data_type: 'integer'
   is_nullable: 0
-  size: 10
 
 =head2 ori
 
-  data_type: TINYINT
-  default_value: 0
+  data_type: 'tinyint'
   is_nullable: 0
-  size: 4
 
 =cut
 
 __PACKAGE__->add_columns(
   "asm_seq_region_id",
-  {
-    data_type => "INT",
-    default_value => 0,
-    extra => { unsigned => 1 },
-    is_nullable => 0,
-    size => 10,
-  },
+  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
   "cmp_seq_region_id",
-  {
-    data_type => "INT",
-    default_value => 0,
-    extra => { unsigned => 1 },
-    is_nullable => 0,
-    size => 10,
-  },
+  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
   "asm_start",
-  { data_type => "INT", default_value => 0, is_nullable => 0, size => 10 },
+  { data_type => "integer", is_nullable => 0 },
   "asm_end",
-  { data_type => "INT", default_value => 0, is_nullable => 0, size => 10 },
+  { data_type => "integer", is_nullable => 0 },
   "cmp_start",
-  { data_type => "INT", default_value => 0, is_nullable => 0, size => 10 },
+  { data_type => "integer", is_nullable => 0 },
   "cmp_end",
-  { data_type => "INT", default_value => 0, is_nullable => 0, size => 10 },
+  { data_type => "integer", is_nullable => 0 },
   "ori",
-  { data_type => "TINYINT", default_value => 0, is_nullable => 0, size => 4 },
+  { data_type => "tinyint", is_nullable => 0 },
 );
+
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<all_idx>
+
+=over 4
+
+=item * L</asm_seq_region_id>
+
+=item * L</cmp_seq_region_id>
+
+=item * L</asm_start>
+
+=item * L</asm_end>
+
+=item * L</cmp_start>
+
+=item * L</cmp_end>
+
+=item * L</ori>
+
+=back
+
+=cut
+
 __PACKAGE__->add_unique_constraint(
   "all_idx",
   [
@@ -114,8 +117,8 @@ __PACKAGE__->add_unique_constraint(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-06-22 16:42:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9Lps+CM5S7Z8Z08d4CWkww
+# Created by DBIx::Class::Schema::Loader v0.07018 @ 2012-11-29 16:38:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Oho6lB8vuz5E9x0V6C2u8Q
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 
