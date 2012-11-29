@@ -63,6 +63,7 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(1) {
     given ($feature_type) {
         when ('dna')     { $feature_class = 'DnaAlignFeature'; }
         when ('protein') { $feature_class = 'ProteinAlignFeature'; }
+        when ('simple')  { $feature_class = 'SimpleFeature'; }
     }
 
     unless ($feature_class) {
