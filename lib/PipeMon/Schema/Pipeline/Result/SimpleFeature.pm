@@ -113,5 +113,22 @@ __PACKAGE__->set_primary_key("simple_feature_id");
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:88CR2YWU6aodUbIzyQM9CA
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+__PACKAGE__->belongs_to(
+    'analysis',
+    'PipeMon::Schema::Pipeline::Result::Analysis',
+    'analysis_id',
+    { proxy => [ qw/logic_name/ ] },
+    );
+
+__PACKAGE__->belongs_to(
+    'seq_region',
+    'PipeMon::Schema::Pipeline::Result::SeqRegion',
+    'seq_region_id',
+    {
+        proxy => {
+            seq_region_name => 'name',
+        },
+    },
+    );
+
 1;
