@@ -184,4 +184,12 @@
    <input type="hidden" name="seq_region_id" value="[% seq_region.id %]" />
   </form>
  </dd>
+ <dt>Simple</dt>
+ <dd>
+  <a href="[% c.uri_for_action('/alignfeature/feature_summary',
+                               [species, db_type, 'simple', 'logic_name'],
+                               { seq_region_id => seq_region.id }
+                               ) %]">
+   Summary by logic_name</a>
+ </dd>
 </dl>
