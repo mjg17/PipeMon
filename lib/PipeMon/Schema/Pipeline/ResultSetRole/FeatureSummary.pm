@@ -1,4 +1,4 @@
-package PipeMon::Schema::Pipeline::ResultSetRole::AlignFeatureSummary;
+package PipeMon::Schema::Pipeline::ResultSetRole::FeatureSummary;
 
 use Moose::Role;
 requires 'search';
