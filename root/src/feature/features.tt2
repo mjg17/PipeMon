@@ -25,7 +25,7 @@
 [% WHILE (feature = features.next) -%]
   <tr>
     <td align="right">
-      <a href="[% c.uri_for_action('/alignfeature/feature', [species, db_type, feature_type], feature.$feature_id) %]">
+      <a href="[% c.uri_for_action('/feature/feature', [species, db_type, feature_type], feature.$feature_id) %]">
         [% feature.$feature_id %]
       </a>
     </td>

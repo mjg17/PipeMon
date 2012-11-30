@@ -1,4 +1,4 @@
-package PipeMon::Controller::AlignFeature;
+package PipeMon::Controller::Feature;
 use Moose;
 use namespace::autoclean;
 
@@ -37,7 +37,7 @@ __PACKAGE__->config(
 
 =head1 NAME
 
-PipeMon::Controller::AlignFeature - Catalyst Controller
+PipeMon::Controller::Feature - Catalyst Controller
 
 =head1 DESCRIPTION
 

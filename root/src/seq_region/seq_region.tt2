@@ -152,13 +152,13 @@
 <dl>
  <dt>DNA align</dt>
  <dd>
-  <a href="[% c.uri_for_action('/alignfeature/feature_summary',
+  <a href="[% c.uri_for_action('/feature/feature_summary',
                                [species, db_type, 'dna', 'logic_name'],
                                { seq_region_id => seq_region.id }
                                ) %]">
    Summary by logic_name</a>
   <br/>
-  <form action="[% c.uri_for_action('/alignfeature/feature_summary',
+  <form action="[% c.uri_for_action('/feature/feature_summary',
                                     [species, db_type, 'dna', 'logic_name'],
                                     ) %]"
         method="get">
@@ -169,13 +169,13 @@
  </dd>
  <dt>Protein align</dt>
  <dd>
-  <a href="[% c.uri_for_action('/alignfeature/feature_summary',
+  <a href="[% c.uri_for_action('/feature/feature_summary',
                                [species, db_type, 'protein', 'logic_name'],
                                { seq_region_id => seq_region.id }
                                ) %]">
    Summary by logic_name</a>
   <br/>
-  <form action="[% c.uri_for_action('/alignfeature/feature_summary',
+  <form action="[% c.uri_for_action('/feature/feature_summary',
                                     [species, db_type, 'protein', 'logic_name'],
                                     ) %]"
         method="get">
@@ -186,7 +186,7 @@
  </dd>
  <dt>Simple</dt>
  <dd>
-  <a href="[% c.uri_for_action('/alignfeature/feature_summary',
+  <a href="[% c.uri_for_action('/feature/feature_summary',
                                [species, db_type, 'simple', 'logic_name'],
                                { seq_region_id => seq_region.id }
                                ) %]">

@@ -18,7 +18,7 @@
 [%   END -%]
     <td>[% sum.get_column('feature_count') %]</td>
     <td>
-      <a href="[% c.uri_for_action('/alignfeature/features', [species, db_type, feature_type], this_row ) %]">
+      <a href="[% c.uri_for_action('/feature/features', [species, db_type, feature_type], this_row ) %]">
         list
       </a>
     </td>
