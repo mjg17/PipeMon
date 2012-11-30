@@ -58,11 +58,11 @@ DNA versus protein.
 sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(1) {
     my ( $self, $c, $feature_type ) = @_;
 
-    my $feature_class;
+    my ($feature_class, $has_hit);
 
     given ($feature_type) {
-        when ('dna')     { $feature_class = 'DnaAlignFeature'; }
-        when ('protein') { $feature_class = 'ProteinAlignFeature'; }
+        when ('dna')     { $feature_class = 'DnaAlignFeature';     $has_hit = 1; }
+        when ('protein') { $feature_class = 'ProteinAlignFeature'; $has_hit = 1; }
         when ('simple')  { $feature_class = 'SimpleFeature'; }
     }
 
@@ -78,6 +78,7 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(1) {
         feature_rs   => $model->resultset($feature_class),
         feature_type => $feature_type,
         feature_id   => "${feature_type}_align_feature_id",
+        has_hit      => $has_hit,
         );
 }
 
@@ -138,8 +139,11 @@ sub features :Chained('search') :PathPart('features') :Args(0)
 {
     my ( $self, $c ) = @_;
 
+    my @order = qw/seq_region_start seq_region_strand/;
+    push @order, 'hit_name' if $c->stash->{has_hit};
+
     my %opts = (
-        order_by => [ qw/seq_region_start seq_region_strand hit_name/],
+        order_by => \@order,
         prefetch => [ qw/analysis seq_region/ ],
         );
 

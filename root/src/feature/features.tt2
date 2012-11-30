@@ -2,12 +2,14 @@
 
 <p>Features [% pager.first %] - [% pager.last %] of [% pager.total_entries %]:</p>
 <table>
+[% IF has_hit -%]
   <tr>
     <th>&nbsp;</th>
     <th colspan="4">seq_region</th>
     <th>&nbsp;</th>
     <th colspan="2">hit</th>
   </tr>
+[% END -%]
   <tr>
     <th>feature_id</th>
     <th>name</th>
@@ -15,7 +17,9 @@
     <th>end</th>
     <th>strand</th>
     <th>logic_name</th>
+[% IF has_hit -%]
     <th>name</th>
+[% END -%]
     <th>score</th>
   </tr>
 [% WHILE (feature = features.next) -%]
@@ -30,7 +34,9 @@
     <td align="right">[% feature.seq_region_end %]</td>
     <td align="right">[% feature.seq_region_strand %]</td>
     <td>[% feature.analysis.logic_name %]</td>
+[% IF has_hit -%]
     <td>[% feature.hit_name %]</td>
+[% END -%]
     <td align="right">[% feature.score %]</td>
   </tr>
 [% END -%]
