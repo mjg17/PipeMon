@@ -45,13 +45,10 @@
     <th>result</th>
   </tr>
 [% WHILE (ana = analyses.next) -%]
+[%  a_uri = analysis_uri(species, 'pipe', ana.analysis_id) -%]
   <tr>
-    <td>
-     <a href="[% c.uri_for_action('/analysis/analysis', [species, 'pipe'], ana.analysis_id) %]">
-      [% ana.analysis_id %]
-     </a>
-    </td>
-    <td>[% ana.logic_name %]</td>
+    <td><a href="[% a_uri %]">[% ana.analysis_id %]</a></td>
+    <td><a href="[% a_uri %]">[% ana.logic_name %]</a></td>
     <td>[% ana.created %]</td>
     <td>[% ana.db_version %]</td>
     <td>[% ana.result %]</td>
