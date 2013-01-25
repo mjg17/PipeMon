@@ -51,7 +51,7 @@ Catalyst Controller.
 =head2 base
 
 Just gets us chained to the right place with the right pathpart initially, and sorts out
-DNA versus protein.
+DNA versus protein vs simple.
 
 =cut
 
@@ -59,11 +59,12 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(1) {
     my ( $self, $c, $feature_type ) = @_;
 
     my ($feature_class, $has_hit);
+    my $feature_id = "${feature_type}_align_feature_id";
 
     given ($feature_type) {
         when ('dna')     { $feature_class = 'DnaAlignFeature';     $has_hit = 1; }
         when ('protein') { $feature_class = 'ProteinAlignFeature'; $has_hit = 1; }
-        when ('simple')  { $feature_class = 'SimpleFeature'; }
+        when ('simple')  { $feature_class = 'SimpleFeature';       $feature_id = 'simple_feature_id'; }
     }
 
     unless ($feature_class) {
@@ -77,7 +78,7 @@ sub base :Chained('/loutreorpipe/base') :PathPart('') :CaptureArgs(1) {
     $c->stash(
         feature_rs   => $model->resultset($feature_class),
         feature_type => $feature_type,
-        feature_id   => "${feature_type}_align_feature_id",
+        feature_id   => $feature_id,
         has_hit      => $has_hit,
         );
 }
