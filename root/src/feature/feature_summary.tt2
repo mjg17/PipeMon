@@ -10,11 +10,17 @@
   </tr>
 [% WHILE (sum = feature_summary.next) -%]
   <tr>
-[%   FOREACH g IN groups       ; 
+[%   FOREACH g IN groups       ;
        val = sum.get_column(g) ;
        this_row = search_params;
        this_row.$g = val           -%]
-    <td>[% val %]</td>
+    <td>
+[%     IF g == 'logic_name' -%]
+      <a href="[% analysis_uri(species, db_type, val) %]">[% val %]</a>
+[%     ELSE -%]
+      [% val %]
+[%     END -%]
+    </td>
 [%   END -%]
     <td>[% sum.get_column('feature_count') %]</td>
     <td>

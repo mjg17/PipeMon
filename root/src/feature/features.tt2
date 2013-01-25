@@ -33,7 +33,9 @@
     <td align="right">[% feature.seq_region_start %]</td>
     <td align="right">[% feature.seq_region_end %]</td>
     <td align="right">[% feature.seq_region_strand %]</td>
-    <td>[% feature.analysis.logic_name %]</td>
+    <td>
+     <a href="[% analysis_uri(species, db_type, feature.analysis.analysis_id) %]">[% feature.analysis.logic_name %]</a>
+    </td>
 [% IF has_hit -%]
     <td>[% feature.hit_name %]</td>
 [% END -%]
