@@ -1,5 +1,5 @@
-[% META title = 'Sequence sets' -%]
-<h2>Sequence sets in [% db_type %] for [% species %]</h2>
+[% meta.title = species_db_title('sequence sets') -%]
+
 <table>
   <tr>
     <th>seq_region_id</th>
@@ -13,7 +13,7 @@
 [% FOREACH sr IN seq_sets -%]
   <tr>
     <td>
-     <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sr.seq_region_id) %]">
+     <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], sr.seq_region_id) %]">
       [% sr.seq_region_id %]</a>
     </td>
     <td>[% sr.name %]</td>

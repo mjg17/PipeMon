@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>[% template.title or "Pipeline Monitor" %]</title>
+<title>[% meta.title or "Pipeline Monitor" %]</title>
 <link rel="stylesheet" type="text/css" href="http://www.sanger.ac.uk/css/wtsi.css?2007" />
 <link rel="stylesheet" href="[% c.uri_for('/static/css/main.css') %]" />
 <link rel="stylesheet" href="[% c.uri_for('/static/css/div_lineup.css') %]" />
@@ -12,9 +12,9 @@
 <div id="outer">
 <div id="header">
     [%# Your logo could go here -%]
-    <img src="[% c.uri_for('/static/images/btn_88x31_powered.png') %]" />
+    <img src="[% c.uri_for('/static/images/btn_88x31_powered.png') %]" alt="Powered by Catalyst" />
     [%# Insert the page title -%]
-    <h1>[% template.title or site.title %]</h1>
+    <h1>[% meta.title or site.title %]</h1>
 </div>
 
 <div id="bodyblock">
@@ -34,6 +34,36 @@
     <span class="error">[% error_msg %]</span>
     [%# This is where TT will stick all of your template's contents. -%]
     [% content %]
+    [% IF pager %]
+    <div class="pager">
+        <div class="counter">
+            Page [% pager.current_page %] of [% pager.last_page %]
+        </div>
+        [% IF pager.last_page > 1 %]
+        <div>
+           [% IF pager.previous_page %]
+               <span><a href="[% c.req.uri_with( page => pager.first_page ) %]">&laquo;</a></span>
+               <span><a href="[% c.req.uri_with( page => pager.previous_page ) %]">&lt;</a></span>
+           [% END %]
+
+           [% start = (pager.current_page - 3) > 0 ? (pager.current_page - 3) : 1;
+            FOREACH page IN [ start .. pager.last_page ] %]
+               [% LAST IF loop.count > 6 %]
+               [% IF pager.current_page == page %]
+                   <span class="current"> [% page %] </span>
+               [% ELSE %]
+                   <span> <a href="[% c.req.uri_with( page => page ) %]">[% page %]</a> </span>
+               [% END %]
+           [% END %]
+
+           [% IF pager.next_page %]
+               <span><a href="[% c.req.uri_with( page => pager.next_page ) %]">&gt;</a></span>
+               <span><a href="[% c.req.uri_with( page => pager.last_page ) %]">&raquo;</a></span>
+           [% END %]
+       </div>
+       [% END %]
+    </div>
+    [% END %]
 </div><!-- end content -->
 </div><!-- end bodyblock -->
 

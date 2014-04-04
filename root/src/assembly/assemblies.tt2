@@ -1,0 +1,41 @@
+[% meta.title = species_db_title('assemblies for ' _ seq_region.name) %]
+
+<p>Components [% pager.first %] - [% pager.last %] of [% pager.total_entries %]:</p>
+
+<table>
+  <tr>
+   <th colspan="4">Assembly</th>
+   <th colspan="2">Component</th>
+  </tr>
+  <tr>
+   <th>Name</th>
+   <th>Coords</th>
+   <th>Start</th>
+   <th>End</th>
+   <th>Start</th>
+   <th>End</th>
+   <th>Orientation</th>
+  </tr>
+[% WHILE (asm = asm_rs.next) -%]
+  <tr>
+    <td>
+      <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], asm.asm_seq_region_id) %]">
+        [% asm.assembly.name %]
+      </a>
+    </td>
+    <td>[% asm.assembly.cs_name %]:[% asm.assembly.cs_version %]</td>
+    <td align="right">[% asm.asm_start      %]</td>
+    <td align="right">[% asm.asm_end        %]</td>
+    <td align="right">[% asm.cmp_start      %]</td>
+    <td align="right">[% asm.cmp_end        %]</td>
+    <td align="right">[% asm.ori            %]</td>
+    <td>
+     <a href="[% c.uri_for_action('/assembly/components',
+                                  [species, db_type], asm.asm_seq_region_id, asm.component.coord_system_id,
+                                  { focus => asm.cmp_seq_region_id }) | html %]">
+      <em>browse assembly</em>
+     </a>
+    </td>
+  </tr>
+[% END %]
+</table>

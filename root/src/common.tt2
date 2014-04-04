@@ -1,0 +1,11 @@
+[%- MACRO species_title(title) BLOCK -%]
+[% species %]: [% title %]
+[%- END -%]
+
+[%- MACRO species_db_title(title) BLOCK -%]
+[% species %]: [% title %] ([% db_type %])
+[%- END -%]
+
+[%- MACRO analysis_uri(species, db_type, ana_id) BLOCK -%]
+[%-   c.uri_for_action('/analysis/analysis', [species, db_type], ana_id) -%]
+[%- END -%]

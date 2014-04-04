@@ -1,4 +1,4 @@
-[% META title = "Pipeline for species (fix me - which?)" -%]
+[% meta.title = "Dataset: " _ species -%]
 
 <h2>
    Pipeline for [% species %]
@@ -18,26 +18,46 @@
   </dd>
   <dt>jobs</dt>
   <dd>
-    <a class="jobs" href="[% c.uri_for_action('/job/jobs', [species]) %]">
+    <a class="jobs" href="[% c.uri_for_action('/job/jobs', [species, 'pipe']) %]">
       jobs for <em>[% species %]</em>
     </a>
   </dd>
   <dt>job summary</dt>
   <dd>
-    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species]) %]">
+    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species, 'pipe']) %]">
       job summary for <em>[% species %]</em>
     </a>
   </dd>
   <dt>job summary by logic_name</dt>
   <dd>
-    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species], 'logic_name') %]">
+    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species, 'pipe'], 'logic_name') %]">
       job summary for <em>[% species %]</em> by logic_name
     </a>
   </dd>
   <dt>job summary by status</dt>
   <dd>
-    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species], 'status') %]">
+    <a class="job_summary" href="[% c.uri_for_action('/job/job_summary', [species, 'pipe'], 'status') %]">
       job summary for <em>[% species %]</em> by job status
+    </a>
+  </dd>
+  <dt>pipe_queue</dt>
+  <dd>
+   <a class="pipe_queue" href="[% c.uri_for_action('/pipequeue/priority', [], { species => species }) %]">
+     pipe queue for <em>[% species %]</em> by priority
+   </a>
+  </dd>
+  <dt>meta</dt>
+  <dd>
+    <a class="meta" href="[% c.uri_for_action('/meta/all', [species, 'pipe']) %]">
+      meta for <em>[% species %]</em>
+    </a>
+    <br/>
+    <a class="meta" href="[% c.uri_for_action('/meta/subset', [species, 'pipe'], 'assembly') %]">
+      assembly.* for <em>[% species %]</em>
+    </a>
+    <br/>
+    <a class="meta" href="[% c.uri_for_action('/meta/subset',  [species, 'pipe'], 'species') %]">
+      species.* for <em>[% species %]</em>
     </a>
   </dd>
 </dl>
@@ -50,6 +70,32 @@
   <dd>
     <a class="seq_sets" href="[% c.uri_for_action('/seqregion/seq_sets', [species, 'loutre']) %]">
       sequence sets for <em>[% species %]</em>
+    </a>
+  </dd>
+  <dt>analyses</dt>
+  <dd>
+    <a class="analyses" href="[% c.uri_for_action('/analysis/analyses', [species, 'loutre']) %]">
+      analyses for <em>[% species %]</em>
+    </a>
+  </dd>
+  <dt>meta</dt>
+  <dd>
+    <a class="meta" href="[% c.uri_for_action('/meta/all', [species, 'loutre']) %]">
+      meta for <em>[% species %]</em>
+    </a>
+    <br/>
+    <a class="meta" href="[% c.uri_for_action('/meta/subset', [species, 'loutre'], 'assembly') %]">
+      assembly.* for <em>[% species %]</em>
+    </a>
+    <br/>
+    <a class="meta" href="[% c.uri_for_action('/meta/subset',  [species, 'loutre'], 'species') %]">
+      species.* for <em>[% species %]</em>
+    </a>
+  </dd>
+  <dt>align_sessions</dt>
+  <dd>
+    <a class="align_sessions" href="[% c.uri_for_action('/assemblymapping/sessions', [species, 'loutre']) %]">
+      align_sessions for <em>[% species %]</em>
     </a>
   </dd>
 </dl>

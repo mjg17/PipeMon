@@ -1,4 +1,4 @@
-[% META title = 'Job summary' -%]
+[% meta.title = species_title('job summary') -%]
 
 <table>
   <tr>
@@ -16,7 +16,7 @@
     <td>[% val %]</td>
 [%   END -%]
     <td>[% sum.get_column('job_count') %]</td>
-    <td><a href="[% c.uri_for_action('/job/jobs', [species], this_row ) %]">list</a></td>
+    <td><a href="[% c.uri_for_action('/job/jobs', [species, db_type], this_row ) %]">list</a></td>
   </tr>
 [% END -%]
 </table>

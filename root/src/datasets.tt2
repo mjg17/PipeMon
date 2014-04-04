@@ -1,4 +1,4 @@
-[% META title = 'Datasets' -%]
+[% meta.title = 'Datasets' -%]
 
 <table>
 [% FOREACH ds IN datasets -%]
@@ -8,6 +8,9 @@
 [% END -%]
 </table>
 
-<p>
- <a href="[% c.uri_for_action('/pipequeue/summary') %]">Pipe queue summary</a>
-</p>
+<br/>
+
+<table>
+ <tr><td><a href="[% c.uri_for_action('/pipequeue/summary') %]">Pipe queue summary</a></td></tr>
+ <tr><td><a href="[% c.uri_for_action('/pipequeue/priority') %]">Pipe queue by priority</a></td></tr>
+</table>

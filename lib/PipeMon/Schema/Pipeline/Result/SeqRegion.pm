@@ -1,17 +1,21 @@
+use utf8;
 package PipeMon::Schema::Pipeline::Result::SeqRegion;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+PipeMon::Schema::Pipeline::Result::SeqRegion
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-PipeMon::Schema::Pipeline::Result::SeqRegion
+=head1 TABLE: C<seq_region>
 
 =cut
 
@@ -21,73 +25,78 @@ __PACKAGE__->table("seq_region");
 
 =head2 seq_region_id
 
-  data_type: INT
-  default_value: undef
-  extra: HASH(0x89d6c88)
+  data_type: 'integer'
+  extra: {unsigned => 1}
   is_auto_increment: 1
   is_nullable: 0
-  size: 10
 
 =head2 name
 
-  data_type: VARCHAR
-  default_value: (empty string)
+  data_type: 'varchar'
   is_nullable: 0
   size: 40
 
 =head2 coord_system_id
 
-  data_type: INT
-  default_value: 0
-  extra: HASH(0x89d7108)
+  data_type: 'integer'
+  extra: {unsigned => 1}
   is_nullable: 0
-  size: 10
 
 =head2 length
 
-  data_type: INT
-  default_value: undef
-  extra: HASH(0x89c68dc)
+  data_type: 'integer'
+  extra: {unsigned => 1}
   is_nullable: 0
-  size: 10
 
 =cut
 
 __PACKAGE__->add_columns(
   "seq_region_id",
   {
-    data_type => "INT",
-    default_value => undef,
+    data_type => "integer",
     extra => { unsigned => 1 },
     is_auto_increment => 1,
     is_nullable => 0,
-    size => 10,
   },
   "name",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 40 },
+  { data_type => "varchar", is_nullable => 0, size => 40 },
   "coord_system_id",
-  {
-    data_type => "INT",
-    default_value => 0,
-    extra => { unsigned => 1 },
-    is_nullable => 0,
-    size => 10,
-  },
+  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
   "length",
-  {
-    data_type => "INT",
-    default_value => undef,
-    extra => { unsigned => 1 },
-    is_nullable => 0,
-    size => 10,
-  },
+  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 0 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</seq_region_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("seq_region_id");
+
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<name_cs_idx>
+
+=over 4
+
+=item * L</name>
+
+=item * L</coord_system_id>
+
+=back
+
+=cut
+
 __PACKAGE__->add_unique_constraint("name_cs_idx", ["name", "coord_system_id"]);
 
 
-# Created by DBIx::Class::Schema::Loader v0.05002 @ 2011-03-25 09:57:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EVWZYLo7VZ4UyfOfUYbLXg
+# Created by DBIx::Class::Schema::Loader v0.07018 @ 2012-11-29 16:38:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zFxrV6ouTYxhBwasuPep2A
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 
@@ -139,6 +148,18 @@ __PACKAGE__->many_to_many(
     'assembly',
     );
     
+__PACKAGE__->has_many(
+    'dna_align_features',
+    'PipeMon::Schema::Pipeline::Result::DnaAlignFeature',
+    'seq_region_id',
+    );
+
+__PACKAGE__->has_many(
+    'protein_align_features',
+    'PipeMon::Schema::Pipeline::Result::ProteinAlignFeature',
+    'seq_region_id',
+    );
+
 sub get_attrib_val_by_code {
     my ($self, $code) = @_;
 
@@ -160,6 +181,28 @@ sub write_access {
 sub hidden {
     my ($self) = @_;
     return $self->get_attrib_val_by_code('hidden');
+}
+
+sub display_name {
+    my ($self) = @_;
+    return join(':',
+                $self->cs_name,
+                $self->cs_version || '',
+                $self->name
+        );
+}
+
+# May not be general
+#
+sub input_id_name {
+    my ($self) = @_;
+    my ($start, $end) = $self->name =~ /.+\.(\d+)\.(\d+)$/;
+    return join(':',
+                $self->display_name,
+                $start,
+                $end,
+                1,
+        );
 }
 
 sub n_all_components {

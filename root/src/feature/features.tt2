@@ -1,0 +1,45 @@
+[% meta.title = species_title('features') -%]
+
+<p>Features [% pager.first %] - [% pager.last %] of [% pager.total_entries %]:</p>
+<table>
+[% IF has_hit -%]
+  <tr>
+    <th>&nbsp;</th>
+    <th colspan="4">seq_region</th>
+    <th>&nbsp;</th>
+    <th colspan="2">hit</th>
+  </tr>
+[% END -%]
+  <tr>
+    <th>feature_id</th>
+    <th>name</th>
+    <th>start</th>
+    <th>end</th>
+    <th>strand</th>
+    <th>logic_name</th>
+[% IF has_hit -%]
+    <th>name</th>
+[% END -%]
+    <th>score</th>
+  </tr>
+[% WHILE (feature = features.next) -%]
+  <tr>
+    <td align="right">
+      <a href="[% c.uri_for_action('/feature/feature', [species, db_type, feature_type], feature.$feature_id) %]">
+        [% feature.$feature_id %]
+      </a>
+    </td>
+    <td>[% feature.seq_region.name %]</td>
+    <td align="right">[% feature.seq_region_start %]</td>
+    <td align="right">[% feature.seq_region_end %]</td>
+    <td align="right">[% feature.seq_region_strand %]</td>
+    <td>
+     <a href="[% analysis_uri(species, db_type, feature.analysis.analysis_id) %]">[% feature.analysis.logic_name %]</a>
+    </td>
+[% IF has_hit -%]
+    <td>[% feature.hit_name %]</td>
+[% END -%]
+    <td align="right">[% feature.score %]</td>
+  </tr>
+[% END -%]
+</table>

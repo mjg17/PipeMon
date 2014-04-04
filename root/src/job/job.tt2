@@ -1,4 +1,4 @@
-[% META title = "Job" -%]
+[% meta.title = species_title('job ' _ job.job_id) -%]
 
 <h2>Basics</h2>
 <dl class="job">

@@ -1,6 +1,6 @@
-[% META title = 'Jobs' -%]
+[% meta.title = species_title('jobs') -%]
 
-<p>First [% jobs.count %] of [% total %] jobs:</p>
+<p>Jobs [% pager.first %] - [% pager.last %] of [% pager.total_entries %]:</p>
 <table>
   <tr>
     <th>job_id</th>
@@ -12,9 +12,9 @@
   </tr>
 [% WHILE (job = jobs.next) -%]
   <tr>
-    <td><a href="[% c.uri_for_action('/job/job', [species], job.job_id) %]">[% job.job_id %]</a></td>
+    <td><a href="[% c.uri_for_action('/job/job', [species, db_type], job.job_id) %]">[% job.job_id %]</a></td>
     <td>
-     <a href="[% c.uri_for_action('/inputid/input_id', [species], job.input_id) %]">
+     <a href="[% c.uri_for_action('/inputid/input_id', [species, db_type], job.input_id) %]">
       [% job.input_id %]
      </a>
     </td>

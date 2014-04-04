@@ -1,15 +1,16 @@
-[% META title = 'Analyses' -%]
+[% meta.title = species_db_title('analyses') -%]
 
 <table>
 [% FOREACH a IN analyses -%]
   <tr>
     <td>[% a.analysis_id %]</td>
-    <td><a href="[% c.uri_for_action('/analysis/analysis', [species, db_type], a.logic_name) %]">[% a.logic_name %]</a></td>
+    <td><a href="[% analysis_uri(species, db_type, a.logic_name) %]">[% a.logic_name %]</a></td>
+    <td>[% a.db_version %]</td>
 [% IF db_type == 'pipe' -%]
     <td>[% a.job_count %]</td>
     <td>
       [% IF a.job_count -%]
-      <a href="[% c.uri_for_action('/job/jobs', [species], { analysis_id => a.analysis_id }) %]">list</a>
+      <a href="[% c.uri_for_action('/job/jobs', [species, db_type], { analysis_id => a.analysis_id }) %]">list</a>
       [% END -%]
     </td>
 [% END -%]

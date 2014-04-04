@@ -1,6 +1,6 @@
 # Run from PipeMon home
 
-/software/perl-5.8.8/bin/dbicdump \
+dbicdump \
     -o dump_directory=./lib \
     PipeMon::Schema::PipeQueue \
     'dbi:mysql:database=pipe_queue;host=otterlive;port=3324' ottro

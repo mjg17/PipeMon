@@ -1,1 +1,8 @@
 *~
+META.yml
+MYMETA.*
+Makefile
+Makefile.old
+blib/
+inc/
+var/

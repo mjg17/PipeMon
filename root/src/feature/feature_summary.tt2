@@ -1,0 +1,33 @@
+[% meta.title = species_title('feature summary') -%]
+
+<table>
+  <tr>
+[% FOREACH g IN groups -%]
+    <th>[% g %]</th>
+[% END -%]
+    <th># features</th>
+    <th>details</th>
+  </tr>
+[% WHILE (sum = feature_summary.next) -%]
+  <tr>
+[%   FOREACH g IN groups       ;
+       val = sum.get_column(g) ;
+       this_row = search_params;
+       this_row.$g = val           -%]
+    <td>
+[%     IF g == 'logic_name' -%]
+      <a href="[% analysis_uri(species, db_type, val) %]">[% val %]</a>
+[%     ELSE -%]
+      [% val %]
+[%     END -%]
+    </td>
+[%   END -%]
+    <td>[% sum.get_column('feature_count') %]</td>
+    <td>
+      <a href="[% c.uri_for_action('/feature/features', [species, db_type, feature_type], this_row ) %]">
+        list
+      </a>
+    </td>
+  </tr>
+[% END -%]
+</table>

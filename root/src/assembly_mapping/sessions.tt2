@@ -1,0 +1,42 @@
+[% meta.title = species_db_title("align_sessions") -%]
+
+<table>
+  <tr>
+   <th>ID</th>
+   <th>ref_seq_region</th>
+   <th>alt_seq_region</th>
+   <th>alt_db_name</th>
+   <th>author</th>
+   <th>comment</th>
+  </tr>
+[% FOREACH s IN sessions -%]
+  <tr>
+    <td>[% s.align_session_id %]</td>
+    <td>
+      <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], s.ref_seq_region.seq_region_id) %]">
+        [% s.ref_seq_region.name %]
+      </a>
+    </td>
+    <td>
+[%   IF s.alt_db_name -%]
+      [% s.alt_seq_region.name %]
+[%   ELSE -%]
+      <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], s.alt_seq_region.seq_region_id) %]">
+        [% s.alt_seq_region.name %]
+      </a>
+[%   END -%]
+    </td>
+    <td>[% s.alt_db_name %]</td>
+    <td>[% s.author %]</td>
+    <td>[% s.comment %]</td>
+    <td>
+      <a href="[% c.uri_for_action('/assemblymapping/stages', [species, db_type, s.align_session_id]) %]">stages</a>
+    </td>
+    <td>
+      <a href="[% c.uri_for_action('/assemblymapping/tmp_aligns', [species, db_type, s.align_session_id]) %]">
+        tmp_aligns
+      </a>
+    </td>
+  </tr>
+[% END -%]
+</table>

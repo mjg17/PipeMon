@@ -18,7 +18,10 @@ sub build_per_context_instance {
     # By the time this is used, the stash should already contain a dataset
     #
     my $dataset = $c->stash->{dataset};
-    my $opt_str = $dataset->satellite_dba_options('pipeline_db_head');
+    my $opt_str = $dataset->_satellite_dba_options('pipeline_db_head');
+
+    # satellite_dba_options will have opened a loutre db connection, close it if possible
+    $dataset->otter_dba->dbc->disconnect_if_idle;
 
     # Duplication with Bio::Otter::SpeciesDat::DataSet
     my %options;

@@ -1,0 +1,16 @@
+[% meta.title = species_db_title("align_stage $stage.align_stage_id for session $session.align_session_id") -%]
+
+[% INCLUDE 'assembly_mapping/session_details.tt2' -%]
+
+<dl>
+[% FOREACH key IN align_stage_keys -%]
+  <dt>[% key %]</dt>
+  <dd>
+    [% stage.$key %]
+  </dd>
+[% END -%]
+  <dt>parameters</dt>
+  <dd>
+    <pre>[% stage.parameters %]</pre>
+  </dd>
+</dl>

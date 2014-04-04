@@ -1,9 +1,23 @@
-[% META title = "Seq region" -%]
-<h2>[% species %] [% seq_region.cs_name %] [% seq_region.name %] in [% db_type %]</h2>
+[% meta.title = species_db_title(seq_region.display_name) -%]
+
 <dl class="seq_region">
 [% FOREACH key IN sr_keys -%]
  <dt>[% key %]</dt>
- <dd>[% seq_region.$key %]</dd>
+ <dd>
+  [% IF seq_region.$key.defined -%]
+   [% seq_region.$key %]
+  [% ELSE -%]
+   <em>null</em>
+  [% END -%]
+ </dd>
+[% END %]
+[% IF seq_region.cs_name == 'contig' AND db_type == 'pipe' %]
+ <dt>input_id</dt>
+ <dd>
+  <a href="[% c.uri_for_action('/inputid/input_id', [species, db_type], seq_region.input_id_name) | html %]">
+   [% seq_region.input_id_name %]
+  </a>
+ </dd>
 [% END %]
 </dl>
 
@@ -37,14 +51,26 @@
 [%   WHILE (m = m_type.value.next) -%]
  <tr>
   <td>
-   <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], m.seq_region_id) %]">
+   <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], m.seq_region_id) %]">
     [% m.seq_region_id %]
    </a>
   </td>
   <td>[% m.name %]</td>
   <td>[% m.cs_name %]</td>
   <td>[% m.cs_version %]</td>
-  <td>[% m.get_column('segments') %]</td>
+  <td>
+[%     IF m_type.key == 'Mappings from:' -%]
+   <a href="[% c.uri_for_action('/assembly/mapping',
+                                [species, db_type],
+                                m.seq_region_id, seq_region.seq_region_id) %]">
+[%     ELSE -%]
+   <a href="[% c.uri_for_action('/assembly/mapping',
+                                [species, db_type],
+                                seq_region.seq_region_id, m.seq_region_id) %]">
+[%     END  -%]
+    [% m.get_column('segments') %]
+   </a>
+  </td>
  </tr>
 [%   END %]
 </table>
@@ -62,13 +88,21 @@
  <tr>
   <td>[% ct.cs_name %]</td>
   <td>[% ct.cs_version %]</td>
-  <td>[% ct.get_column('count') %]</td>
 [%  IF (sole_comp) -%]
+  <td>[% ct.get_column('count') %]</td>
   <td>
-   <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sole_comp.seq_region_id) %]">
+   <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], sole_comp.seq_region_id) %]">
     [% sole_comp.name %]
    </a>
   </td>
+[%  ELSE %]
+  <td>
+   <a href="[% c.uri_for_action('/assembly/components',
+                                [species, db_type], seq_region.seq_region_id, ct.coord_system_id) | html %]">
+    [% ct.get_column('count') %]
+   </a>
+  </td>
+  <td>&nbsp;</td>
 [%  END %]
  </tr>
 [% END %]
@@ -89,11 +123,73 @@
   <td>[% at.get_column('count') %]</td>
 [%  IF (sole_asm) -%]
   <td>
-   <a href="[% c.uri_for_action('/seqregion/seq_region', [species, db_type], sole_asm.seq_region_id) %]">
+   <a href="[% c.uri_for_action('/seqregion/seq_region_id', [species, db_type], sole_asm.seq_region_id) %]">
     [% sole_asm.name %]
+   </a>
+  </td>
+  <td>
+   <a href="[% c.uri_for_action('/assembly/components',
+                                [species, db_type], sole_asm.seq_region_id, seq_region.coord_system_id,
+                                { focus => seq_region.seq_region_id }) | html %]">
+    <em>browse assembly</em>
+   </a>
+  </td>
+[%  ELSE %]
+  <td>&nbsp;</td>
+  <td>
+   <a href="[% c.uri_for_action('/assembly/assemblies', [species, db_type],
+                                seq_region.seq_region_id, at.coord_system_id) %]">
+    <em>show assemblies</em>
    </a>
   </td>
 [%  END %]
  </tr>
 [% END %]
 </table>
+
+<h3>Features</h3>
+
+<dl>
+ <dt>DNA align</dt>
+ <dd>
+  <a href="[% c.uri_for_action('/feature/feature_summary',
+                               [species, db_type, 'dna', 'logic_name'],
+                               { seq_region_id => seq_region.id }
+                               ) %]">
+   Summary by logic_name</a>
+  <br/>
+  <form action="[% c.uri_for_action('/feature/feature_summary',
+                                    [species, db_type, 'dna', 'logic_name'],
+                                    ) %]"
+        method="get">
+   Search by hit_name:                <input type="text"     name="hit_name" />
+   Use LIKE &quot<em>name</em>%&quot: <input type="checkbox" name="hit_name_like" value="1" />
+   <input type="hidden" name="seq_region_id" value="[% seq_region.id %]" />
+  </form>
+ </dd>
+ <dt>Protein align</dt>
+ <dd>
+  <a href="[% c.uri_for_action('/feature/feature_summary',
+                               [species, db_type, 'protein', 'logic_name'],
+                               { seq_region_id => seq_region.id }
+                               ) %]">
+   Summary by logic_name</a>
+  <br/>
+  <form action="[% c.uri_for_action('/feature/feature_summary',
+                                    [species, db_type, 'protein', 'logic_name'],
+                                    ) %]"
+        method="get">
+   Search by hit_name:                <input type="text"     name="hit_name" />
+   Use LIKE &quot<em>name</em>%&quot: <input type="checkbox" name="hit_name_like" value="1" />
+   <input type="hidden" name="seq_region_id" value="[% seq_region.id %]" />
+  </form>
+ </dd>
+ <dt>Simple</dt>
+ <dd>
+  <a href="[% c.uri_for_action('/feature/feature_summary',
+                               [species, db_type, 'simple', 'logic_name'],
+                               { seq_region_id => seq_region.id }
+                               ) %]">
+   Summary by logic_name</a>
+ </dd>
+</dl>

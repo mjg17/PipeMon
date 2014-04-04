@@ -17,17 +17,6 @@ Catalyst Controller.
 =cut
 
 
-=head2 index
-
-=cut
-
-sub index :Path :Args(0) {
-    my ( $self, $c ) = @_;
-
-    $c->response->body('Matched PipeMon::Controller::PipeQueue in PipeQueue.');
-}
-
-
 =head2 summary
 
 =cut
@@ -44,6 +33,38 @@ sub summary :Path('summary') :Args(0) {
     $c->stash( 
         pipe_summary => $pipe_summary,
         template     => 'pipe_queue/summary.tt2',
+        );
+}
+
+=head2 priority
+
+=cut
+
+sub priority :Path('priority') :Args(0) {
+    my ( $self, $c ) = @_;
+
+    my ($where, $species_list);
+    if (my $species = $c->request->parameters->{species}) {
+        my @species = split ',', $species;
+        my @pipeline_list = map { 'pipe_' . $_ } @species;
+        $where = { pipeline => { -in => \@pipeline_list } };
+        $species_list = ' for ' . join ', ', @species;
+    }
+
+    my @fields = qw( pipeline analysis priority is_update );
+
+    my $pipe_priority = $c->model('PipeQueue::Queue')->search(
+        $where,
+        {
+            select   => [ @fields, { min => 'created' }, { max => 'created' }, { count => 'id' } ],
+            as       => [ @fields, 'oldest',             'youngest',           'job_count' ],
+            group_by => [ @fields ],
+            order_by => { -desc => 'priority' },
+        } );
+    $c->stash(
+        pipe_priority => $pipe_priority,
+        species_list  => $species_list,
+        template      => 'pipe_queue/priority.tt2',
         );
 }
 

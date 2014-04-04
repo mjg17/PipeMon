@@ -1,0 +1,27 @@
+[% meta.title = 'PipeQueue by priority' _ species_list -%]
+
+<table>
+  <tr>
+    <th>pipeline</th>
+    <th>analysis</th>
+    <th>priority</th>
+    <th>is_update</th>
+    <th>oldest</th>
+    <th>youngest</th>
+    <th># jobs</th>
+    <th>details</th>
+  </tr>
+[% WHILE (pri = pipe_priority.next) -%]
+  <tr>
+    <td>[% pri.pipeline %]</td>
+    <td>[% pri.analysis %]</td>
+    <td align="right">[% pri.priority %]</td>
+    <td align="right">[% pri.is_update %]</td>
+    <td>[% pri.get_column('oldest') %]</td>
+    <td>[% pri.get_column('youngest') %]</td>
+    <td align="right">[% pri.get_column('job_count') %]</td>
+    <td><a href="[% c.uri_for_action('/job/jobs', [pri.species, 'pipe'],
+                                     { logic_name => pri.analysis, status => 'CREATED' } ) %]">jobs</a></td>
+  </tr>
+[% END -%]
+</table>

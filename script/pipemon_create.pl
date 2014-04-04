@@ -23,7 +23,7 @@ pipemon_create.pl [options] model|view|controller name [helper] [options]
 
  Examples:
    pipemon_create.pl controller My::Controller
-   pipemon_create.pl -mechanize controller My::Controller
+   pipemon_create.pl --mechanize controller My::Controller
    pipemon_create.pl view My::View
    pipemon_create.pl view HTML TT
    pipemon_create.pl model My::Model

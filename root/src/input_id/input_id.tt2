@@ -1,12 +1,17 @@
-[% META title = "Input ID" -%]
+[% meta.title = species_title(input_id.input_id) -%]
 
 <h2>Basics</h2>
-[% sr_url = c.uri_for_action('/seqregion/seq_region', [species, 'pipe'], input_id.seq_region_id) -%]
+[% sr_url = c.uri_for_action('/seqregion/seq_region_id', [species, 'pipe'], seq_region.seq_region_id) -%]
 <dl class="input_id">
  <dt>input_id</dt>     <dd>[% input_id.input_id %]</dd>
- <dt>seq_region_id</dt><dd><a href="[% sr_url %]">[% input_id.seq_region_id %]</a></dd>
- <dt>name</dt>         <dd><a href="[% sr_url %]">[% input_id.name %]</a></dd>
- <dt>length</dt>       <dd>[% input_id.length %]</dd>
+ <dt>seq_region</dt>
+ <dd>
+  <dl class="seq_region">
+   <dt>seq_region_id</dt><dd><a href="[% sr_url %]">[% seq_region.seq_region_id %]</a></dd>
+   <dt>name</dt>         <dd><a href="[% sr_url %]">[% seq_region.name %]</a></dd>
+   <dt>length</dt>       <dd>[% seq_region.length %]</dd>
+  </dl>
+ </dd>
 </dl>
 
 <h2>Jobs</h2>
@@ -21,7 +26,7 @@
   </tr>
 [% WHILE (job = jobs.next) -%]
   <tr>
-    <td><a href="[% c.uri_for_action('/job/job', [species], job.job_id) %]">[% job.job_id %]</a></td>
+    <td><a href="[% c.uri_for_action('/job/job', [species, db_type], job.job_id) %]">[% job.job_id %]</a></td>
     <td>[% job.logic_name %]</td>
     <td>[% job.status %]</td>
     <td>[% job.retry_count %]</td>
@@ -40,13 +45,10 @@
     <th>result</th>
   </tr>
 [% WHILE (ana = analyses.next) -%]
+[%  a_uri = analysis_uri(species, 'pipe', ana.analysis_id) -%]
   <tr>
-    <td>
-     <a href="[% c.uri_for_action('/analysis/analysis', [species, 'pipe'], ana.analysis_id) %]">
-      [% ana.analysis_id %]
-     </a>
-    </td>
-    <td>[% ana.logic_name %]</td>
+    <td><a href="[% a_uri %]">[% ana.analysis_id %]</a></td>
+    <td><a href="[% a_uri %]">[% ana.logic_name %]</a></td>
     <td>[% ana.created %]</td>
     <td>[% ana.db_version %]</td>
     <td>[% ana.result %]</td>
