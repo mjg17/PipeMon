@@ -37,11 +37,11 @@ sub base :Chained('/') :PathPart('') :CaptureArgs(1) {
         $c->detach;
     }
 
-    if ($ds->params->{RESTRICTED}) {
-        $c->response->status(401);
-        $c->response->body("Not permitted to see '$species'");
-        $c->detach;
-    }
+    # if ($ds->params->{RESTRICTED}) {
+    #     $c->response->status(401);
+    #     $c->response->body("Not permitted to see '$species'");
+    #     $c->detach;
+    # }
 
     $c->stash(dataset => $ds);
 
